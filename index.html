@@ -566,6 +566,8 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{ou
         <button class="tf-btn on" data-tf="1h">1H</button>
         <button class="tf-btn" data-tf="4h">4H</button>
         <button class="tf-btn" data-tf="1d">1D</button>
+        <button class="tf-btn" data-tf="1w">1W</button>
+        <button class="tf-btn" data-tf="1M">1M</button>
       </div>
       <div class="term-grid">
         <div class="term-main">
@@ -769,7 +771,7 @@ function toast(msg){var t=$('toast');t.textContent=msg;t.style.display='block';c
    snapshot prices stay on screen and a note says so. Chart candles
    still come from the embedded snapshot data, unchanged. */
 var LIVE={ok:false,at:0};
-var BINANCE_TICKER='https://api.binance.com/api/v3/ticker/24hr?symbols='+encodeURIComponent(JSON.stringify(['BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT']));
+var BINANCE_TICKER='https://data-api.binance.vision/api/v3/ticker/24hr?symbols='+encodeURIComponent(JSON.stringify(['BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT']));
 
 /* ---------- live candles (Binance klines) ---------- */
 /* The chart used to draw only the frozen 25 Nov 2026 snapshot candles
@@ -777,10 +779,10 @@ var BINANCE_TICKER='https://api.binance.com/api/v3/ticker/24hr?symbols='+encodeU
    Now candles come from Binance klines (free public API, no key) and
    the forming candle is updated on every live price tick. If Binance
    is unreachable the snapshot candles stay -- the chart never blanks. */
-var BINANCE_KLINES='https://api.binance.com/api/v3/klines';
+var BINANCE_KLINES='https://data-api.binance.vision/api/v3/klines';
 var liveCandles=null; /* {key:'BTC|1h', c:[[t,o,h,l,c,v],...], at:ms} */
 var liveCandlesBusy=false;
-var TF_SEC={'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400};
+var TF_SEC={'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400,'1w':604800,'1M':2592000};
 function candleBucket(tf,nowMs){
   var d=new Date(nowMs);
   if(tf==='1d')return Math.floor(nowMs/86400000)*86400;
@@ -1508,9 +1510,9 @@ window.addEventListener('scroll',function(){
 
 /* ---------- Binance all-market live data layer ---------- */
 /* Public Binance market data only. No API keys or secrets are used here. */
-var BINANCE_EXCHANGE_INFO='https://api.binance.com/api/v3/exchangeInfo';
-var BINANCE_24H='https://api.binance.com/api/v3/ticker/24hr';
-var BINANCE_PRICE='https://api.binance.com/api/v3/ticker/price';
+var BINANCE_EXCHANGE_INFO='https://data-api.binance.vision/api/v3/exchangeInfo';
+var BINANCE_24H='https://data-api.binance.vision/api/v3/ticker/24hr';
+var BINANCE_PRICE='https://data-api.binance.vision/api/v3/ticker/price';
 var coinMeta={};
 var marketRows=[];
 var activeSocket=null;
@@ -1521,7 +1523,7 @@ var candleRequestToken=0;
 var lastPricePollAt=0;
 var searchQuery='';
 var marketReady=false;
-var TF_SEC={'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400};
+var TF_SEC={'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400,'1w':604800,'1M':2592000};
 
 function precisionFromSymbol(info){
   var f=(info.filters||[]).find(function(x){return x.filterType==='PRICE_FILTER'});
@@ -1578,31 +1580,56 @@ function renderMarkets(){
     if(!query)return true;
     return sym.indexOf(query)>=0||safeCoinName(sym).toUpperCase().indexOf(query)>=0||(coinMeta[sym].symbol||'').indexOf(query)>=0;
   });
-  var html='';
-  filtered.forEach(function(sym){
-    var s=SNAP[sym]||{p:0,c:0,v:0},on=!!state.watch[sym];
-    html+='<button class="mrow'+(state.pair===sym?' sel':'')+'" data-sym="'+sym+'">'
-      +'<span class="star'+(on?' on':'')+'" data-star="'+sym+'">'+(on?'★':'☆')+'</span>'
-      +'<span><span class="sym">'+sym+'</span> <span class="pair">/ USDT</span><br><span class="pair">'+safeCoinName(sym)+'</span></span>'
-      +'<span><span class="pr num">'+(s.p>0?fmt$(s.p,coinPrecision(sym)):'—')+'</span><br><span class="vol num">Vol '+fmtVol(s.v||0)+'</span></span>'
-      +'<span class="chg num '+((s.c||0)>=0?'up':'down')+'">'+((s.c||0)>=0?'▲':'▼')+' '+fmt(Math.abs(s.c||0),2)+'%</span></button>';
-  });
-  $('mktRows').innerHTML=html||'<div class="empty">No matching Binance USDT pairs. Try another search.</div>';
+  var el=$('mktRows');
+  var key=filtered.join(',');
   $('wlCount').textContent='Watchlist: '+Object.keys(state.watch).filter(function(k){return state.watch[k]}).length+' pairs';
-  Array.prototype.forEach.call(document.querySelectorAll('.mrow'),function(r){
-    r.addEventListener('click',function(e){
-      var sym=r.getAttribute('data-sym');
-      if(e.target.hasAttribute('data-star')){state.watch[sym]=!state.watch[sym];renderMarkets();renderWatch();return;}
-      setPair(sym);$('chart').scrollIntoView({behavior:'smooth'});
+  if(el._mktKey!==key){
+    var html='';
+    filtered.forEach(function(sym){
+      var s=SNAP[sym]||{p:0,c:0,v:0},on=!!state.watch[sym];
+      html+='<button class="mrow'+(state.pair===sym?' sel':'')+'" data-sym="'+sym+'">'
+        +'<span class="star'+(on?' on':'')+'" data-star="'+sym+'">'+(on?'★':'☆')+'</span>'
+        +'<span><span class="sym">'+sym+'</span> <span class="pair">/ USDT</span><br><span class="pair">'+safeCoinName(sym)+'</span></span>'
+        +'<span><span class="pr num">'+(s.p>0?fmt$(s.p,coinPrecision(sym)):'—')+'</span><br><span class="vol num">Vol '+fmtVol(s.v||0)+'</span></span>'
+        +'<span class="chg num '+((s.c||0)>=0?'up':'down')+'">'+((s.c||0)>=0?'▲':'▼')+' '+fmt(Math.abs(s.c||0),2)+'%</span></button>';
     });
+    el.innerHTML=html||'<div class="empty">No matching Binance USDT pairs. Try another search.</div>';
+    el._mktKey=key;
+    Array.prototype.forEach.call(el.querySelectorAll('.mrow'),function(r){
+      r.addEventListener('click',function(e){
+        var sym=r.getAttribute('data-sym');
+        if(e.target.hasAttribute('data-star')){state.watch[sym]=!state.watch[sym];renderMarkets();renderWatch();return;}
+        setPair(sym);$('chart').scrollIntoView({behavior:'smooth'});
+      });
+    });
+    return;
+  }
+  Array.prototype.forEach.call(el.querySelectorAll('.mrow'),function(r){
+    var sym=r.getAttribute('data-sym'),s=SNAP[sym]||{p:0,c:0,v:0};
+    var pr=r.querySelector('.pr');if(pr)pr.textContent=(s.p>0?fmt$(s.p,coinPrecision(sym)):'—');
+    var vol=r.querySelector('.vol');if(vol)vol.textContent='Vol '+fmtVol(s.v||0);
+    var chg=r.querySelector('.chg');if(chg){chg.textContent=(((s.c||0)>=0?'▲':'▼')+' '+fmt(Math.abs(s.c||0),2)+'%');chg.className='chg num '+((s.c||0)>=0?'up':'down');}
+    r.classList.toggle('sel',state.pair===sym);
+    var star=r.querySelector('.star');if(star){var on=!!state.watch[sym];star.textContent=on?'★':'☆';star.className='star'+(on?' on':'');}
   });
 }
 function renderWatch(){
   var el=$('tvWatch');if(!el)return;
   var list=Object.keys(state.watch).filter(function(sym){return state.watch[sym]&&coinMeta[sym]});
   if(!list.length)list=[state.pair];
-  el.innerHTML=list.map(function(sym){var s=SNAP[sym]||{p:0,c:0};return '<button class="wrow'+(state.pair===sym?' sel':'')+'" data-wsym="'+sym+'"><span><span class="w-sym">'+sym+'</span> <span class="w-pair">/USDT</span><span class="w-name">'+safeCoinName(sym)+'</span></span><span class="w-pr num">'+(s.p>0?fmt$(s.p,coinPrecision(sym)):'—')+'</span><span class="w-chg num '+((s.c||0)>=0?'up':'down')+'">'+((s.c||0)>=0?'+':'')+fmt(s.c||0,2)+'%</span></button>'}).join('');
-  Array.prototype.forEach.call(el.querySelectorAll('[data-wsym]'),function(r){r.addEventListener('click',function(){setPair(r.getAttribute('data-wsym'))})});
+  var key=list.join(',');
+  if(el._wKey!==key){
+    el.innerHTML=list.map(function(sym){var s=SNAP[sym]||{p:0,c:0};return '<button class="wrow'+(state.pair===sym?' sel':'')+'" data-wsym="'+sym+'"><span><span class="w-sym">'+sym+'</span> <span class="w-pair">/USDT</span><span class="w-name">'+safeCoinName(sym)+'</span></span><span class="w-pr num">'+(s.p>0?fmt$(s.p,coinPrecision(sym)):'—')+'</span><span class="w-chg num '+((s.c||0)>=0?'up':'down')+'">'+((s.c||0)>=0?'+':'')+fmt(s.c||0,2)+'%</span></button>'}).join('');
+    el._wKey=key;
+    Array.prototype.forEach.call(el.querySelectorAll('[data-wsym]'),function(r){r.addEventListener('click',function(){setPair(r.getAttribute('data-wsym'))})});
+    return;
+  }
+  Array.prototype.forEach.call(el.querySelectorAll('[data-wsym]'),function(r){
+    var sym=r.getAttribute('data-wsym'),s=SNAP[sym]||{p:0,c:0};
+    var pr=r.querySelector('.w-pr');if(pr)pr.textContent=(s.p>0?fmt$(s.p,coinPrecision(sym)):'—');
+    var chg=r.querySelector('.w-chg');if(chg){chg.textContent=(((s.c||0)>=0?'+':'')+fmt(s.c||0,2)+'%');chg.className='w-chg num '+((s.c||0)>=0?'up':'down');}
+    r.classList.toggle('sel',state.pair===sym);
+  });
 }
 function setPair(sym){
   if(!coinMeta[sym]){toast(sym+'/USDT is not available on Binance spot.');return;}
@@ -1662,7 +1689,7 @@ function fetchLiveCandles(){
   var token=++candleRequestToken,sym=state.pair,tf=state.tf,meta=coinMeta[sym];
   if(!meta)return Promise.resolve();
   var key=sym+'|'+tf;
-  return fetch('https://api.binance.com/api/v3/klines?symbol='+meta.symbol+'&interval='+tf+'&limit=100',{cache:'no-store'})
+  return fetch('https://data-api.binance.vision/api/v3/klines?symbol='+meta.symbol+'&interval='+tf+'&limit=100',{cache:'no-store'})
     .then(function(r){if(!r.ok)throw new Error('klines '+r.status);return r.json()})
     .then(function(arr){
       if(token!==candleRequestToken||sym!==state.pair||tf!==state.tf)return;
