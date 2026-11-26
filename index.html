@@ -1431,7 +1431,7 @@ function syncOrderPanel(){
   if(!$('opPair'))return;
   var sym=state.pair,p=SNAP[sym].p,d=coinPrecision(sym);
   $('symTitle').textContent=sym+' / USDT';
-  $('symSub').textContent=NAMES[sym]+' · USDT · '+state.tf.toUpperCase();
+  $('symSub').textContent=NAMES[sym]+' · USDT · '+(state.tf.slice(-1)==='m'?state.tf:state.tf.toUpperCase());
   $('qSellP').textContent=fmt(p,d);$('qBuyP').textContent=fmt(p,d);
   $('opPair').textContent=sym+'/USDT';
   var pr=$('opPrice');if(document.activeElement!==pr)pr.value=p;
