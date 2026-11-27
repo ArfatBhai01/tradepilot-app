@@ -735,11 +735,11 @@ button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
       </ul>
       <p style="font-size:12.5px;color:var(--dim);margin:0 0 8px">Tap your issue below &mdash; your message is already written, just press Send in Telegram.</p>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">
-        <a class="btn" href="https://t.me/Lustcoded?text=Hi%2C%20I%20paid%20with%20Telegram%20Stars%20but%20my%20paper%20balance%20top-up%20hasn%27t%20arrived.%20Please%20help." target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Payment issue</a>
-        <a class="btn" href="https://t.me/Lustcoded?text=Hi%2C%20my%20paper%20balance%20looks%20wrong%20%2F%20is%20%240.%20Please%20help." target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Balance issue</a>
-        <a class="btn" href="https://t.me/Lustcoded?text=Hi%2C%20the%20TradePilot%20AI%20app%20is%20not%20working%20properly.%20Please%20help." target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">App issue</a>
+        <a class="btn" data-support-link href="https://t.me/Lustcoded?text=Hi%2C%20I%20paid%20with%20Telegram%20Stars%20but%20my%20paper%20balance%20top-up%20hasn%27t%20arrived.%20Please%20help. target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Payment issue</a>
+        <a class="btn" data-support-link href="https://t.me/Lustcoded?text=Hi%2C%20my%20paper%20balance%20looks%20wrong%20%2F%20is%20%240.%20Please%20help. target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Balance issue</a>
+        <a class="btn" data-support-link href="https://t.me/Lustcoded?text=Hi%2C%20the%20TradePilot%20AI%20app%20is%20not%20working%20properly.%20Please%20help. target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">App issue</a>
       </div>
-      <a class="chat-btn" href="https://t.me/Lustcoded?text=Hi%2C%20I%27m%20facing%20some%20issues%20with%20TradePilot%20AI.%20Please%20help." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6 18.8 19.3c-.2 1-.8 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.8L19.4 6.6c.4-.3-.1-.5-.6-.2L7.6 13.2 2.9 11.7c-1-.3-1-1 .2-1.5L21.3 3.5c.8-.3 1.6.2 1.3 1.1z"/></svg>Chat on Telegram · @Lustcoded</a>
+      <a class="chat-btn" data-support-link href="https://t.me/Lustcoded?text=Hi%2C%20I%27m%20facing%20some%20issues%20with%20TradePilot%20AI.%20Please%20help. target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6 18.8 19.3c-.2 1-.8 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.8L19.4 6.6c.4-.3-.1-.5-.6-.2L7.6 13.2 2.9 11.7c-1-.3-1-1 .2-1.5L21.3 3.5c.8-.3 1.6.2 1.3 1.1z"/></svg>Chat on Telegram · @Lustcoded</a>
     </div>
   </section>
 
@@ -1623,6 +1623,20 @@ function saveEditSLTP(){
 $('editSave').addEventListener('click',saveEditSLTP);
 $('editCancel').addEventListener('click',closeEditSLTP);
 $('editOverlay').addEventListener('click',function(e){if(e.target===this)closeEditSLTP()});
+
+/* Support links: open t.me with the pre-filled message via Telegram's own
+   opener inside the Mini App (plain <a> links do nothing in the WebView);
+   in a normal browser fall back to opening the link. */
+function openSupportLink(url){
+  try{
+    var w=window.Telegram&&window.Telegram.WebApp;
+    if(w&&typeof w.openTelegramLink==='function'){w.openTelegramLink(url);return}
+  }catch(e){}
+  window.open(url,'_blank');
+}
+Array.prototype.forEach.call(document.querySelectorAll('[data-support-link]'),function(a){
+  a.addEventListener('click',function(e){e.preventDefault();openSupportLink(a.getAttribute('href'));});
+});
 
 /* ---------- store: Stars top-ups via the bot ---------- */
 /* Buy -> Confirm purchase -> "Open Bot & Get Invoice": the link
