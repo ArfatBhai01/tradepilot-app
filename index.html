@@ -518,44 +518,49 @@ button:active,.mrow:active,.wrow:active,.tf-btn:active,.ind-btn:active{transform
 </style>
 
 <style>
-/* ---- Animated background v3 (27 Nov 2026) — aurora glow + twinkling stars ----
-   CSS-only, fixed behind content, pointer-events none so it never blocks taps.
-   Colours stay inside the dark-navy / gold TradePilot theme. */
+/* ---- Animated background v5 (27 Nov 2026) — STRONGER aurora + twinkling stars ----
+   v3 was too faint to see, so blobs are bigger + more saturated and stars are
+   bigger with a clear blink. CSS-only, fixed behind content, pointer-events none. */
 body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(600px 420px at 12% 8%, rgba(240,185,11,.12), transparent 70%),
-    radial-gradient(520px 380px at 88% 28%, rgba(14,203,129,.17), transparent 70%),
-    radial-gradient(720px 520px at 50% 92%, rgba(77,163,255,.15), transparent 70%);
-  animation:tpAurora 26s ease-in-out infinite alternate}
+    radial-gradient(900px 620px at 12% 8%, rgba(240,185,11,.35), transparent 70%),
+    radial-gradient(800px 560px at 88% 28%, rgba(14,203,129,.28), transparent 70%),
+    radial-gradient(1000px 700px at 50% 92%, rgba(77,163,255,.25), transparent 70%);
+  animation:tpAurora 18s ease-in-out infinite alternate}
 @keyframes tpAurora{
-  0%{transform:translate3d(0,0,0) scale(1);opacity:.85}
-  50%{transform:translate3d(2%,1%,0) scale(1.06);opacity:1}
-  100%{transform:translate3d(-2%,2%,0) scale(1.03);opacity:.95}}
+  0%{transform:translate3d(0,0,0) scale(1);opacity:.8}
+  50%{transform:translate3d(3%,2%,0) scale(1.12);opacity:1}
+  100%{transform:translate3d(-3%,3%,0) scale(1.06);opacity:.9}}
 body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:
-    radial-gradient(1px 1px at 20% 25%, rgba(255,255,255,.75), transparent),
-    radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,.5), transparent),
-    radial-gradient(1.5px 1.5px at 40% 60%, rgba(214,168,75,.85), transparent),
-    radial-gradient(1px 1px at 85% 70%, rgba(255,255,255,.6), transparent),
-    radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,.5), transparent),
-    radial-gradient(1px 1px at 55% 40%, rgba(214,168,75,.65), transparent),
-    radial-gradient(1px 1px at 30% 90%, rgba(255,255,255,.45), transparent),
-    radial-gradient(1.5px 1.5px at 95% 45%, rgba(255,255,255,.55), transparent);
-  background-size:420px 420px;
-  animation:tpTwinkle 5s ease-in-out infinite alternate}
-@keyframes tpTwinkle{from{opacity:.45}to{opacity:.95}}
+    radial-gradient(2px 2px at 20% 25%, rgba(255,255,255,.9), transparent),
+    radial-gradient(2px 2px at 70% 15%, rgba(255,255,255,.7), transparent),
+    radial-gradient(2.5px 2.5px at 40% 60%, rgba(214,168,75,1), transparent),
+    radial-gradient(2px 2px at 85% 70%, rgba(255,255,255,.8), transparent),
+    radial-gradient(2.5px 2.5px at 10% 80%, rgba(255,255,255,.7), transparent),
+    radial-gradient(2px 2px at 55% 40%, rgba(214,168,75,.9), transparent),
+    radial-gradient(2px 2px at 30% 90%, rgba(255,255,255,.6), transparent),
+    radial-gradient(2.5px 2.5px at 95% 45%, rgba(255,255,255,.75), transparent),
+    radial-gradient(2px 2px at 60% 85%, rgba(214,168,75,.8), transparent),
+    radial-gradient(2px 2px at 5% 45%, rgba(255,255,255,.7), transparent);
+  background-size:380px 380px;
+  animation:tpTwinkle 3s ease-in-out infinite alternate}
+@keyframes tpTwinkle{from{opacity:.2}to{opacity:1}}
 /* keep all content above the animated background; tab bar already sits at z-index 50 */
 .wrap{position:relative;z-index:1}
 </style>
 
 <style>
-/* ---- Support Center animations v4 (27 Nov 2026) — visible, premium, CSS-only ---- */
-@keyframes tpAvatarGlow{0%,100%{box-shadow:0 0 0 0 rgba(214,168,75,.45),0 0 18px rgba(214,168,75,.28)}50%{box-shadow:0 0 0 7px rgba(214,168,75,0),0 0 28px rgba(214,168,75,.5)}}
-.support-card .avatar{animation:tpAvatarGlow 2.6s ease-in-out infinite}
+/* ---- Support Center animations v5 (27 Nov 2026) — STRONG, unmistakable, CSS-only ----
+   v4 was too subtle to see in screenshots, so: avatar now PULSES in size (scale),
+   chat button shimmer uses a BRIGHT gold band, card border is 2px and pulses to
+   bright gold with a strong glow. */
+@keyframes tpAvatarPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(214,168,75,.6),0 0 20px rgba(214,168,75,.4)}50%{transform:scale(1.18);box-shadow:0 0 0 10px rgba(214,168,75,0),0 0 36px rgba(214,168,75,.75)}}
+.support-card .avatar{animation:tpAvatarPulse 2.2s ease-in-out infinite}
 @keyframes tpChatShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.support-card .chat-btn{background:linear-gradient(100deg,var(--panel3),#33291a,var(--panel3));background-size:220% 220%;animation:tpChatShimmer 4s ease-in-out infinite}
-@keyframes tpCardGlow{0%,100%{border-color:var(--line);box-shadow:0 4px 14px rgba(0,0,0,.22)}50%{border-color:rgba(214,168,75,.55);box-shadow:0 4px 22px rgba(214,168,75,.18)}}
-.support-card{animation:tpCardGlow 4s ease-in-out infinite}
+.support-card .chat-btn{background:linear-gradient(100deg,var(--panel3) 0%,var(--panel3) 35%,#e8c15a 50%,var(--panel3) 65%,var(--panel3) 100%);background-size:220% 220%;animation:tpChatShimmer 3s ease-in-out infinite}
+@keyframes tpCardGlow{0%,100%{border-color:rgba(214,168,75,.25);box-shadow:0 4px 14px rgba(0,0,0,.22)}50%{border-color:rgba(214,168,75,.95);box-shadow:0 4px 30px rgba(214,168,75,.4)}}
+.support-card{animation:tpCardGlow 3s ease-in-out infinite;border-width:2px}
 .support-list li{animation:tpFadeUp .5s ease both}
 .support-list li:nth-child(2){animation-delay:.08s}
 .support-list li:nth-child(3){animation-delay:.16s}
