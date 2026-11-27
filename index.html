@@ -517,6 +517,37 @@ button:active,.mrow:active,.wrow:active,.tf-btn:active,.ind-btn:active{transform
 .tf-btn.on,.ind-btn.on{transition:background .2s ease,color .2s ease,transform .12s ease}
 </style>
 
+<style>
+/* ---- Animated background v3 (27 Nov 2026) — aurora glow + twinkling stars ----
+   CSS-only, fixed behind content, pointer-events none so it never blocks taps.
+   Colours stay inside the dark-navy / gold TradePilot theme. */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(600px 420px at 12% 8%, rgba(240,185,11,.12), transparent 70%),
+    radial-gradient(520px 380px at 88% 28%, rgba(14,203,129,.09), transparent 70%),
+    radial-gradient(720px 520px at 50% 92%, rgba(77,163,255,.08), transparent 70%);
+  animation:tpAurora 26s ease-in-out infinite alternate}
+@keyframes tpAurora{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:.65}
+  50%{transform:translate3d(2%,1%,0) scale(1.06);opacity:1}
+  100%{transform:translate3d(-2%,2%,0) scale(1.03);opacity:.8}}
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 20% 25%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.5px 1.5px at 40% 60%, rgba(214,168,75,.85), transparent),
+    radial-gradient(1px 1px at 85% 70%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1px 1px at 55% 40%, rgba(214,168,75,.65), transparent),
+    radial-gradient(1px 1px at 30% 90%, rgba(255,255,255,.45), transparent),
+    radial-gradient(1.5px 1.5px at 95% 45%, rgba(255,255,255,.55), transparent);
+  background-size:420px 420px;
+  animation:tpTwinkle 5s ease-in-out infinite alternate}
+@keyframes tpTwinkle{from{opacity:.25}to{opacity:.7}}
+/* keep all content above the animated background; tab bar already sits at z-index 50 */
+.wrap{position:relative;z-index:1}
+</style>
+
 </head>
 <body>
 <div class="wrap">
