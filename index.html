@@ -586,9 +586,23 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .msg-body .m-warn{margin-top:8px;font-size:12.5px;color:var(--dim)}
 .msg-foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 </style>
+
+<style>
+/* ---- Brand header v7 (27 Nov 2026) — logo + TradePilot AI name, like other apps ---- */
+.brand{display:flex;align-items:center;gap:12px;padding:16px 4px 12px}
+.brand-logo{width:44px;height:44px;flex:none;border-radius:12px;background:linear-gradient(135deg,#0d1b2e,#07090c);border:1px solid rgba(214,168,75,.45);box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 18px rgba(214,168,75,.18);display:flex;align-items:center;justify-content:center}
+.brand-name{font-size:21px;font-weight:800;letter-spacing:-.02em;color:#f2f4f6;line-height:1.1}
+.brand-name span{color:#d6a84b}
+.brand-tag{font-size:11.5px;color:var(--dim);letter-spacing:.04em;margin-top:2px}
+</style>
 </head>
 <body>
 <div class="wrap">
+
+  <div class="brand">
+    <div class="brand-logo"><svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="#d6a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34 L18 24 L26 28 L40 12"/><path d="M32 12 H40 V20"/></svg></div>
+    <div><div class="brand-name">TradePilot <span>AI</span></div><div class="brand-tag">Paper trading &middot; Live signals &middot; Binance spot</div></div>
+  </div>
 
   <div class="strip">
     <span class="pill paper">Paper trading</span>
