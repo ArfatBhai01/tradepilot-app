@@ -742,6 +742,7 @@ button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
         <a class="btn" data-support-link href="https://t.me/Lustcoded?text=Hi%2C%20the%20TradePilot%20AI%20app%20is%20not%20working%20properly.%20Please%20help." target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">App issue</a>
       </div>
       <a class="chat-btn" data-support-link href="https://t.me/Lustcoded?text=Hi%2C%20I%27m%20facing%20some%20issues%20with%20TradePilot%20AI.%20Please%20help." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M21.9 4.6 18.8 19.3c-.2 1-.8 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.8L19.4 6.6c.4-.3-.1-.5-.6-.2L7.6 13.2 2.9 11.7c-1-.3-1-1 .2-1.5L21.3 3.5c.8-.3 1.6.2 1.3 1.1z"/></svg>Chat on Telegram · @Lustcoded</a>
+      <a class="chat-btn" data-website-link href="https://muse.ai/s/tradepilot-ai-website-lxv6xs2xcxk4exi7/TDeelhi-OAocFHrbmiJZTIvf87FQHopCW01AWMyRk9g" target="_blank" rel="noopener">🌐 Visit our Website · TradePilot AI</a>
     </div>
   </section>
 
@@ -1647,6 +1648,21 @@ function openSupportLink(url){
 }
 Array.prototype.forEach.call(document.querySelectorAll('[data-support-link]'),function(a){
   a.addEventListener('click',function(e){e.preventDefault();openSupportLink(a.getAttribute('href'));});
+});
+
+/* Website link: open the TradePilot AI website with Telegram's own
+   external-link opener inside the Mini App (plain <a> links may not
+   open reliably in the WebView); in a normal browser fall back to
+   opening the link. */
+function openWebsiteLink(url){
+  try{
+    var w=window.Telegram&&window.Telegram.WebApp;
+    if(w&&typeof w.openLink==='function'){w.openLink(url);return}
+  }catch(e){}
+  window.open(url,'_blank');
+}
+Array.prototype.forEach.call(document.querySelectorAll('[data-website-link]'),function(a){
+  a.addEventListener('click',function(e){e.preventDefault();openWebsiteLink(a.getAttribute('href'));});
 });
 
 /* ---------- store: Stars top-ups via the bot ---------- */
