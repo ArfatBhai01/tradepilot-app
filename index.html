@@ -217,7 +217,7 @@ section{margin-top:26px;scroll-margin-top:14px}
 .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;padding:4px;background:var(--bg2);border:1px solid var(--line);border-radius:14px}
 .seg button{border-radius:10px;border:1px solid transparent;background:transparent;color:var(--sub);font-weight:700;font-size:14.5px;padding:10px;transition:background .15s ease,color .15s ease}
 .seg button.on-buy{background:linear-gradient(180deg,#17dd96,var(--green));color:#04150d;box-shadow:0 2px 10px rgba(14,203,129,.3)}
-.seg button.on-sell{background:linear-gradient(180deg,#ff5c74,var(--red));color:#fff;box-shadow:0 2px 10px rgba(246,70,93,.3)}
+.seg button.on-sell{background:linear-gradient(180deg,#ff5c74,var(--red));color:#fff;box-shadow:0 2px 10px rgba(246,70,93,.3)} .seg button.on-type{background:var(--gold-soft);color:var(--gold);border-color:var(--gold);box-shadow:none}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .f-lab{font-size:11.5px;color:var(--sub);font-weight:600;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
 select,input[type=number],input[type=text]{width:100%;background:var(--bg2);border:1px solid var(--line2);color:var(--text);border-radius:11px;padding:9px 11px;font-family:var(--font);font-size:14.5px;min-height:44px}
@@ -594,15 +594,23 @@ button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
         </div>
         <aside class="term-side">
           <div class="opanel">
-            <div class="op-head"><span class="op-pair" id="opPair">BTC/USDT</span><span class="op-tag">Paper · Market</span></div>
+            <div class="op-head"><span class="op-pair" id="opPair">BTC/USDT</span><span class="op-tag" id="opTypeTag">Paper · Market</span></div>
             <div class="op-side">
               <button id="opBuy" class="on-buy">Buy</button>
               <button id="opSell">Sell</button>
             </div>
-            <label class="f-lab" for="opPrice">Price (USDT)</label>
+            <div class="seg" id="opTypeSeg" style="margin:0 0 13px">
+              <button id="opTypeMkt" class="on-type">Market</button>
+              <button id="opTypeLmt">Limit</button>
+            </div>
+            <label class="f-lab" for="opPrice" id="opPriceLab">Price (USDT)</label>
             <input type="number" id="opPrice" inputmode="decimal" step="any" />
             <label class="f-lab" for="opAmt" style="margin-top:10px">Amount (USD)</label>
             <input type="number" id="opAmt" value="1000" min="10" step="10" inputmode="decimal" />
+            <div class="f-row" style="margin-top:10px">
+              <div><label class="f-lab" for="opSL">Stop Loss (USDT)</label><input type="number" id="opSL" inputmode="decimal" step="any" placeholder="Optional" /></div>
+              <div><label class="f-lab" for="opTP">Take Profit (USDT)</label><input type="number" id="opTP" inputmode="decimal" step="any" placeholder="Optional" /></div>
+            </div>
             <div class="op-pcts" id="opPcts">
               <button data-pct="10">10%</button><button data-pct="25">25%</button><button data-pct="50">50%</button><button data-pct="75">75%</button><button data-pct="100">100%</button>
             </div>
@@ -610,7 +618,7 @@ button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
             <div class="op-meta"><span>Available cash</span><b class="num" id="opAvail">$10,000.00</b></div>
             <div class="op-meta"><span>Est. quantity</span><b class="num" id="opQty">—</b></div>
             <button class="op-submit buy" id="opSubmit">Buy BTC/USDT</button>
-            <p class="op-note">Paper order — fills at the current live price (Binance when online, snapshot price when offline), the same price the Paper Trading section below uses. No real funds, no real orders.</p>
+            <p class="op-note">Market fills at the current live price. Limit waits until the live price reaches your price. Stop Loss / Take Profit close the position automatically when hit. No real funds, no real orders.</p>
           </div>
           <div class="wlpanel">
             <div class="wl-head"><span class="wl-t">Watchlist</span><span class="wl-sub">Select a market to load its chart</span></div>
@@ -663,6 +671,8 @@ button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
 
     <h3 style="font-size:14.5px;margin:20px 0 4px">Open Positions <span style="color:var(--dim);font-weight:500" id="openCount"></span></h3>
     <div id="openList"></div>
+    <h3 style="font-size:14.5px;margin:20px 0 4px">Pending Limit Orders <span style="color:var(--dim);font-weight:500" id="pendCount"></span></h3>
+    <div id="pendList"></div>
 
     <h3 style="font-size:14.5px;margin:20px 0 4px">Closed Trades &amp; History</h3>
     <div class="stats-row" id="paperStats" style="grid-template-columns:repeat(3,1fr)"></div>
@@ -1254,7 +1264,7 @@ function renderSignals(){
    state is restored exactly as left, even at $0, and the starter
    $10,000 is never re-granted on this phone. */
 var PAPER_KEY='tradepilot_paper_v1';
-var paper={cash:10000,start:10000,open:[],closed:[],seq:1};
+var paper={cash:10000,start:10000,open:[],closed:[],pending:[],seq:1};
 function savePaper(){
   try{localStorage.setItem(PAPER_KEY,JSON.stringify(paper))}catch(e){}
 }
@@ -1268,6 +1278,7 @@ function loadPaper(){
         paper.cash=s.cash;paper.start=10000;
         paper.open=Array.isArray(s.open)?s.open:[];
         paper.closed=Array.isArray(s.closed)?s.closed:[];
+        paper.pending=Array.isArray(s.pending)?s.pending:[];
         paper.seq=(typeof s.seq==='number'&&s.seq>0)?s.seq:1;
         restored=true;
       }
@@ -1310,28 +1321,62 @@ function syncServerBalance(){
 }
 function curPrice(sym){return SNAP[sym].p}
 function posPnl(p,price){return p.side==='BUY'?(price-p.entry)*p.qty:(p.entry-price)*p.qty}
-function openPos(pair,side,usd,tag){
+function openPos(pair,side,usd,tag,sl,tp){
   var price=curPrice(pair);
   if(!isFinite(price)||price<=0){toast('A live price is not available for '+pair+'/USDT yet. Please wait and try again.');return false}
   if(!isFinite(usd)||usd>paper.cash){toast('Not enough virtual cash. Available: '+fmt$(paper.cash)+' — refill from the Store to keep trading');return false}
   if(usd<10){toast('Minimum paper order is $10');return false}
   paper.cash-=usd;
-  paper.open.push({id:paper.seq++,pair:pair,side:side,usd:usd,qty:usd/price,entry:price,tag:tag||'Manual',time:Date.now()});
+  paper.open.push({id:paper.seq++,pair:pair,side:side,usd:usd,qty:usd/price,entry:price,tag:tag||'Manual',time:Date.now(),sl:(isFinite(sl)&&sl>0)?sl:null,tp:(isFinite(tp)&&tp>0)?tp:null});
   savePaper();renderPaper();return true;
 }
-function closePos(id){
+function closePos(id,reason){
   var i=paper.open.findIndex(function(p){return p.id===id});if(i<0)return;
   var p=paper.open[i],price=curPrice(p.pair),pnl=posPnl(p,price);
   paper.cash+=p.usd+pnl;
-  paper.closed.unshift({pair:p.pair,side:p.side,usd:p.usd,qty:p.qty,entry:p.entry,exit:price,pnl:pnl,tag:p.tag,time:Date.now()});
+  paper.closed.unshift({pair:p.pair,side:p.side,usd:p.usd,qty:p.qty,entry:p.entry,exit:price,pnl:pnl,tag:p.tag,time:Date.now(),exitReason:reason||'Manual'});
   paper.open.splice(i,1);savePaper();renderPaper();
-  toast('Position closed · P&L '+(pnl>=0?'+':'')+fmt$(pnl));
+  toast('Position closed'+(reason?' · '+reason:'')+' · P&L '+(pnl>=0?'+':'')+fmt$(pnl));
+}
+function checkStops(){
+  var i=0;
+  while(i<paper.open.length){
+    var p=paper.open[i],price=curPrice(p.pair);
+    if(!isFinite(price)||price<=0){i++;continue}
+    var hit=null;
+    if(p.side==='BUY'){
+      if(p.sl!=null&&price<=p.sl)hit='Stop Loss';
+      else if(p.tp!=null&&price>=p.tp)hit='Take Profit';
+    }else{
+      if(p.sl!=null&&price>=p.sl)hit='Stop Loss';
+      else if(p.tp!=null&&price<=p.tp)hit='Take Profit';
+    }
+    if(hit){closePos(p.id,hit);}
+    else i++;
+  }
+}
+function checkPending(){
+  var i=0;
+  while(i<paper.pending.length){
+    var o=paper.pending[i],price=curPrice(o.pair);
+    if(!isFinite(price)||price<=0){i++;continue}
+    var fill=(o.side==='BUY'&&price<=o.limit)||(o.side==='SELL'&&price>=o.limit);
+    if(fill){
+      paper.pending.splice(i,1);
+      if(openPos(o.pair,o.side,o.usd,o.tag,o.sl,o.tp))toast('Limit '+o.side+' filled · '+o.pair+'/USDT at '+fmt$(price,coinPrecision(o.pair)));
+      savePaper();renderPaper();
+    }else i++;
+  }
+}
+function cancelPending(id){
+  var i=paper.pending.findIndex(function(o){return o.id===id});if(i<0)return;
+  paper.pending.splice(i,1);savePaper();renderPaper();toast('Limit order cancelled');
 }
 function takeSignal(x){
   var pair=x.pair.split('/')[0];
   var usd=Math.min(1000,paper.cash);
   if(usd<10){toast('No virtual cash left — refill your paper balance from the Store to keep trading');return}
-  if(openPos(pair,x.side,usd,'Signal · '+x.confidence+'% conf')){toast('Paper '+x.side+' opened from signal at the current price '+fmt$(curPrice(pair),DEC[pair]));document.getElementById('paper').scrollIntoView({behavior:'smooth'})}
+  if(openPos(pair,x.side,usd,'Signal · '+x.confidence+'% conf',x.sl,x.tp1)){toast('Paper '+x.side+' opened from signal at the current price '+fmt$(curPrice(pair),DEC[pair])+' (Stop Loss / Take Profit from signal)');document.getElementById('paper').scrollIntoView({behavior:'smooth'})}
 }
 function renderPaper(){
   var unreal=paper.open.reduce(function(s,p){return s+posPnl(p,curPrice(p.pair))},0);
@@ -1359,9 +1404,22 @@ function renderPaper(){
       +'<span class="num '+(pnl>=0?'up':'down')+'" style="margin-left:auto;font-weight:700">'+(pnl>=0?'+':'')+fmt$(pnl)+' ('+(pct>=0?'+':'')+fmt(pct)+'%)</span></div>'
       +'<div class="pos-grid"><div><div class="k">Size</div>'+fmt$(p.usd)+'</div><div><div class="k">Qty</div><span class="num">'+fmt(p.qty,4)+'</span></div><div><div class="k">Entry</div><span class="num">'+fmt$(p.entry,d)+'</span></div>'
       +'<div><div class="k">Mark Price</div><span class="num">'+fmt$(price,d)+'</span></div><div><div class="k">Unrealized</div><span class="num '+(pnl>=0?'up':'down')+'">'+(pnl>=0?'+':'')+fmt$(pnl)+'</span></div>'
+      +'<div><div class="k">Stop Loss</div><span class="num down">'+(p.sl!=null?fmt$(p.sl,d):'—')+'</span></div><div><div class="k">Take Profit</div><span class="num up">'+(p.tp!=null?fmt$(p.tp,d):'—')+'</span></div>'
       +'<div><button class="btn" data-close="'+p.id+'" style="padding:5px 12px;min-height:32px">Close</button></div></div></div>';
   }).join(''):'<div class="empty">No open paper positions. Place an order above, or tap “Take as paper trade” on an active signal.</div>';
   Array.prototype.forEach.call(document.querySelectorAll('[data-close]'),function(b){b.addEventListener('click',function(){closePos(+b.getAttribute('data-close'))})});
+  var pl=$('pendList');
+  if(pl){
+    $('pendCount').textContent=paper.pending.length?'· '+paper.pending.length:'';
+    pl.innerHTML=paper.pending.length?paper.pending.map(function(o){
+      var d=coinPrecision(o.pair);
+      return '<div class="pos"><div class="pos-head"><span class="pair">'+o.pair+'/USDT</span><span class="side '+o.side.toLowerCase()+'">'+o.side+' · Limit</span><span style="font-size:11.5px;color:var(--dim)">'+o.tag+'</span></div>'
+        +'<div class="pos-grid"><div><div class="k">Size</div>'+fmt$(o.usd)+'</div><div><div class="k">Limit Price</div><span class="num">'+fmt$(o.limit,d)+'</span></div><div><div class="k">Mark Price</div><span class="num">'+fmt$(curPrice(o.pair),d)+'</span></div>'
+        +'<div><div class="k">Stop Loss</div><span class="num down">'+(o.sl!=null?fmt$(o.sl,d):'—')+'</span></div><div><div class="k">Take Profit</div><span class="num up">'+(o.tp!=null?fmt$(o.tp,d):'—')+'</span></div>'
+        +'<div><button class="btn" data-cancelpend="'+o.id+'" style="padding:5px 12px;min-height:32px">Cancel</button></div></div></div>';
+    }).join(''):'<div class="empty">No pending limit orders.</div>';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-cancelpend]'),function(b){b.addEventListener('click',function(){cancelPending(+b.getAttribute('data-cancelpend'))})});
+  }
   var total=paper.closed.length,aw=paper.closed.filter(function(p){return p.pnl>0}),al=paper.closed.filter(function(p){return p.pnl<=0});
   var avgW=aw.length?aw.reduce(function(s,p){return s+p.pnl},0)/aw.length:0, avgL=al.length?Math.abs(al.reduce(function(s,p){return s+p.pnl},0)/al.length):0;
   var pf=avgL>0?fmt(avgW/avgL,2):'—';
@@ -1429,13 +1487,21 @@ function renderWatch(){
   el.innerHTML=html;
   Array.prototype.forEach.call(el.querySelectorAll('[data-wsym]'),function(r){r.addEventListener('click',function(){setPair(r.getAttribute('data-wsym'))})});
 }
+var opType='Market';
+function opSetType(t){opType=t;opMeta()}
 function opMeta(){
   if(!$('opAvail'))return;
   $('opAvail').textContent=fmt$(paper.cash);
   var amt=parseFloat($('opAmt').value)||0,pr=parseFloat($('opPrice').value)||SNAP[state.pair].p;
   $('opQty').textContent=pr?fmt(amt/pr,5)+' '+state.pair:'—';
-  var b=$('opSubmit');b.textContent=(opSide==='BUY'?'Buy ':'Sell ')+state.pair+'/USDT';b.className='op-submit '+(opSide==='BUY'?'buy':'sell');
+  var b=$('opSubmit');
+  b.textContent=(opType==='Limit'?'Place Limit ':'')+(opSide==='BUY'?'Buy ':'Sell ')+state.pair+'/USDT';
+  b.className='op-submit '+(opSide==='BUY'?'buy':'sell');
   $('opBuy').className=opSide==='BUY'?'on-buy':'';$('opSell').className=opSide==='SELL'?'on-sell':'';
+  var tm=$('opTypeMkt'),tl=$('opTypeLmt');
+  if(tm){tm.className=opType==='Market'?'on-type':'';tl.className=opType==='Limit'?'on-type':'';}
+  var tg=$('opTypeTag');if(tg)tg.textContent='Paper · '+opType;
+  var pl=$('opPriceLab');if(pl)pl.textContent=opType==='Limit'?'Limit Price (USDT)':'Price (USDT)';
 }
 function syncOrderPanel(){
   if(!$('opPair'))return;
@@ -1464,9 +1530,22 @@ $('opAmt').addEventListener('input',opMeta);
 $('opPrice').addEventListener('input',opMeta);
 Array.prototype.forEach.call(document.querySelectorAll('#opPcts button'),function(b){b.addEventListener('click',function(){opSetPct(+b.getAttribute('data-pct'))})});
 $('opRange').addEventListener('input',function(){var pct=+this.value;$('opAmt').value=Math.max(10,Math.floor(paper.cash*pct/100));opMeta()});
+$('opTypeMkt').addEventListener('click',function(){opSetType('Market')});
+$('opTypeLmt').addEventListener('click',function(){opSetType('Limit')});
 $('opSubmit').addEventListener('click',function(){
   var amt=parseFloat($('opAmt').value)||0;
-  if(openPos(state.pair,opSide,amt,'Chart order'))toast('Paper '+opSide+' opened · '+fmt$(amt)+' of '+state.pair+'/USDT at the current price');
+  var sl=parseFloat($('opSL').value),tp=parseFloat($('opTP').value);
+  if(opType==='Limit'){
+    var lim=parseFloat($('opPrice').value);
+    if(!isFinite(lim)||lim<=0){toast('Enter a limit price first');return}
+    if(!isFinite(amt)||amt<10){toast('Minimum paper order is $10');return}
+    if(amt>paper.cash){toast('Not enough virtual cash. Available: '+fmt$(paper.cash));return}
+    paper.pending.push({id:paper.seq++,pair:state.pair,side:opSide,usd:amt,limit:lim,sl:(isFinite(sl)&&sl>0)?sl:null,tp:(isFinite(tp)&&tp>0)?tp:null,tag:'Chart limit',time:Date.now()});
+    savePaper();renderPaper();
+    toast('Limit '+opSide+' placed · '+fmt$(amt)+' of '+state.pair+'/USDT at '+fmt$(lim,coinPrecision(state.pair)));
+  }else{
+    if(openPos(state.pair,opSide,amt,'Chart order',sl,tp))toast('Paper '+opSide+' opened · '+fmt$(amt)+' of '+state.pair+'/USDT at the current price');
+  }
   opMeta();
 });
 
@@ -1666,7 +1745,7 @@ function applyTicker(sym,price,change,volume){
   if(isFinite(volume))SNAP[sym].v=volume;
   LIVE.ok=true;LIVE.at=Date.now();lastPricePollAt=LIVE.at;updateLiveNote();
   if(sym===state.pair){renderBigPrice();syncOrderPanel();tickLiveCandle();}
-  renderMarkets();renderWatch();renderPaper();
+  renderMarkets();renderWatch();checkStops();checkPending();renderPaper();
 }
 function connectSelectedTicker(){
   if(activeSocket){try{activeSocket.close()}catch(e){}}
