@@ -595,6 +595,26 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .brand-name span{color:#d6a84b}
 .brand-tag{font-size:11.5px;color:var(--dim);letter-spacing:.04em;margin-top:2px}
 </style>
+
+<style>
+/* ---- Premium floating cards v8 (28 Nov 2026) — 60/30/10 + glassmorphism ---- */
+.fc-row{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.fc-row::-webkit-scrollbar{display:none}
+.fc{flex:0 0 172px;scroll-snap-align:start;background:linear-gradient(160deg,rgba(23,30,38,.85),rgba(17,22,28,.8));border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:tpFadeUp .55s ease both;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.fc:hover{transform:translateY(-3px);border-color:rgba(214,168,75,.45);box-shadow:0 16px 34px rgba(0,0,0,.55),0 0 0 1px rgba(214,168,75,.12)}
+.fc:nth-child(2){animation-delay:.05s}.fc:nth-child(3){animation-delay:.1s}.fc:nth-child(4){animation-delay:.15s}.fc:nth-child(5){animation-delay:.2s}.fc:nth-child(6){animation-delay:.25s}.fc:nth-child(7){animation-delay:.3s}.fc:nth-child(8){animation-delay:.35s}
+.fc-ico{font-size:17px;line-height:1;margin-bottom:8px}
+.fc-k{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.fc-v{font-size:19px;font-weight:700;color:var(--text);margin:3px 0 2px;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-v.gold{color:var(--gold)}
+.fc-s{font-size:11.5px;color:var(--dim);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-trend{display:flex;flex-direction:column;gap:4px;margin:5px 0 3px}
+.fc-trend div{display:flex;justify-content:space-between;font-size:12.5px}
+.fc-trend .t-sym{color:#e8ecf0;font-weight:600}
+.fc-trend .t-chg{font-family:var(--mono);font-weight:600}
+@media(min-width:1024px){.fc-row{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible}.fc{flex:none}}
+@media(prefers-reduced-motion:reduce){.fc{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -611,6 +631,20 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     <span class="snap">Binance spot market · USDT pairs</span>
     <span class="snap" id="liveNote">Live prices: connecting…</span>
   </div>
+
+  <!-- PREMIUM FLOATING CARDS v8 -->
+  <section id="floatCards" aria-label="Overview cards">
+    <div class="fc-row">
+      <div class="fc"><div class="fc-ico">&#128176;</div><div class="fc-k">Portfolio Balance</div><div class="fc-v gold" id="fcBal">$10,000.00</div><div class="fc-s" id="fcBalSub">Cash $10,000.00 &middot; Unreal. $0.00</div></div>
+      <div class="fc"><div class="fc-ico">&#128200;</div><div class="fc-k">Profit / Loss</div><div class="fc-v" id="fcPnl">+$0.00</div><div class="fc-s" id="fcPnlSub">Realized $0.00 &middot; Unreal. $0.00</div></div>
+      <div class="fc"><div class="fc-ico">&#129302;</div><div class="fc-k">AI Signals</div><div class="fc-v" id="fcSig">&mdash;</div><div class="fc-s" id="fcSigSub">Loading signals&hellip;</div></div>
+      <div class="fc"><div class="fc-ico">&#128552;</div><div class="fc-k">Market Sentiment</div><div class="fc-v" style="color:#ff8296">11 &middot; Extreme Fear</div><div class="fc-s">Fear &amp; Greed &middot; snapshot 25 Nov</div></div>
+      <div class="fc"><div class="fc-ico">&#128293;</div><div class="fc-k">Trending Coins &middot; 24h</div><div class="fc-trend" id="fcTrend"><div><span class="t-sym">&mdash;</span><span class="t-chg">&mdash;</span></div></div><div class="fc-s">Top gainers &middot; live Binance</div></div>
+      <div class="fc"><div class="fc-ico">&#127758;</div><div class="fc-k">Market Overview</div><div class="fc-v">$2.08T</div><div class="fc-s">Total cap &middot; BTC dom 57.9% &middot; snapshot 25 Nov</div></div>
+      <div class="fc"><div class="fc-ico">&#128276;</div><div class="fc-k">Price Alerts</div><div class="fc-v" style="color:var(--dim)">No alerts</div><div class="fc-s">Alerts are not live yet</div></div>
+      <div class="fc"><div class="fc-ico">&#127942;</div><div class="fc-k">Trading Performance</div><div class="fc-v" id="fcWin">&mdash;</div><div class="fc-s" id="fcWinSub">No closed trades yet</div></div>
+    </div>
+  </section>
 
   <!-- A. MARKET OVERVIEW -->
   <section id="dashboard">
@@ -2011,7 +2045,7 @@ function fetchMarketTickers(){
   return fetch(BINANCE_24H,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('24h '+r.status);return r.json()})
     .then(function(arr){var map={};(arr||[]).forEach(function(t){map[t.symbol]=t});
       marketRows.forEach(function(sym){var t=map[coinMeta[sym].symbol];if(!t)return;SNAP[sym].c=Number(t.priceChangePercent)||0;SNAP[sym].v=Number(t.quoteVolume)||0;var p=Number(t.lastPrice);if(p>0)SNAP[sym].p=p;coinMeta[sym].quoteVolume=SNAP[sym].v;});
-      marketRows.sort(function(a,b){return coinMeta[b].quoteVolume-coinMeta[a].quoteVolume});renderMarkets();renderWatch();
+      marketRows.sort(function(a,b){return coinMeta[b].quoteVolume-coinMeta[a].quoteVolume});renderMarkets();renderWatch();renderFloatCards();
     }).catch(function(){});
 }
 function fetchLivePrices(){return fetchSelectedPrice();}
@@ -2088,6 +2122,52 @@ function renderAI(){
   var rows=[['Market trend','Short-term price trend is '+trend.toLowerCase()+' based on the selected candle history. This is an indicator reading, not a prediction.'],['Momentum','RSI 14: '+(rsi!=null?fmt(rsi,2):'Not enough candles yet')+'. RSI can remain overbought or oversold during strong trends.'],['Candle data','Analysis uses the selected Binance spot pair and timeframe. Switch timeframe to refresh the candle history.'],['Engine signal',sig?'Latest C++ engine signal: '+sig.side+' · entry '+fmt$(sig.entry,coinPrecision(state.pair))+'.':'No C++ engine signal is currently available for this pair.'],['Risk reminder','Paper trading only. Always define a stop loss and position size; signals do not guarantee profit.']];
   $('aiGrid').innerHTML=rows.map(function(x){return '<div class="ai-item"><h3>'+x[0]+'</h3><p>'+x[1]+'</p></div>'}).join('');
 }
+function renderFloatCards(){
+  try{
+    var num=function(t){var v=parseFloat(String(t||'').replace(/[^0-9.\-]/g,''));return isFinite(v)?v:0};
+    var money=function(v){return (v>=0?'+$':'-$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})};
+    /* 1. Portfolio Balance — real, from the paper account (server-synced) */
+    var eq=$('acctEquity'),cash=$('acctCash'),un=$('acctUnreal');
+    if(eq)$('fcBal').textContent=eq.textContent;
+    if(cash&&un)$('fcBalSub').textContent='Cash '+cash.textContent+' \u00b7 Unreal. '+un.textContent;
+    /* 2. Profit / Loss — real realized + unrealized */
+    var rl=$('acctReal');
+    if(rl&&un){
+      var tot=num(rl.textContent)+num(un.textContent);
+      var el=$('fcPnl');
+      el.textContent=money(tot);
+      el.style.color=tot>=0?'var(--green)':'var(--red)';
+      $('fcPnlSub').textContent='Realized '+rl.textContent+' \u00b7 Unreal. '+un.textContent;
+    }
+    /* 3. AI Signals — real, from the engine feed */
+    var list=(typeof engineSignals!=='undefined'&&engineSignals)?engineSignals.map(mapEngineSignal):[];
+    $('fcSig').textContent=list.length?list.length+' live':'\u2014';
+    if(list.length){
+      var n=list[0];
+      $('fcSigSub').textContent=n.side+' '+n.pair+' \u00b7 '+fmt$(n.entry,coinPrecision(n.pair.split('/')[0]));
+    }else{
+      $('fcSigSub').textContent=engineSignals===null?'Signal server unreachable':'No engine signals yet';
+    }
+    /* 4. Market Sentiment — Fear & Greed snapshot already in the dashboard (static) */
+    /* 5. Trending Coins — real, top 24h gainers from live Binance tickers */
+    var rows=(typeof marketRows!=='undefined'?marketRows:[]).slice();
+    rows.sort(function(a,b){return ((SNAP[b]&&SNAP[b].c)||0)-((SNAP[a]&&SNAP[a].c)||0)});
+    var top=rows.slice(0,3);
+    if(top.length&&SNAP[top[0]]&&SNAP[top[0]].c){
+      $('fcTrend').innerHTML=top.map(function(sym){
+        var c=(SNAP[sym]&&SNAP[sym].c)||0;
+        return '<div><span class="t-sym">'+sym+'</span><span class="t-chg" style="color:'+(c>=0?'var(--green)':'var(--red)')+'">'+(c>=0?'+':'')+c.toFixed(2)+'%</span></div>';
+      }).join('');
+    }
+    /* 6. Market Overview — snapshot already in the dashboard (static) */
+    /* 7. Price Alerts — no backend yet, honest empty state (static) */
+    /* 8. Trading Performance — real win rate + closed-trade count */
+    var w=$('acctWin');
+    if(w)$('fcWin').textContent=w.textContent;
+    var closed=(typeof paper!=='undefined'&&paper.closed)?paper.closed.length:0;
+    $('fcWinSub').textContent=closed?closed+' closed paper trades':'No closed trades yet';
+  }catch(e){}
+}
 function renderSignals(){
   var list=(engineSignals||[]).map(mapEngineSignal);renderedSignals=list;
   var note=$('sigNote'),hint=$('sigHint'),newest=list[0]||null,stale=engineStale();
@@ -2114,6 +2194,7 @@ function renderSignals(){
         +'<div class="msg-foot"><button class="btn" data-load="'+i+'">Load on chart</button><button class="btn gold" data-take="'+i+'">Take as paper trade</button></div></article>';}).join(''):'<div class="empty">No signals yet. Run your C++ engine to publish signals.</div>';
   Array.prototype.forEach.call(document.querySelectorAll('[data-load]'),function(b){b.addEventListener('click',function(){var x=renderedSignals[+b.getAttribute('data-load')];state.signal=x;setPair(x.pair.split('/')[0]);$('chart').scrollIntoView({behavior:'smooth'});refreshChart();});});
   Array.prototype.forEach.call(document.querySelectorAll('[data-take]'),function(b){b.addEventListener('click',function(){takeSignal(renderedSignals[+b.getAttribute('data-take')]);});});
+renderFloatCards();
 }
 function curPrice(sym){return SNAP[sym]&&SNAP[sym].p||0;}
 
@@ -2123,6 +2204,7 @@ $('coinSearch').addEventListener('input',function(){searchQuery=this.value;rende
 segUI();initCharts();renderPaper();loadPaper();syncServerBalance();syncOrderPanel();
 $('chartSrc').textContent='Connecting to Binance OHLC candle feed…';
 fetchEngineSignals();setInterval(fetchEngineSignals,30000);
+renderFloatCards();setInterval(renderFloatCards,30000);
 updateMarketMeta().then(function(){
   connectSelectedTicker();fetchSelectedPrice();fetchMarketTickers();
   pricePollTimer=setInterval(function(){if(!activeSocket||activeSocket.readyState!==1)fetchSelectedPrice();},1000);
