@@ -486,6 +486,37 @@ input[type=range]{touch-action:pan-x}
 button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
 #chartMain{touch-action:none}
 </style>
+<style>
+/* ---- Premium motion pack (27 Nov 2026) — V3 + OpenTerminal + shadcn inspired ----
+   Pure CSS animations + micro-interactions. No layout or ID changes. */
+@keyframes tpFlashUp{0%{background:rgba(14,203,129,.28);box-shadow:0 0 0 1px rgba(14,203,129,.35)}100%{background:transparent;box-shadow:0 0 0 1px transparent}}
+@keyframes tpFlashDown{0%{background:rgba(246,70,93,.28);box-shadow:0 0 0 1px rgba(246,70,93,.35)}100%{background:transparent;box-shadow:0 0 0 1px transparent}}
+@keyframes tpFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tpGoldShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes tpPulseDot{0%{box-shadow:0 0 0 0 rgba(14,203,129,.5)}70%{box-shadow:0 0 0 8px rgba(14,203,129,0)}100%{box-shadow:0 0 0 0 rgba(14,203,129,0)}}
+/* big price: flash pill on every live tick */
+#bigPrice{display:inline-block;border-radius:12px;padding:2px 12px;margin-left:-12px}
+#bigPrice.tp-flash-up{animation:tpFlashUp .55s ease-out}
+#bigPrice.tp-flash-down{animation:tpFlashDown .55s ease-out}
+/* press feedback + smooth transitions on every interactive element */
+button,.mrow,.wrow,.tf-btn,.ind-btn,.tabbar a,.star{transition:transform .12s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,opacity .18s ease}
+button:active,.mrow:active,.wrow:active,.tf-btn:active,.ind-btn:active{transform:scale(.965)}
+/* entrance: cards fade up once on load */
+.mkt .cell,.acct,.mkt-table,.chart-card{animation:tpFadeUp .5s ease both}
+.mkt .cell:nth-child(2){animation-delay:.05s}
+.mkt .cell:nth-child(3){animation-delay:.1s}
+.mkt .cell:nth-child(4){animation-delay:.15s}
+/* hover lift on market rows and overview cells */
+.mrow:hover,.wrow:hover{background:var(--panel2)}
+.mkt .cell:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.32)}
+/* gold shimmer on the primary gold buttons */
+.btn.gold,.buy-btn,.op-submit.buy{background-size:200% 200%;animation:tpGoldShimmer 5s ease-in-out infinite}
+/* live dot pulses a little stronger */
+.pill .dot{animation:tpPulseDot 2.2s ease-out infinite}
+/* timeframe / indicator buttons glide between states */
+.tf-btn.on,.ind-btn.on{transition:background .2s ease,color .2s ease,transform .12s ease}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -1993,6 +2024,53 @@ updateMarketMeta().then(function(){
   $('liveNote').textContent='Binance connection unavailable';
   console.error('TradePilot market bootstrap failed',err);
 });
+
+/* ---- Premium motion pack JS (27 Nov 2026) — inside IIFE, runs after all defs ---- */
+(function(){
+  /* 1) Price flash on the big price: green when tick up, red when tick down. */
+  try{
+    var _applyTicker = applyTicker;
+    applyTicker = function(sym, price, change, volume){
+      var prev = (typeof SNAP!=='undefined' && SNAP[sym]) ? SNAP[sym].p : 0;
+      _applyTicker(sym, price, change, volume);
+      if(sym === state.pair && price > 0 && prev > 0 && price !== prev){
+        var el = document.getElementById('bigPrice');
+        if(el){
+          el.classList.remove('tp-flash-up','tp-flash-down');
+          void el.offsetWidth; /* restart the animation */
+          el.classList.add(price > prev ? 'tp-flash-up' : 'tp-flash-down');
+        }
+      }
+    };
+  }catch(e){ /* motion only — never break trading */ }
+
+  /* 2) Balance count-up: animate #acctEquity instead of jumping. */
+  try{
+    var eqEl = document.getElementById('acctEquity');
+    if(eqEl){
+      var eqPrev = 0, eqBusy = false;
+      var eqObs = new MutationObserver(function(){
+        if(eqBusy) return;
+        var val = parseFloat(eqEl.textContent.replace(/[^0-9.\-]/g,''));
+        if(!isFinite(val)) return;
+        var from = eqPrev; eqPrev = val;
+        if(from === 0 || from === val) return;
+        eqBusy = true;
+        var t0 = null, dur = 450;
+        function step(ts){
+          if(!t0) t0 = ts;
+          var k = Math.min(1,(ts - t0)/dur);
+          var v = from + (val - from)*k;
+          eqEl.textContent = '$' + v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+          if(k < 1){ requestAnimationFrame(step); }
+          else { eqBusy = false; }
+        }
+        requestAnimationFrame(step);
+      });
+      eqObs.observe(eqEl,{childList:true,characterData:true,subtree:true});
+    }
+  }catch(e){ /* motion only — never break trading */ }
+})();
 
 })();
 </script>
