@@ -569,6 +569,23 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .support-card .btn[data-support-link]:nth-child(3){animation-delay:.3s}
 </style>
 
+
+<style>
+/* ---- Messages (chat-style signals) v6 (27 Nov 2026) ---- */
+.msg{background:linear-gradient(180deg,#1a2330,#131b26);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 14px rgba(0,0,0,.2);animation:tpFadeUp .45s ease both}
+.msg-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.msg-ava{width:38px;height:38px;flex:none;border-radius:50%;background:linear-gradient(135deg,#f0b90b,#d6a84b);color:#17130a;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px}
+.msg-name{font-size:14px;font-weight:700;color:#f2f4f6}
+.msg-time{font-size:11.5px;color:var(--dim)}
+.msg-side{margin-left:auto}
+.msg-body{font-size:14px;line-height:1.65;color:#e8ecf1}
+.msg-body .m-title{font-weight:800;color:#f2f4f6;margin-bottom:6px}
+.msg-body .m-pair{font-size:15.5px;font-weight:700;margin-bottom:6px}
+.msg-body .m-line{color:#c9d1d9}
+.msg-body .m-line b{color:#f2f4f6}
+.msg-body .m-warn{margin-top:8px;font-size:12.5px;color:var(--dim)}
+.msg-foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -730,7 +747,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 
   <!-- E. SIGNALS -->
   <section id="signals">
-    <div class="sec-head"><h2>Trading Signals</h2><span class="hint" id="sigHint">EMA 20/50 crossover model · 1H · from the last 30 days of hourly data</span></div>
+    <div class="sec-head"><h2>Messages</h2><span class="hint" id="sigHint">EMA 20/50 crossover model · 1H · from the last 30 days of hourly data</span></div>
     <p style="font-size:12.5px;color:var(--dim);margin:0 2px 10px">Signals are <b style="color:var(--sub)">free for everyone</b> &mdash; no payment or Telegram Stars needed to view them. They are automated model output for information only, not financial advice, and they do not guarantee profit.</p>
     <div class="stats-row" id="sigStats"></div>
     <div id="sigNote" style="font-size:12.5px;color:var(--dim);margin:0 2px 10px"></div>
@@ -879,7 +896,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 <nav class="tabbar"><div class="in">
   <a href="#dashboard" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</a>
   <a href="#chart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4v13M7 8h4v6H7zM17 3v18M17 10h4v7h-4z"/></svg>Chart</a>
-  <a href="#signals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>Signals</a>
+  <a href="#signals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Messages</a>
   <a href="#ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>AI</a>
   <a href="#paper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg>Paper</a>
   <a href="#store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.2 11a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8L4 7z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>Store</a>
@@ -1319,25 +1336,30 @@ function renderSignals(){
     var newest=list[0]||null,stale=engineStale();
     var cells=[['Signals from engine',list.length],['Newest',newest?newest.side+' '+newest.pair:'\u2014'],['Newest entry',newest?fmt$(newest.entry,DEC[newest.pair.split('/')[0]]):'\u2014'],['Confidence',newest?newest.confidence+'%':'\u2014'],['Engine',list.length?(stale?'PC off':'Live'):'\u2014'],['Model','C++ Core \u00b7 EMA/RSI']];
     $('sigStats').innerHTML=cells.map(function(c){return '<div class="cell"><div class="k">'+c[0]+'</div><div class="v num">'+c[1]+'</div></div>'}).join('');
-    if(hint)hint.textContent='Live signals from your C++ engine (Binance 1H) \u00b7 refreshes every 30s';
+    if(hint)hint.textContent='Live signals from your C++ engine (Binance 1H) \u00b7 each signal arrives here as a message \u00b7 refreshes every 30s';
     if(note)note.textContent=list.length?(stale?'Engine PC is off \u2014 showing last signal'+(newest.time?' from '+fmtTime(newest.time)+' IST':'')+'. Run the C++ engine on your PC for new signals.':'Live from your C++ engine \u00b7 updated '+new Date(engineSignalsAt).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit',hour12:true})+' IST'):'';
     if(!list.length){
       $('sigList').innerHTML='<div class="empty">No signals yet \u2014 run the C++ engine on your PC</div>';
       return;
     }
     $('sigList').innerHTML=list.map(function(x,i){
-      var d=DEC[x.pair.split('/')[0]];
-      return '<article class="sig"><div class="sig-head"><span class="pair">'+x.pair+'</span><span class="side '+x.side.toLowerCase()+'">'+x.side+'</span>'
-        +'<span class="status '+(stale?'loss':'act')+'">'+(stale?'Engine \u00b7 PC off':'Engine \u00b7 Live')+'</span><span class="time">'+(x.time?fmtTime(x.time)+' IST \u00b7 '+x.timeframe:'\u2014')+'</span></div>'
-        +'<div class="sig-grid">'
-        +'<div><div class="k">Entry</div><div class="v num">'+fmt$(x.entry,d)+'</div></div>'
-        +'<div><div class="k">Stop Loss</div><div class="v num down">'+fmt$(x.sl,d)+'</div></div>'
-        +'<div><div class="k">Take Profit</div><div class="v num up">'+fmt$(x.tp1,d)+'</div></div>'
-        +'<div><div class="k">Risk : Reward</div><div class="v num">'+x.rr+'</div></div>'
-        +'<div><div class="k">Confidence</div><div class="v num">'+x.confidence+'%</div></div>'
-        +'<div><div class="k">RSI 14</div><div class="v num">'+(x.rsi!=null?fmt(x.rsi,2):'\u2014')+'</div></div></div>'
-        +'<div style="margin-top:11px"><div class="k" style="font-size:11px;color:var(--dim);font-weight:600">MODEL CONFIDENCE \u00b7 '+x.confidence+'%</div><div class="confbar"><i style="width:'+x.confidence+'%"></i></div></div>'
-        +'<div class="sig-foot"><button class="btn" data-load="'+i+'">Load on chart</button>'
+      var d=DEC[x.pair.split('\/')[0]];
+      var sideIcon=x.side==='BUY'?'\uD83D\uDFE2':'\uD83D\uDD34';
+      var trendIcon=x.side==='BUY'?'\uD83D\uDCC8':'\uD83D\uDCC9';
+      return '<article class="msg"><div class="msg-head"><div class="msg-ava">T</div>'
+        +'<div><div class="msg-name">TradePilot AI</div><div class="msg-time">'+(x.time?fmtTime(x.time)+' IST \u00b7 '+x.timeframe:'\u2014')+'</div></div>'
+        +'<span class="side '+x.side.toLowerCase()+' msg-side">'+x.side+'</span></div>'
+        +'<div class="msg-body">'
+        +'<div class="m-title">\uD83D\uDE80 TradePilot AI | SIGNAL</div>'
+        +'<div class="m-pair">'+sideIcon+' <b>'+x.side+'</b> '+trendIcon+' '+x.pair+'</div>'
+        +'<div class="m-line">\uD83D\uDCB0 Entry: <b>'+fmt$(x.entry,d)+'</b></div>'
+        +'<div class="m-line">\uD83D\uDEE1\uFE0F Stop Loss: '+fmt$(x.sl,d)+'</div>'
+        +'<div class="m-line">\uD83C\uDFAF Take Profit: '+fmt$(x.tp1,d)+'</div>'
+        +'<div class="m-line">\uD83D\uDCCA RSI: '+(x.rsi!=null?fmt(x.rsi,2):'\u2014')+'</div>'
+        +'<div class="m-line">\uD83D\uDCAA Confidence: '+x.confidence+'%</div>'
+        +'<div class="m-warn">\u26A0\uFE0F Paper trading only. No profit guarantee.</div>'
+        +'</div>'
+        +'<div class="msg-foot"><button class="btn" data-load="'+i+'">Load on chart</button>'
         +'<button class="btn gold" data-take="'+i+'">Take as paper trade</button>'
         +'</div></article>';
     }).join('');
@@ -1350,19 +1372,25 @@ function renderSignals(){
     if(note)note.textContent=engineSignals===null?'Could not reach signal server \u2014 showing demo signals from the backtest.':'';
     renderedSignals=DATA.signals;
     $('sigList').innerHTML=DATA.signals.map(function(x,i){
-      var d=DEC[x.pair.split('/')[0]];
+      var d=DEC[x.pair.split('\/')[0]];
       var sc=x.status.indexOf('TP')===0||x.status.indexOf('Closed \u00b7 TP')===0?'win':x.status.indexOf('Closed')===0?'loss':'act';
-      return '<article class="sig"><div class="sig-head"><span class="pair">'+x.pair+'</span><span class="side '+x.side.toLowerCase()+'">'+x.side+'</span>'
-        +'<span class="status '+sc+'">'+x.status+'</span><span class="time">'+fmtTime(x.time)+' IST \u00b7 '+x.timeframe+'</span></div>'
-        +'<div class="sig-grid">'
-        +'<div><div class="k">Entry</div><div class="v num">'+fmt$(x.entry,d)+'</div></div>'
-        +'<div><div class="k">Stop Loss</div><div class="v num down">'+fmt$(x.sl,d)+'</div></div>'
-        +'<div><div class="k">Risk : Reward</div><div class="v num">'+x.rr+'</div></div>'
-        +'<div><div class="k">Take Profit 1</div><div class="v num up">'+fmt$(x.tp1,d)+'</div></div>'
-        +'<div><div class="k">Take Profit 2</div><div class="v num up">'+fmt$(x.tp2,d)+'</div></div>'
-        +'<div><div class="k">Take Profit 3</div><div class="v num up">'+fmt$(x.tp3,d)+'</div></div></div>'
-        +'<div style="margin-top:11px"><div class="k" style="font-size:11px;color:var(--dim);font-weight:600">MODEL CONFIDENCE \u00b7 '+x.confidence+'%</div><div class="confbar"><i style="width:'+x.confidence+'%"></i></div></div>'
-        +'<div class="sig-foot"><button class="btn" data-load="'+i+'">Load on chart</button>'
+      var sideIcon=x.side==='BUY'?'\uD83D\uDFE2':'\uD83D\uDD34';
+      var trendIcon=x.side==='BUY'?'\uD83D\uDCC8':'\uD83D\uDCC9';
+      return '<article class="msg"><div class="msg-head"><div class="msg-ava">T</div>'
+        +'<div><div class="msg-name">TradePilot AI</div><div class="msg-time">'+fmtTime(x.time)+' IST \u00b7 '+x.timeframe+'</div></div>'
+        +'<span class="side '+x.side.toLowerCase()+' msg-side">'+x.side+'</span></div>'
+        +'<div class="msg-body">'
+        +'<div class="m-title">\uD83D\uDE80 TradePilot AI | SIGNAL</div>'
+        +'<div class="m-pair">'+sideIcon+' <b>'+x.side+'</b> '+trendIcon+' '+x.pair+'</div>'
+        +'<div class="m-line">\uD83D\uDCB0 Entry: <b>'+fmt$(x.entry,d)+'</b></div>'
+        +'<div class="m-line">\uD83D\uDEE1\uFE0F Stop Loss: '+fmt$(x.sl,d)+'</div>'
+        +'<div class="m-line">\uD83C\uDFAF Take Profit: '+fmt$(x.tp1,d)+'</div>'
+        +'<div class="m-line">\uD83D\uDCCA RSI: '+(x.rsi!=null?fmt(x.rsi,2):'\u2014')+'</div>'
+        +'<div class="m-line">\uD83D\uDCAA Confidence: '+x.confidence+'%</div>'
+        +'<div class="m-line">Status: '+x.status+'</div>'
+        +'<div class="m-warn">\u26A0\uFE0F Paper trading only. No profit guarantee.</div>'
+        +'</div>'
+        +'<div class="msg-foot"><button class="btn" data-load="'+i+'">Load on chart</button>'
         +(x.status.indexOf('Active')>-1?'<button class="btn gold" data-take="'+i+'">Take as paper trade</button>':'')
         +'</div></article>';
     }).join('');
@@ -2051,9 +2079,25 @@ function renderSignals(){
   var note=$('sigNote'),hint=$('sigHint'),newest=list[0]||null,stale=engineStale();
   var cells=[['Signals from engine',list.length],['Newest',newest?newest.side+' '+newest.pair:'—'],['Newest entry',newest?fmt$(newest.entry,coinPrecision(newest.pair.split('/')[0])):'—'],['Confidence',newest?newest.confidence+'%':'—'],['Engine',list.length?(stale?'PC off':'Live'):'—'],['Source','C++ Core']];
   $('sigStats').innerHTML=cells.map(function(c){return '<div class="cell"><div class="k">'+c[0]+'</div><div class="v num">'+c[1]+'</div></div>'}).join('');
-  hint.textContent='Signals published by your C++ engine · refreshed every 30 seconds';
+  hint.textContent='Signals published by your C++ engine · each signal arrives here as a message · refreshed every 30 seconds';
   note.textContent=engineSignals===null?'Could not reach the signal server. No demo signals are shown.':(list.length?(stale?'C++ engine appears offline · showing its latest stored signals.':'Signals received from the C++ engine.'):'No C++ engine signals available yet.');
-  $('sigList').innerHTML=list.length?list.map(function(x,i){var d=coinPrecision(x.pair.split('/')[0]);return '<article class="sig"><div class="sig-head"><span class="pair">'+x.pair+'</span><span class="side '+x.side.toLowerCase()+'">'+x.side+'</span><span class="status '+(stale?'loss':'act')+'">'+(stale?'Stored signal':'Engine signal')+'</span><span class="time">'+(x.time?fmtTime(x.time)+' IST':'—')+'</span></div><div class="sig-grid"><div><div class="k">Entry</div><div class="v num">'+fmt$(x.entry,d)+'</div></div><div><div class="k">Stop Loss</div><div class="v num down">'+fmt$(x.sl,d)+'</div></div><div><div class="k">Take Profit</div><div class="v num up">'+fmt$(x.tp1,d)+'</div></div><div><div class="k">Risk : Reward</div><div class="v num">'+x.rr+'</div></div><div><div class="k">Confidence</div><div class="v num">'+x.confidence+'%</div></div><div><div class="k">RSI 14</div><div class="v num">'+(x.rsi!=null?fmt(x.rsi,2):'—')+'</div></div></div><div class="sig-foot"><button class="btn" data-load="'+i+'">Load on chart</button><button class="btn gold" data-take="'+i+'">Take as paper trade</button></div></article>';}).join(''):'<div class="empty">No signals yet. Run your C++ engine to publish signals.</div>';
+  $('sigList').innerHTML=list.length?list.map(function(x,i){var d=coinPrecision(x.pair.split('/')[0]);
+      var sideIcon=x.side==='BUY'?'\uD83D\uDFE2':'\uD83D\uDD34';
+      var trendIcon=x.side==='BUY'?'\uD83D\uDCC8':'\uD83D\uDCC9';
+      return '<article class="msg"><div class="msg-head"><div class="msg-ava">T</div>'
+        +'<div><div class="msg-name">TradePilot AI</div><div class="msg-time">'+(x.time?fmtTime(x.time)+' IST':'\u2014')+'</div></div>'
+        +'<span class="side '+x.side.toLowerCase()+' msg-side">'+x.side+'</span></div>'
+        +'<div class="msg-body">'
+        +'<div class="m-title">\uD83D\uDE80 TradePilot AI | SIGNAL</div>'
+        +'<div class="m-pair">'+sideIcon+' <b>'+x.side+'</b> '+trendIcon+' '+x.pair+'</div>'
+        +'<div class="m-line">\uD83D\uDCB0 Entry: <b>'+fmt$(x.entry,d)+'</b></div>'
+        +'<div class="m-line">\uD83D\uDEE1\uFE0F Stop Loss: '+fmt$(x.sl,d)+'</div>'
+        +'<div class="m-line">\uD83C\uDFAF Take Profit: '+fmt$(x.tp1,d)+'</div>'
+        +'<div class="m-line">\uD83D\uDCCA RSI: '+(x.rsi!=null?fmt(x.rsi,2):'\u2014')+'</div>'
+        +'<div class="m-line">\uD83D\uDCAA Confidence: '+x.confidence+'%</div>'
+        +'<div class="m-warn">\u26A0\uFE0F Paper trading only. No profit guarantee.</div>'
+        +'</div>'
+        +'<div class="msg-foot"><button class="btn" data-load="'+i+'">Load on chart</button><button class="btn gold" data-take="'+i+'">Take as paper trade</button></div></article>';}).join(''):'<div class="empty">No signals yet. Run your C++ engine to publish signals.</div>';
   Array.prototype.forEach.call(document.querySelectorAll('[data-load]'),function(b){b.addEventListener('click',function(){var x=renderedSignals[+b.getAttribute('data-load')];state.signal=x;setPair(x.pair.split('/')[0]);$('chart').scrollIntoView({behavior:'smooth'});refreshChart();});});
   Array.prototype.forEach.call(document.querySelectorAll('[data-take]'),function(b){b.addEventListener('click',function(){takeSignal(renderedSignals[+b.getAttribute('data-take')]);});});
 }
