@@ -489,15 +489,15 @@ button,a,.mrow,.wrow,.tf-btn,.tabbar a{touch-action:manipulation}
 <style>
 /* ---- Premium motion pack (27 Nov 2026) — V3 + OpenTerminal + shadcn inspired ----
    Pure CSS animations + micro-interactions. No layout or ID changes. */
-@keyframes tpFlashUp{0%{background:rgba(14,203,129,.28);box-shadow:0 0 0 1px rgba(14,203,129,.35)}100%{background:transparent;box-shadow:0 0 0 1px transparent}}
-@keyframes tpFlashDown{0%{background:rgba(246,70,93,.28);box-shadow:0 0 0 1px rgba(246,70,93,.35)}100%{background:transparent;box-shadow:0 0 0 1px transparent}}
+@keyframes tpFlashUp{0%{background:rgba(14,203,129,.55);color:#0ecb81;box-shadow:0 0 0 1px rgba(14,203,129,.5)}100%{background:transparent;color:#f2f4f6;box-shadow:0 0 0 1px transparent}}
+@keyframes tpFlashDown{0%{background:rgba(246,70,93,.55);color:#f6465d;box-shadow:0 0 0 1px rgba(246,70,93,.5)}100%{background:transparent;color:#f2f4f6;box-shadow:0 0 0 1px transparent}}
 @keyframes tpFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes tpGoldShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes tpPulseDot{0%{box-shadow:0 0 0 0 rgba(14,203,129,.5)}70%{box-shadow:0 0 0 8px rgba(14,203,129,0)}100%{box-shadow:0 0 0 0 rgba(14,203,129,0)}}
 /* big price: flash pill on every live tick */
 #bigPrice{display:inline-block;border-radius:12px;padding:2px 12px;margin-left:-12px}
-#bigPrice.tp-flash-up{animation:tpFlashUp .55s ease-out}
-#bigPrice.tp-flash-down{animation:tpFlashDown .55s ease-out}
+#bigPrice.tp-flash-up{animation:tpFlashUp 1s ease-out}
+#bigPrice.tp-flash-down{animation:tpFlashDown 1s ease-out}
 /* press feedback + smooth transitions on every interactive element */
 button,.mrow,.wrow,.tf-btn,.ind-btn,.tabbar a,.star{transition:transform .12s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,opacity .18s ease}
 button:active,.mrow:active,.wrow:active,.tf-btn:active,.ind-btn:active{transform:scale(.965)}
