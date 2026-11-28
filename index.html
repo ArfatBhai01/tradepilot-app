@@ -681,7 +681,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
-/* ---- Voice input + spoken answers v30 ---- */
+/* ---- Voice input + spoken answers v31 ---- */
 .input-row button.mic-btn{flex:none;align-self:center;min-height:0;width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
 .input-row button.mic-btn svg{display:block}
 @keyframes micListen{0%{box-shadow:0 0 0 0 rgba(214,168,75,.55)}70%{box-shadow:0 0 0 10px rgba(214,168,75,0)}100%{box-shadow:0 0 0 0 rgba(214,168,75,0)}}
@@ -691,7 +691,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .voice-btn.off{opacity:.45}
 .voice-btn.off .wv{display:none}
 .voice-btn.off .mute{display:block}
-/* ---- Legal collapsible rows v30 ---- */
+/* ---- Legal collapsible rows v31 ---- */
 .risk-coll{padding:0;overflow:hidden}
 .risk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:0;background:none;border:none;padding:11px 14px;font-size:12.5px;color:#e8d9a0;font-family:inherit;text-align:left;cursor:pointer}
 .risk-head b{color:var(--gold)}
@@ -700,7 +700,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .risk-body{padding:0 14px 12px;font-size:12.5px;line-height:1.6}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v30 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v31 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
 .tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
@@ -742,7 +742,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *::after{animation:none!important;transition:none!important}
 </style>
 <style>
-/* ---- Live voice call with Aria v30 (29 Nov 2026) ---- */
+/* ---- Live voice call with Aria v31 (29 Nov 2026) ---- */
 /* Small floating call panel, like Muse's own call UI: a compact
    rounded card that slides in from the right and floats over the
    app (the app stays visible behind it). Drag it by the header.
@@ -751,23 +751,23 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 #tpcPanel{position:fixed;z-index:300;top:calc(12px + env(safe-area-inset-top));right:10px;width:min(300px,calc(100vw - 20px));color:#eef1f8}
 #tpcPanel[hidden]{display:none!important}
 #tpcPanel [hidden]{display:none!important}
-.tpc-panel-card{animation:tpcSlideIn .28s cubic-bezier(.32,.72,.35,1);background:linear-gradient(165deg,rgba(24,36,82,.94) 0%,rgba(13,23,52,.95) 55%,rgba(10,17,40,.96) 100%);border:1px solid rgba(212,175,55,.38);border-radius:24px;padding:16px 16px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 18px 44px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07);max-height:calc(100vh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.tpc-panel-card{animation:tpcSlideIn .28s cubic-bezier(.32,.72,.35,1);background:linear-gradient(165deg,rgba(24,36,82,.94) 0%,rgba(13,23,52,.95) 55%,rgba(10,17,40,.96) 100%);border:1px solid rgba(212,175,55,.38);border-radius:24px;padding:12px 14px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 18px 44px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07);max-height:calc(100vh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch}
 @keyframes tpcSlideIn{from{transform:translateX(48px);opacity:0}to{transform:translateX(0);opacity:1}}
 .tpc-panel-head{cursor:grab;touch-action:none;display:flex;flex-direction:column;align-items:center;width:100%;-webkit-user-select:none;user-select:none}
 .tpc-panel-head:active{cursor:grabbing}
-.tpc-photo-wrap{position:relative;width:228px;margin:2px auto 12px;border-radius:18px;overflow:hidden;border:1px solid rgba(212,175,55,.45);box-shadow:0 10px 28px rgba(0,0,0,.45),0 0 24px rgba(212,175,55,.18);animation:tpcBreathe 4.5s ease-in-out infinite;flex:none}
+.tpc-photo-wrap{position:relative;width:110px;height:110px;margin:2px auto 8px;border-radius:50%;overflow:hidden;border:2px solid rgba(212,175,55,.65);box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 20px rgba(212,175,55,.18);animation:tpcBreathe 4.5s ease-in-out infinite;flex:none}
 .tpc-photo-wrap::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,175,55,.30),rgba(212,175,55,0) 62%);opacity:calc(.35 + var(--tpc-voice,0)*.65);pointer-events:none;z-index:2}
-.tpc-photo{display:block;width:100%;height:auto;aspect-ratio:560/960;object-fit:cover;object-position:top center;transform-origin:50% 30%;will-change:transform}
-.tpc-in-call .tpc-photo-wrap{box-shadow:0 10px 28px rgba(0,0,0,.45),0 0 34px rgba(212,175,55,.38)}
-.tpc-live-dot{position:absolute;right:10px;bottom:10px;width:14px;height:14px;border-radius:50%;background:#3ddc84;border:3px solid #0d1734;z-index:3;display:none}
+.tpc-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 8%;transform-origin:50% 50%;will-change:transform}
+.tpc-in-call .tpc-photo-wrap{box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 30px rgba(212,175,55,.38)}
+.tpc-live-dot{position:absolute;right:6px;bottom:6px;width:12px;height:12px;border-radius:50%;background:#3ddc84;border:2px solid #0d1734;z-index:3;display:none}
 .tpc-in-call .tpc-live-dot{display:block}
 @keyframes tpcBreathe{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.012) translateY(-2px)}}
-.tpc-callee{font-size:22px;font-weight:800;margin:0 0 2px;letter-spacing:.01em;color:#eef1f8}
-.tpc-callee-sub{color:#eec95c;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
-.tpc-status{color:#9aa7c7;font-size:13.5px;font-weight:600;margin:0;min-height:20px}
+.tpc-callee{font-size:19px;font-weight:800;margin:0 0 1px;letter-spacing:.01em;color:#eef1f8}
+.tpc-callee-sub{color:#eec95c;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px}
+.tpc-status{color:#9aa7c7;font-size:13px;font-weight:600;margin:0;min-height:18px}
 .tpc-status.tpc-speaking{color:#eec95c}
-.tpc-timer{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.06em;margin:6px 0 0;color:#eef1f8}
-.tpc-wave{display:none;align-items:flex-end;justify-content:center;gap:3px;height:20px;margin:10px 0 0}
+.tpc-timer{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.06em;margin:4px 0 0;color:#eef1f8}
+.tpc-wave{display:none;align-items:flex-end;justify-content:center;gap:3px;height:18px;margin:8px 0 0}
 .tpc-in-call .tpc-wave{display:flex}
 .tpc-wave span{width:4px;border-radius:2px;background:linear-gradient(180deg,#f3d97b,#d4af37);height:20%;animation:tpcWave 1s ease-in-out infinite}
 .tpc-wave span:nth-child(2){animation-delay:.15s}
@@ -779,16 +779,16 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 .tpc-error-box{margin-top:12px;width:100%;background:rgba(229,72,77,.10);border:1px solid rgba(229,72,77,.55);color:#ffb4b8;border-radius:14px;padding:10px 12px;font-size:13px;font-weight:600;line-height:1.45;text-align:left;overflow-wrap:anywhere}
 .tpc-error-box .tpc-detail{display:block;margin-top:6px;color:#e58a8e;font-size:12px;font-weight:500}
 .tpc-info-box{margin-top:12px;width:100%;background:rgba(212,175,55,.08);border:1px solid #8a742a;color:#eec95c;border-radius:14px;padding:10px 12px;font-size:13px;font-weight:600;line-height:1.45;text-align:left;overflow-wrap:anywhere}
-.tpc-controls{margin-top:16px;width:100%;display:flex;justify-content:center;gap:14px}
+.tpc-controls{margin-top:12px;width:100%;display:flex;justify-content:center;gap:14px}
 .tpc-ctl{position:relative;appearance:none;border:0;cursor:pointer;width:48px;height:48px;min-height:0;border-radius:50%;padding:0;background:rgba(22,34,74,.9);border:1px solid rgba(212,175,55,.45);color:#eec95c;display:flex;align-items:center;justify-content:center;transition:transform .08s ease,opacity .15s ease}
 .tpc-ctl:active{transform:scale(.94)}
 .tpc-ctl svg{width:22px;height:22px;flex:none}
 .tpc-ctl-end{background:linear-gradient(180deg,#e5484d,#c23338);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(229,72,77,.45)}
-.tpc-ctl.tpc-off{opacity:.55}
-.tpc-ctl.tpc-off::after{content:"";position:absolute;left:50%;top:50%;width:30px;height:2px;background:#fff;border-radius:1px;transform:translate(-50%,-50%) rotate(-45deg)}
-.tpc-transcript-card{margin-top:14px;width:100%;background:rgba(13,23,52,.72);border:1px solid rgba(34,49,95,.9);border-radius:16px;padding:12px;display:flex;flex-direction:column;text-align:left;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.tpc-ctl.tpc-off{opacity:.45}
+.tpc-ctl.tpc-off::after{content:"";position:absolute;left:50%;top:50%;width:32px;height:2.5px;background:#fff;border-radius:1px;transform:translate(-50%,-50%) rotate(-45deg)}
+.tpc-transcript-card{margin-top:10px;width:100%;background:rgba(13,23,52,.72);border:1px solid rgba(34,49,95,.9);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;text-align:left;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .tpc-transcript-card h2{margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;color:#9aa7c7;text-transform:uppercase}
-.tpc-transcript{overflow-y:auto;max-height:22vh;display:flex;flex-direction:column;gap:8px;padding-right:2px}
+.tpc-transcript{overflow-y:auto;max-height:150px;min-height:88px;display:flex;flex-direction:column;gap:8px;padding-right:2px}
 .tpc-empty{color:#9aa7c7;font-size:13px;margin:4px 0}
 .tpc-bubble{max-width:92%;border-radius:14px;padding:8px 11px;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere;color:#eef1f8}
 .tpc-bubble .tpc-who{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;margin-bottom:3px;text-transform:uppercase}
@@ -797,7 +797,7 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 .tpc-bubble.tpc-ai{align-self:flex-start;background:#16224a;border:1px solid #22315f;border-bottom-left-radius:6px}
 .tpc-bubble.tpc-ai .tpc-who{color:#9aa7c7}
 .tpc-note{align-self:center;color:#9aa7c7;font-size:12px;font-style:italic;margin:2px 0;text-align:center}
-.tpc-foot{text-align:center;color:#9aa7c7;font-size:11.5px;line-height:1.5;margin-top:10px}
+.tpc-foot{text-align:center;color:#9aa7c7;font-size:11.5px;line-height:1.5;margin-top:8px}
 .tpc-foot .tpc-nf{color:#eef1f8;font-weight:700;font-size:12px}
 .tpc-foot p{margin:2px 0}
 .tpc-open-btn{appearance:none;border:0;cursor:pointer;width:100%;min-height:52px;border-radius:999px;background:linear-gradient(180deg,#eec95c,#d4af37);color:#231a04;font-family:inherit;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:12px;box-shadow:0 6px 20px rgba(212,175,55,.30)}
@@ -1200,13 +1200,13 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v30<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v31<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v30</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v31</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -1238,7 +1238,7 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
   <a href="#support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 0-16.6 4.6L3 21l4.5-1.3A9 9 0 0 0 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg>Support</a>
 </div></nav>
 
-<!-- L. LIVE VOICE CALL WITH ARIA (v30) — small floating panel, like Muse's call UI -->
+<!-- L. LIVE VOICE CALL WITH ARIA (v31) — small floating panel, like Muse's call UI -->
 <div id="tpcPanel" hidden role="dialog" aria-label="Live voice call with Aria">
   <section class="tpc-panel-card" id="tpcPanelCard">
     <div class="tpc-panel-head" id="tpcPanelHead">
@@ -2762,7 +2762,7 @@ updateMarketMeta().then(function(){
     var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
     log.appendChild(d);log.scrollTop=log.scrollHeight;
   }
-  /* Voice input + spoken answers v30 */
+  /* Voice input + spoken answers v31 */
   var tpVoiceSpeak=true;
   try{tpVoiceSpeak=localStorage.getItem('tpVoiceSpeak')!=='0';}catch(e){}
   function tpSpeak(text){
@@ -2892,7 +2892,7 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Legal collapsible rows v30 */
+  /* Legal collapsible rows v31 */
   try{
     document.querySelectorAll('.risk-coll .risk-head').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -2905,7 +2905,7 @@ updateMarketMeta().then(function(){
     });
   }catch(e){}
 
-  /* Hamburger menu + drawer v30 */
+  /* Hamburger menu + drawer v31 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
@@ -2991,7 +2991,7 @@ updateMarketMeta().then(function(){
     tpSyncDrawerBal();
   }catch(e){ /* drawer only - never break trading */ }
 
-/* ---- Live voice call with Aria v30 (29 Nov 2026) ----
+/* ---- Live voice call with Aria v31 (29 Nov 2026) ----
    Ported faithfully from the proven live-call preview (same flow that
    worked on a real phone call). Flow: Call tap -> POST /liveToken
    (ephemeral token, single use) -> Gemini Live API via @google/genai
@@ -3047,6 +3047,7 @@ updateMarketMeta().then(function(){
   var timerInt = null;
   var statusInt = null;
   var ctxInt = null;            // periodic live-market refresh during the call
+  var resumeWatchInt = null;    // 1s AudioContext resume watchdog during a call
   var openBubble = null;        // { role, textEl }
   var turnSawAiText = false;
   var turnSawAudio = false;
@@ -3565,15 +3566,38 @@ updateMarketMeta().then(function(){
     ctxInt = setInterval(function () {
       if (inCall && session && !reconnecting) sendMarketContext(session);
     }, 90000);
+    startResumeWatchdog();
   }
   function stopLoops() {
     if (timerInt) clearInterval(timerInt);
     if (statusInt) clearInterval(statusInt);
     if (ctxInt) clearInterval(ctxInt);
     timerInt = statusInt = ctxInt = null;
+    stopResumeWatchdog();
     if (voiceRaf) cancelAnimationFrame(voiceRaf);
     voiceRaf = 0;
     setVoiceMotion(0);
+  }
+
+  // ---- Audio resume watchdog ----
+  // On some phones (Telegram WebView) the AudioContext can slip back
+  // to "suspended" after creation, so scheduled playback never
+  // advances: the call looks live ("AI speaking…") but no sound
+  // comes out. Every second while a call is active, resume it if
+  // it is suspended. Taps inside the panel and unmuting the speaker
+  // resume it immediately too.
+  function resumeAudio() {
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume().catch(function () { /* stays suspended; the next tick retries */ });
+    }
+  }
+  function startResumeWatchdog() {
+    stopResumeWatchdog();
+    resumeWatchInt = setInterval(resumeAudio, 1000);
+  }
+  function stopResumeWatchdog() {
+    if (resumeWatchInt) clearInterval(resumeWatchInt);
+    resumeWatchInt = null;
   }
 
   // ---- Voice motion: the portrait moves with her live voice ----
@@ -3645,6 +3669,7 @@ updateMarketMeta().then(function(){
   function toggleSpeaker() {
     speakerMuted = !speakerMuted;
     if (outGain) outGain.gain.value = speakerMuted ? 0 : 1;
+    if (!speakerMuted) resumeAudio();
     updateToggleButtons();
   }
   function toggleMic() {
@@ -3887,6 +3912,9 @@ updateMarketMeta().then(function(){
   if (speakerBtn) speakerBtn.addEventListener("click", toggleSpeaker);
   if (micBtn) micBtn.addEventListener("click", toggleMic);
   if (panelHead) panelHead.addEventListener("pointerdown", onDragStart);
+  // Any tap inside the call panel also nudges a suspended
+  // AudioContext awake (Telegram WebView autoplay policy).
+  if (panelEl) panelEl.addEventListener("pointerdown", resumeAudio);
   window.addEventListener("pointermove", onDragMove);
   window.addEventListener("pointerup", onDragEnd);
   window.addEventListener("pointercancel", onDragEnd);
