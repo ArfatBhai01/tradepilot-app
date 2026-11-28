@@ -601,21 +601,20 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <style>
 /* ---- Premium floating cards v8 (28 Nov 2026) — 60/30/10 + glassmorphism ---- */
-.fc-row{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.fc-row::-webkit-scrollbar{display:none}
-.fc{flex:0 0 172px;scroll-snap-align:start;background:linear-gradient(160deg,rgba(23,30,38,.85),rgba(17,22,28,.8));border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:tpFadeUp .55s ease both;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.fc-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:8px 2px 16px}
+.fc{min-width:0;background:linear-gradient(160deg,rgba(23,30,38,.85),rgba(17,22,28,.8));border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:14px;box-shadow:0 10px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:tpFadeUp .55s ease both;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
 .fc:hover{transform:translateY(-3px);border-color:rgba(214,168,75,.45);box-shadow:0 16px 34px rgba(0,0,0,.55),0 0 0 1px rgba(214,168,75,.12)}
 .fc:nth-child(2){animation-delay:.05s}.fc:nth-child(3){animation-delay:.1s}.fc:nth-child(4){animation-delay:.15s}.fc:nth-child(5){animation-delay:.2s}.fc:nth-child(6){animation-delay:.25s}.fc:nth-child(7){animation-delay:.3s}.fc:nth-child(8){animation-delay:.35s}
-.fc-ico{font-size:17px;line-height:1;margin-bottom:8px}
+.fc-ico{color:var(--gold);line-height:0;margin-bottom:8px}.fc-ico svg{display:block}
 .fc-k{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600}
-.fc-v{font-size:19px;font-weight:700;color:var(--text);margin:3px 0 2px;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-v{font-size:19px;font-weight:700;color:var(--text);margin:3px 0 2px;font-family:var(--mono);white-space:normal}
 .fc-v.gold{color:var(--gold)}
-.fc-s{font-size:11.5px;color:var(--dim);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-s{font-size:11.5px;color:var(--dim);line-height:1.35;white-space:normal}
 .fc-trend{display:flex;flex-direction:column;gap:4px;margin:5px 0 3px;min-height:66px}
 .fc-trend div{display:flex;justify-content:space-between;font-size:12.5px}
 .fc-trend .t-sym{color:#e8ecf0;font-weight:600}
 .fc-trend .t-chg{font-family:var(--mono);font-weight:600}
-@media(min-width:1024px){.fc-row{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible}.fc{flex:none}}
+@media(min-width:1024px){.fc-row{grid-template-columns:repeat(4,1fr)}}
 @media(prefers-reduced-motion:reduce){.fc{animation:none!important;transition:none!important}}
 </style>
 <style>
@@ -670,6 +669,11 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .msg.ai{margin-left:0;margin-right:auto;background:#171e26;border:1px solid rgba(214,168,75,.25);border-radius:14px 14px 14px 4px;padding:10px 12px;margin-bottom:10px;max-width:85%;box-shadow:none}
 .msg.ai b{color:#e8c15a}
 .msg .m-time{font-size:10px;color:var(--dim);margin-top:4px}
+.ai-typing{display:flex;align-items:center;gap:2px;color:var(--dim);font-size:12.5px}
+.ai-typing i{width:6px;height:6px;border-radius:50%;background:#d6a84b;display:inline-block;animation:tpTyping 1.2s ease-in-out infinite}
+.ai-typing i:nth-child(2){animation-delay:.2s}
+.ai-typing i:nth-child(3){animation-delay:.4s}
+@keyframes tpTyping{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 12px}
 .chip{font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid rgba(214,168,75,.45);color:#e8c15a;background:transparent;font-family:inherit;cursor:pointer}
 .chip:active{transform:scale(.96)}
@@ -678,11 +682,53 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
 </style>
+<style>
+/* ---- Hamburger menu + drawer v23 (28 Nov 2026) ---- */
+.tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.tp-menu-btn:active{transform:scale(.94)}
+.tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.tp-backdrop.open{opacity:1;pointer-events:auto}
+.tp-drawer{position:fixed;top:0;left:0;bottom:0;width:300px;max-width:85vw;background:#11161c;border-right:1px solid rgba(214,168,75,.25);box-shadow:12px 0 40px rgba(0,0,0,.5);z-index:200;transform:translateX(-102%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;display:flex;flex-direction:column;overflow-y:auto}
+.tp-drawer.open{transform:translateX(0);visibility:visible;transition:transform .25s ease,visibility 0s linear 0s}
+.tp-drawer-head{flex:none;display:flex;align-items:center;gap:10px;padding:16px 16px 12px;border-bottom:1px solid rgba(220,230,240,.08)}
+.tp-d-logo{width:36px;height:36px;flex:none;border-radius:10px;background:linear-gradient(135deg,#0d1b2e,#07090c);border:1px solid rgba(214,168,75,.45);display:flex;align-items:center;justify-content:center}
+.tp-d-name{font-size:17px;font-weight:800;color:#f2f4f6;letter-spacing:-.02em}
+.tp-d-name span{color:#d6a84b}
+.tp-drawer-close{margin-left:auto;flex:none;width:36px;height:36px;border-radius:50%;border:1px solid rgba(214,168,75,.35);background:transparent;color:#d6a84b;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.tp-drawer-bal{flex:none;margin:14px 16px 4px;padding:14px;border-radius:14px;background:rgba(214,168,75,.08);border:1px solid rgba(214,168,75,.25)}
+.tp-d-k{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.tp-d-v{font-size:22px;font-weight:700;color:#d6a84b;font-family:var(--mono);margin-top:4px}
+.tp-drawer-nav{flex:1;padding:8px 10px 16px}
+.tp-d-group{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:14px 10px 6px}
+.tp-d-item{display:flex;align-items:center;gap:12px;width:100%;padding:11px 10px;border-radius:10px;border:0;background:transparent;color:var(--text);font-size:14.5px;font-weight:600;font-family:inherit;text-align:left;cursor:pointer;text-decoration:none}
+.tp-d-item svg{flex:none;color:#d6a84b}
+.tp-d-item:active{background:rgba(214,168,75,.1)}
+.tp-drawer-foot{flex:none;padding:14px 16px 18px;border-top:1px solid rgba(220,230,240,.08);font-size:11px;color:var(--dim);line-height:1.6}
+.tp-modal{position:fixed;inset:0;z-index:210;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.tp-modal[hidden]{display:none}
+.tp-modal-bar{flex:none;display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.tp-modal-back{background:none;border:0;color:#d6a84b;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;padding:4px 0}
+.tp-modal-title{font-size:16px;font-weight:700;color:var(--text)}
+.tp-modal-body{flex:1;overflow-y:auto;padding:18px 16px 90px;line-height:1.65;color:var(--text);font-size:14px}
+.tp-modal-body p{margin:0 0 14px}
+.tp-kv{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(220,230,240,.08);font-size:14px}
+.tp-kv .k{color:var(--dim)}
+.tp-kv .v{color:var(--text);font-weight:600;text-align:right}
+.tp-set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid rgba(220,230,240,.08)}
+.tp-set-t{font-size:14.5px;font-weight:600;color:var(--text)}
+.tp-set-s{font-size:12px;color:var(--dim);margin-top:2px;line-height:1.5}
+.tp-switch{flex:none;width:48px;height:28px;border-radius:999px;border:1px solid rgba(214,168,75,.4);background:rgba(255,255,255,.08);cursor:pointer;position:relative;padding:0;transition:background .2s ease}
+.tp-switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#f2f4f6;transition:left .2s ease}
+.tp-switch[aria-checked="true"]{background:#d6a84b}
+.tp-switch[aria-checked="true"]::after{left:23px;background:#07090c}
+body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *::after{animation:none!important;transition:none!important}
+</style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="brand">
+    <button type="button" class="tp-menu-btn" id="tpMenuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#d6a84b" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
     <div class="brand-logo"><svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="#d6a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34 L18 24 L26 28 L40 12"/><path d="M32 12 H40 V20"/></svg></div>
     <div><div class="brand-name">TradePilot <span>AI</span></div><div class="brand-tag">Paper trading &middot; Live signals &middot; Binance spot</div><svg class="brand-chart" viewBox="0 0 208 28" width="208" height="28" aria-hidden="true"><path class="tp-line" d="M2 24 L28 18 L52 20 L78 12 L104 14 L130 8 L156 10 L182 4 L198 2"/></svg></div>
   </div>
@@ -698,42 +744,18 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   <!-- PREMIUM FLOATING CARDS v8 -->
   <section id="floatCards" aria-label="Overview cards">
     <div class="fc-row">
-      <div class="fc"><div class="fc-ico">&#128176;</div><div class="fc-k">Portfolio Balance</div><div class="fc-v gold" id="fcBal">$10,000.00</div><div class="fc-s" id="fcBalSub">Cash $10,000.00 &middot; Unreal. $0.00</div></div>
-      <div class="fc"><div class="fc-ico">&#128200;</div><div class="fc-k">Profit / Loss</div><div class="fc-v" id="fcPnl">+$0.00</div><div class="fc-s" id="fcPnlSub">Realized $0.00 &middot; Unreal. $0.00</div></div>
-      <div class="fc"><div class="fc-ico">&#129302;</div><div class="fc-k">AI Signals</div><div class="fc-v" id="fcSig">&mdash;</div><div class="fc-s" id="fcSigSub">Loading signals&hellip;</div></div>
-      <div class="fc"><div class="fc-ico">&#128552;</div><div class="fc-k">Market Sentiment</div><div class="fc-v" style="color:#ff8296">11 &middot; Extreme Fear</div><div class="fc-s">Fear &amp; Greed &middot; snapshot 25 Nov</div></div>
-      <div class="fc"><div class="fc-ico">&#128293;</div><div class="fc-k">Trending Coins &middot; 24h</div><div class="fc-trend" id="fcTrend"><div><span class="t-sym">&mdash;</span><span class="t-chg">&mdash;</span></div></div><div class="fc-s">Top gainers &middot; live Binance</div></div>
-      <div class="fc"><div class="fc-ico">&#127758;</div><div class="fc-k">Market Overview</div><div class="fc-v">$2.08T</div><div class="fc-s">Total cap &middot; BTC dom 57.9% &middot; snapshot 25 Nov</div></div>
-      <div class="fc"><div class="fc-ico">&#128276;</div><div class="fc-k">Price Alerts</div><div class="fc-v" style="color:var(--dim)">No alerts</div><div class="fc-s">Alerts are not live yet</div></div>
-      <div class="fc"><div class="fc-ico">&#127942;</div><div class="fc-k">Trading Performance</div><div class="fc-v" id="fcWin">&mdash;</div><div class="fc-s" id="fcWinSub">No closed trades yet</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="fc-k">Portfolio Balance</div><div class="fc-v gold" id="fcBal">$10,000.00</div><div class="fc-s" id="fcBalSub">Cash $10,000.00 &middot; Unreal. $0.00</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="fc-k">Profit / Loss</div><div class="fc-v" id="fcPnl">+$0.00</div><div class="fc-s" id="fcPnlSub">Realized $0.00 &middot; Unreal. $0.00</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div><div class="fc-k">AI Signals</div><div class="fc-v" id="fcSig">&mdash;</div><div class="fc-s" id="fcSigSub">Loading signals&hellip;</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a8 8 0 1 1 16 0"/><line x1="12" y1="14" x2="15.5" y2="9.5"/><circle cx="12" cy="14" r="1.2"/></svg></div><div class="fc-k">Market Sentiment</div><div class="fc-v" style="color:#ff8296">11 &middot; Extreme Fear</div><div class="fc-s">Fear &amp; Greed &middot; snapshot 25 Nov</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div><div class="fc-k">Trending Coins &middot; 24h</div><div class="fc-trend" id="fcTrend"><div><span class="t-sym">&mdash;</span><span class="t-chg">&mdash;</span></div></div><div class="fc-s">Top gainers &middot; live Binance</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="fc-k">Market Overview</div><div class="fc-v">$2.08T</div><div class="fc-s">Total cap &middot; BTC dom 57.9% &middot; snapshot 25 Nov</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="fc-k">Price Alerts</div><div class="fc-v" style="color:var(--dim)">No alerts</div><div class="fc-s">Alerts are not live yet</div></div>
+      <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div><div class="fc-k">Trading Performance</div><div class="fc-v" id="fcWin">&mdash;</div><div class="fc-s" id="fcWinSub">No closed trades yet</div></div>
     </div>
   </section>
 
-  <!-- v21: AI INSIGHT + ASK AI (Dashboard) -->
-  <section id="aiInsight" aria-label="AI market summary">
-    <div class="ai-insight-card">
-      <div class="ai-head"><span class="ai-badge">AI INSIGHT</span><span class="ai-title">Market Summary</span><span class="ai-live"><i></i>Live data</span></div>
-      <div class="ai-text" id="aiInsightText">Loading live data&hellip;</div>
-      <div class="ai-foot" id="aiInsightFoot">Sources: Binance live prices, C++ engine signals, Fear &amp; Greed Index. Not financial advice.</div>
-    </div>
-  </section>
-
-  <section id="askAi" aria-label="Ask AI">
-    <div class="chat-card">
-      <div class="chat-head"><div class="chat-ava">T</div><div><div class="chat-title">Ask AI</div><div class="chat-sub">Ask about prices, signals, or your paper balance</div></div></div>
-      <div id="aiChatLog">
-        <div class="msg ai">Hi! Ask me about a price, the latest signals, or your paper balance &mdash; I answer from live data.<div class="m-time">TradePilot AI</div></div>
-      </div>
-      <div class="chips">
-        <button type="button" class="chip" data-q="BTC price?">BTC price?</button>
-        <button type="button" class="chip" data-q="Latest signals?">Latest signals?</button>
-        <button type="button" class="chip" data-q="Is BTC bullish?">Is BTC bullish?</button>
-        <button type="button" class="chip" data-q="My balance?">My balance?</button>
-      </div>
-      <div class="input-row"><input id="aiChatInput" type="text" placeholder="Ask AI anything about the market&hellip;" autocomplete="off"/><button type="button" id="aiChatSend">Send</button></div>
-    </div>
-  </section>
-
+  
   <!-- A. MARKET OVERVIEW -->
   <section id="dashboard">
     <div class="sec-head"><h2>Market Overview</h2><span class="hint">Whole crypto market, last 24 hours</span></div>
@@ -871,16 +893,6 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     </div>
   </section>
 
-  <!-- F. AI ANALYSIS -->
-  <section id="ai">
-    <div class="sec-head"><h2>Market analysis</h2><span class="hint">For <b id="aiPair" style="color:var(--text)">BTC/USDT</b> · reads the same numbers you see on the chart</span></div>
-    <div class="ai-card">
-      <div class="ai-verdict"><span class="badge bear" id="aiVerdict">Bearish bias</span><span style="font-size:13px;color:var(--sub)" id="aiVerdictTxt"></span></div>
-      <div class="ai-grid" id="aiGrid"></div>
-      <div class="ai-src">Analysis engine: built-in rule engine reading EMA, RSI, MACD, VWAP, Bollinger Bands and support/resistance from the snapshot data above. The engine sits behind a provider-independent interface, so an external AI provider or a local model can be plugged in later without changing this screen. It explains the data — it does not predict prices and it never guarantees a result.</div>
-    </div>
-  </section>
-
   <!-- E. SIGNALS -->
   <section id="signals">
     <div class="sec-head"><h2>Messages</h2><span class="hint" id="sigHint">EMA 20/50 crossover model · 1H · from the last 30 days of hourly data</span></div>
@@ -889,6 +901,16 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     <div id="sigNote" style="font-size:12.5px;color:var(--dim);margin:0 2px 10px"></div>
     <div id="sigList"></div>
     <p style="font-size:12.5px;color:var(--dim);margin:4px 2px 0">How to read this: every signal was generated by the crossover rule on real past candles, then checked against what price actually did next. “Closed · TP3 Hit” means price reached all three targets before the stop; “Closed · Stop Loss” means it hit the stop first. Past signals losing money is normal — see the win rate above, not just the wins.</p>
+  </section>
+
+  <!-- F. AI ANALYSIS -->
+  <section id="ai">
+    <div class="sec-head"><h2>Market analysis</h2><span class="hint">For <b id="aiPair" style="color:var(--text)">BTC/USDT</b> · reads the same numbers you see on the chart</span></div>
+    <div class="ai-card">
+      <div class="ai-verdict"><span class="badge bear" id="aiVerdict">Bearish bias</span><span style="font-size:13px;color:var(--sub)" id="aiVerdictTxt"></span></div>
+      <div class="ai-grid" id="aiGrid"></div>
+      <div class="ai-src">Analysis engine: built-in rule engine reading EMA, RSI, MACD, VWAP, Bollinger Bands and support/resistance from the snapshot data above. The engine sits behind a provider-independent interface, so an external AI provider or a local model can be plugged in later without changing this screen. It explains the data — it does not predict prices and it never guarantees a result.</div>
+    </div>
   </section>
 
   <!-- G. PAPER TRADING -->
@@ -982,7 +1004,32 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     </div>
   </section>
 
-  <!-- J. LEGAL & DISCLOSURES -->
+  <!-- v21: AI INSIGHT + ASK AI (Dashboard) -->
+  <section id="aiInsight" aria-label="AI market summary">
+    <div class="ai-insight-card">
+      <div class="ai-head"><span class="ai-badge">AI INSIGHT</span><span class="ai-title">Market Summary</span><span class="ai-live"><i></i>Live data</span></div>
+      <div class="ai-text" id="aiInsightText">Loading live data&hellip;</div>
+      <div class="ai-foot" id="aiInsightFoot">Sources: Binance live prices, C++ engine signals, Fear &amp; Greed Index. Not financial advice.</div>
+    </div>
+  </section>
+
+  <section id="askAi" aria-label="Ask AI">
+    <div class="chat-card">
+      <div class="chat-head"><div class="chat-ava">T</div><div><div class="chat-title">Ask AI</div><div class="chat-sub">Ask about prices, signals, or your paper balance</div></div></div>
+      <div id="aiChatLog">
+        <div class="msg ai">Hi! Ask me about a price, the latest signals, or your paper balance &mdash; I answer from live data.<div class="m-time">TradePilot AI</div></div>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" data-q="BTC price?">BTC price?</button>
+        <button type="button" class="chip" data-q="Latest signals?">Latest signals?</button>
+        <button type="button" class="chip" data-q="Is BTC bullish?">Is BTC bullish?</button>
+        <button type="button" class="chip" data-q="My balance?">My balance?</button>
+      </div>
+      <div class="input-row"><input id="aiChatInput" type="text" placeholder="Ask AI anything about the market&hellip;" autocomplete="off"/><button type="button" id="aiChatSend">Send</button></div>
+    </div>
+  </section>
+
+<!-- J. LEGAL & DISCLOSURES -->
   <section id="legal">
     <div class="sec-head"><h2>Legal &amp; Disclosures</h2><span class="hint">Please read before using TradePilot AI</span></div>
     <div class="risk" style="margin-bottom:10px"><b>Free signals &amp; market data:</b> Trading signals and live market prices in this app are free for everyone. Telegram Stars buy virtual paper balance only &mdash; practice money with no real value. Stars never buy signals, market data, premium access, or any real cryptocurrency.</div>
@@ -1041,6 +1088,58 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 <div class="legal-overlay" id="legalOverlay" hidden>
   <div class="legal-bar"><button type="button" class="legal-back" id="legalClose">‹ Back</button><div class="legal-doc-title" id="legalTitle"></div></div>
   <div class="legal-body" id="legalBody"></div>
+</div>
+
+<div class="tp-backdrop" id="tpBackdrop" hidden></div>
+<nav class="tp-drawer" id="tpDrawer" aria-label="Menu">
+  <div class="tp-drawer-head">
+    <div class="tp-d-logo"><svg viewBox="0 0 48 48" width="22" height="22" fill="none" stroke="#d6a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 34 L18 24 L26 28 L40 12"/><path d="M32 12 H40 V20"/></svg></div>
+    <div class="tp-d-name">TradePilot <span>AI</span></div>
+    <button type="button" class="tp-drawer-close" id="tpDrawerClose" aria-label="Close menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="tp-drawer-bal"><div class="tp-d-k">Paper balance</div><div class="tp-d-v" id="tpDrawerBal">$10,000.00</div></div>
+  <div class="tp-drawer-nav">
+    <div class="tp-d-group">Trade</div>
+    <a class="tp-d-item" href="#dashboard" data-tp-nav="dashboard"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="tp-d-item" href="#chart" data-tp-nav="chart"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4v13M7 8h4v6H7zM17 3v18M17 10h4v7h-4z"/></svg>Chart</a>
+    <a class="tp-d-item" href="#signals" data-tp-nav="signals"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Signals</a>
+    <a class="tp-d-item" href="#paper" data-tp-nav="paper"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg>Paper Trading</a>
+    <div class="tp-d-group">AI</div>
+    <a class="tp-d-item" href="#aiInsight" data-tp-nav="aiInsight"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>AI Insight</a>
+    <a class="tp-d-item" href="#askAi" data-tp-nav="askAi"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 0-16.6 4.6L3 21l4.5-1.3A9 9 0 0 0 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg>Ask AI</a>
+    <a class="tp-d-item" href="#ai" data-tp-nav="ai"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>AI Analysis</a>
+    <div class="tp-d-group">Account</div>
+    <a class="tp-d-item" href="#store" data-tp-nav="store"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.2 11a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8L4 7z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>Store</a>
+    <a class="tp-d-item" href="#support" data-tp-nav="support"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Support</a>
+    <div class="tp-d-group">More</div>
+    <button type="button" class="tp-d-item" id="tpNavSettings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</button>
+    <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
+    <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
+  </div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v23<br>Paper trading only &middot; Not financial advice</div>
+</nav>
+
+<div class="tp-modal" id="tpSettingsOverlay" hidden>
+  <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
+  <div class="tp-modal-body">
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v23</span></div>
+    <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
+    <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
+    <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
+    <div class="tp-set-row"><div><div class="tp-set-t">Hide paper balance</div><div class="tp-set-s">Show &bull;&bull;&bull;&bull;&bull;&bull; instead of your balance everywhere in the app.</div></div><button type="button" class="tp-switch" id="tpToggleHideBal" role="switch" aria-checked="false" aria-label="Hide paper balance"></button></div>
+    <p style="margin-top:16px;color:var(--dim);font-size:12.5px">Paper trading only. Signals are automated model output, not financial advice. TradePilot AI is not affiliated with Binance.</p>
+  </div>
+</div>
+
+<div class="tp-modal" id="tpDataOverlay" hidden>
+  <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpDataBack">&#8249; Back</button><div class="tp-modal-title">Market Data</div></div>
+  <div class="tp-modal-body">
+    <p>Prices and candles come from the Binance public API (data-api.binance.vision).</p>
+    <p>Signals are generated by the TradePilot C++ engine on GitHub Actions, every 15 minutes, for the top 10 coins.</p>
+    <p>Fear &amp; Greed sentiment is a snapshot from 25 Nov 2026.</p>
+    <p>Market data is free for everyone.</p>
+    <p>TradePilot AI is not affiliated with Binance.</p>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -2393,6 +2492,7 @@ updateMarketMeta().then(function(){
   var AI_NAMES={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',BNB:'BNB',XRP:'XRP',ZEC:'Zcash',HYPE:'Hyperliquid',TRX:'TRON',DOGE:'Dogecoin',ADA:'Cardano'};
   var AI_COINS=['BTC','ETH','SOL','BNB','XRP','ZEC','HYPE','TRX','DOGE','ADA'];
   var AI_ALIASES={bitcoin:'BTC',ethereum:'ETH',solana:'SOL',bnb:'BNB',xrp:'XRP',zcash:'ZEC',zec:'ZEC',hyperliquid:'HYPE',hype:'HYPE',tron:'TRX',trx:'TRX',dogecoin:'DOGE',doge:'DOGE',cardano:'ADA',ada:'ADA',btc:'BTC',eth:'ETH',sol:'SOL'};
+  var ASK_AI_URL='https://arfuu0.pythonanywhere.com/askAI'; /* v24: real AI chat server (key stays server-side) */
   function aiCoinName(sym){return (typeof AI_NAMES!=='undefined'&&AI_NAMES&&AI_NAMES[sym])||NAMES[sym]||sym}
   function aiChg(sym){var s=SNAP[sym];return s?{p:s.p,c:s.c}:null}
   function aiLiveList(){try{return (typeof engineSignals!=='undefined'&&engineSignals)?engineSignals.map(mapEngineSignal):[]}catch(e){return[]}}
@@ -2499,14 +2599,80 @@ updateMarketMeta().then(function(){
     d.innerHTML=html+'<div class="m-time">TradePilot AI \u00b7 live data</div>';
     log.appendChild(d);log.scrollTop=log.scrollHeight;
   }
+  function buildAskAIContext(){
+    var ctx={};
+    try{
+      var coins=['BTC','ETH','SOL','BNB','XRP'];
+      for(var i=0;i<coins.length;i++){
+        var sym=coins[i],sn=(typeof SNAP!=='undefined'&&SNAP)?SNAP[sym]:null;
+        if(sn&&sn.p>0)ctx[sym.toLowerCase()]=fmt$(sn.p,coinPrecision(sym))+' '+(sn.c>=0?'+':'')+fmt(sn.c,2)+'%';
+      }
+      var list=aiLiveList();
+      if(list&&list.length){
+        var n=list[0],ns=n.pair.split('/')[0];
+        ctx.signal=n.side+' '+ns+' '+fmt$(n.entry,coinPrecision(ns))+(n.rsi!=null?' RSI '+fmt(n.rsi,2):'');
+      }
+      if(typeof paper!=='undefined'&&paper&&typeof paper.cash==='number'&&isFinite(paper.cash))ctx.balance=fmt$(paper.cash,2);
+      else{var eq=$('acctEquity');if(eq&&eq.textContent&&eq.textContent.indexOf('$')===0)ctx.balance=eq.textContent.trim();}
+    }catch(e){}
+    return ctx;
+  }
+  function aiChatAddTyping(){
+    var log=$('aiChatLog');if(!log)return null;
+    var d=document.createElement('div');d.className='msg ai ai-typing';
+    var sp=document.createElement('span');sp.textContent='TradePilot AI is typing';d.appendChild(sp);
+    for(var i=0;i<3;i++)d.appendChild(document.createElement('i'));
+    log.appendChild(d);log.scrollTop=log.scrollHeight;
+    return d;
+  }
+  function aiChatRemoveTyping(el){try{if(el&&el.parentNode)el.parentNode.removeChild(el);}catch(e){}}
+  function aiChatAddAISafe(text){
+    var log=$('aiChatLog');if(!log)return;
+    var d=document.createElement('div');d.className='msg ai';
+    var body=document.createElement('div');
+    var parts=String(text||'').split('\n');
+    for(var i=0;i<parts.length;i++){
+      if(i>0)body.appendChild(document.createElement('br'));
+      body.appendChild(document.createTextNode(parts[i]));
+    }
+    d.appendChild(body);
+    var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
+    log.appendChild(d);log.scrollTop=log.scrollHeight;
+  }
   function askAI(q){
     var query=String(q||'').trim();
     if(!query)return;
     try{
       aiChatAddUser(query);
-      var reply='';
-      try{reply=aiAnswer(query.toLowerCase());}catch(e){reply='Sorry, something went wrong. Please try again.';}
-      aiChatAddAI(reply);
+      var typing=null;
+      try{typing=aiChatAddTyping();}catch(e){}
+      var done=false;
+      function finishLocal(){
+        if(done)return;done=true;
+        aiChatRemoveTyping(typing);
+        var reply='';
+        try{reply=aiAnswer(query.toLowerCase());}catch(e){reply='Sorry, something went wrong. Please try again.';}
+        try{aiChatAddAI(reply);}catch(e){}
+      }
+      function finishRemote(text){
+        if(done)return;done=true;
+        aiChatRemoveTyping(typing);
+        try{aiChatAddAISafe(text);}catch(e){}
+      }
+      try{
+        var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
+        var timer=null;
+        if(ctrl)timer=setTimeout(function(){try{ctrl.abort();}catch(e){}},30000);
+        var opts={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:query,context:buildAskAIContext()})};
+        if(ctrl)opts.signal=ctrl.signal;
+        fetch(ASK_AI_URL,opts)
+        .then(function(r){if(timer)clearTimeout(timer);if(!r.ok)throw new Error('http '+r.status);return r.json();})
+        .then(function(d){
+          if(d&&typeof d.answer==='string'&&d.answer.trim())finishRemote(d.answer);
+          else finishLocal();
+        })
+        .catch(function(){if(timer)clearTimeout(timer);finishLocal();});
+      }catch(e){finishLocal();}
     }catch(e){}
   }
   try{
@@ -2518,6 +2684,92 @@ updateMarketMeta().then(function(){
     document.querySelectorAll('.chip[data-q]').forEach(function(b){b.addEventListener('click',function(){askAI(b.getAttribute('data-q'));});});
     renderAIInsight();
   }catch(e){}
+
+  /* Hamburger menu + drawer v23 */
+  try{
+    var tpDrawer=document.getElementById('tpDrawer'),
+        tpBackdrop=document.getElementById('tpBackdrop'),
+        tpMenuBtn=document.getElementById('tpMenuBtn'),
+        tpDrawerClose=document.getElementById('tpDrawerClose'),
+        tpDrawerBal=document.getElementById('tpDrawerBal'),
+        tpSettingsOverlay=document.getElementById('tpSettingsOverlay'),
+        tpDataOverlay=document.getElementById('tpDataOverlay');
+    var tpHideBal=false, tpHiddenBalVal='';
+    function tpSyncDrawerBal(){
+      var eq=document.getElementById('acctEquity');
+      if(tpDrawerBal&&eq)tpDrawerBal.textContent=tpHideBal?'\u2022\u2022\u2022\u2022\u2022\u2022':eq.textContent;
+    }
+    function tpOpenDrawer(){
+      if(!tpDrawer)return;
+      tpSyncDrawerBal();
+      tpDrawer.classList.add('open');
+      if(tpBackdrop){tpBackdrop.hidden=false;void tpBackdrop.offsetWidth;tpBackdrop.classList.add('open');}
+    }
+    function tpCloseDrawer(){
+      if(!tpDrawer)return;
+      tpDrawer.classList.remove('open');
+      if(tpBackdrop){tpBackdrop.classList.remove('open');setTimeout(function(){if(!tpDrawer.classList.contains('open'))tpBackdrop.hidden=true;},260);}
+    }
+    function tpOpenModal(el){if(!el)return;el.hidden=false;document.body.style.overflow='hidden';}
+    function tpCloseModal(el){if(!el)return;el.hidden=true;document.body.style.overflow='';}
+    if(tpMenuBtn)tpMenuBtn.addEventListener('click',function(){tpOpenDrawer();});
+    if(tpDrawerClose)tpDrawerClose.addEventListener('click',function(){tpCloseDrawer();});
+    if(tpBackdrop)tpBackdrop.addEventListener('click',function(){tpCloseDrawer();});
+    document.addEventListener('keydown',function(ev){
+      if(ev.key==='Escape'){tpCloseDrawer();tpCloseModal(tpSettingsOverlay);tpCloseModal(tpDataOverlay);}
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('#tpDrawer [data-tp-nav]'),function(a){
+      a.addEventListener('click',function(ev){
+        ev.preventDefault();
+        var id=a.getAttribute('data-tp-nav'),el=document.getElementById(id);
+        tpCloseDrawer();
+        if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth'});},80);
+      });
+    });
+    var tpNavSettings=document.getElementById('tpNavSettings');
+    if(tpNavSettings)tpNavSettings.addEventListener('click',function(){tpCloseDrawer();setTimeout(function(){tpOpenModal(tpSettingsOverlay);},120);});
+    var tpNavData=document.getElementById('tpNavData');
+    if(tpNavData)tpNavData.addEventListener('click',function(){tpCloseDrawer();setTimeout(function(){tpOpenModal(tpDataOverlay);},120);});
+    var tpSettingsBack=document.getElementById('tpSettingsBack');
+    if(tpSettingsBack)tpSettingsBack.addEventListener('click',function(){tpCloseModal(tpSettingsOverlay);});
+    var tpDataBack=document.getElementById('tpDataBack');
+    if(tpDataBack)tpDataBack.addEventListener('click',function(){tpCloseModal(tpDataOverlay);});
+    try{
+      var tpEqEl=document.getElementById('acctEquity');
+      if(tpEqEl&&window.MutationObserver){
+        var tpBalObs=new MutationObserver(function(){
+          if(tpHideBal){
+            var t=tpEqEl.textContent;
+            if(t&&t!=='\u2022\u2022\u2022\u2022\u2022\u2022'){tpHiddenBalVal=t;tpEqEl.textContent='\u2022\u2022\u2022\u2022\u2022\u2022';}
+          }
+          tpSyncDrawerBal();
+        });
+        tpBalObs.observe(tpEqEl,{childList:true,characterData:true,subtree:true});
+      }
+    }catch(e){}
+    var tpTglMotion=document.getElementById('tpToggleMotion');
+    if(tpTglMotion)tpTglMotion.addEventListener('click',function(){
+      var on=tpTglMotion.getAttribute('aria-checked')!=='true';
+      tpTglMotion.setAttribute('aria-checked',on?'true':'false');
+      document.body.classList.toggle('tp-reduce-motion',on);
+    });
+    var tpTglHide=document.getElementById('tpToggleHideBal');
+    if(tpTglHide)tpTglHide.addEventListener('click',function(){
+      var on=tpTglHide.getAttribute('aria-checked')!=='true';
+      tpTglHide.setAttribute('aria-checked',on?'true':'false');
+      tpHideBal=on;
+      var eq=document.getElementById('acctEquity'),fc=document.getElementById('fcBal');
+      if(on){
+        if(eq){tpHiddenBalVal=eq.textContent;eq.textContent='\u2022\u2022\u2022\u2022\u2022\u2022';}
+        if(fc)fc.textContent='\u2022\u2022\u2022\u2022\u2022\u2022';
+      }else{
+        if(eq&&tpHiddenBalVal)eq.textContent=tpHiddenBalVal;
+        try{renderFloatCards();}catch(e){}
+      }
+      tpSyncDrawerBal();
+    });
+    tpSyncDrawerBal();
+  }catch(e){ /* drawer only - never break trading */ }
 
 })();
 </script>
