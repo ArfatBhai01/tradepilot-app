@@ -660,6 +660,11 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .ai-text b{color:#f2f4f6}
 .ai-foot{margin-top:12px;padding-top:10px;border-top:1px solid rgba(220,230,240,.08);font-size:11px;color:var(--dim);line-height:1.5}
 #aiChatLog{min-height:420px;max-height:560px;overflow-y:auto}
+/* v34: "Latest" pill — jumps back to the newest message. Sticky
+   inside the chat log, so it floats at the bottom of the visible
+   area while the user reads older messages; shown only then. */
+#aiChatLog .ai-chat-latest{position:sticky;bottom:12px;z-index:5;display:block;width:max-content;margin:8px auto 0;padding:7px 16px;border-radius:999px;border:1px solid #d9a400;background:#f5b90d;color:#14100a;font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer}
+#aiChatLog .ai-chat-latest[hidden]{display:none}
 .chat-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
 .chat-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .chat-ava{width:32px;height:32px;border-radius:50%;background:#d6a84b;color:#07090c;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:none}
@@ -682,7 +687,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
-/* ---- Voice input + spoken answers v33 ---- */
+/* ---- Voice input + spoken answers v34 ---- */
 .input-row button.mic-btn{flex:none;align-self:center;min-height:0;width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
 .input-row button.mic-btn svg{display:block}
 @keyframes micListen{0%{box-shadow:0 0 0 0 rgba(214,168,75,.55)}70%{box-shadow:0 0 0 10px rgba(214,168,75,0)}100%{box-shadow:0 0 0 0 rgba(214,168,75,0)}}
@@ -692,7 +697,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .voice-btn.off{opacity:.45}
 .voice-btn.off .wv{display:none}
 .voice-btn.off .mute{display:block}
-/* ---- Legal collapsible rows v33 ---- */
+/* ---- Legal collapsible rows v34 ---- */
 .risk-coll{padding:0;overflow:hidden}
 .risk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:0;background:none;border:none;padding:11px 14px;font-size:12.5px;color:#e8d9a0;font-family:inherit;text-align:left;cursor:pointer}
 .risk-head b{color:var(--gold)}
@@ -701,7 +706,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .risk-body{padding:0 14px 12px;font-size:12.5px;line-height:1.6}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v33 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v34 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
 .tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
@@ -743,7 +748,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *::after{animation:none!important;transition:none!important}
 </style>
 <style>
-/* ---- Live voice call with Aria v33 (29 Nov 2026) ---- */
+/* ---- Live voice call with Aria v34 (29 Nov 2026) ---- */
 /* Small floating call panel, like Muse's own call UI: a compact
    rounded card that slides in from the right and floats over the
    app (the app stays visible behind it). Drag it by the header.
@@ -799,7 +804,7 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 @media (prefers-reduced-motion:reduce){.tpc-panel-card{animation:none}.tpc-photo-wrap{animation:none}.tpc-wave span{animation:none}.tpc-ctl{transition:none}}
 </style>
 <style>
-/* ---- Smoothness pass v33 (29 Nov 2026) ---- */
+/* ---- Smoothness pass v34 (29 Nov 2026) ---- */
 /* Whole-app scroll smoothness: GPU-composited motion only, no layout or
    paint work on scroll. The v8 look (aurora, stars, glow, pulse,
    shimmer, glass) is UNCHANGED — only HOW it renders changes. */
@@ -1120,6 +1125,7 @@ html{scroll-behavior:smooth}
       <div class="chat-head"><div class="chat-ava">T</div><div><div class="chat-title">Ask AI</div><div class="chat-sub">Ask about prices, signals, or your paper balance</div></div><button type="button" id="aiVoiceBtn" class="voice-btn" aria-label="Voice answers" aria-pressed="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z" fill="currentColor" stroke="none"/><path class="wv" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="wv" d="M18.5 5.5a9 9 0 0 1 0 13"/><line class="mute" x1="16" y1="9" x2="22" y2="15" style="display:none"/><line class="mute" x1="22" y1="9" x2="16" y2="15" style="display:none"/></svg></button></div>
       <div id="aiChatLog">
         <div class="msg ai">Hi! Ask me about a price, the latest signals, or your paper balance &mdash; I answer from live data.<div class="m-time">TradePilot AI</div></div>
+        <button type="button" id="aiChatLatestBtn" class="ai-chat-latest" hidden>&darr; Latest</button>
       </div>
       <div class="chips">
         <button type="button" class="chip" data-q="BTC price?">BTC price?</button>
@@ -1219,13 +1225,13 @@ html{scroll-behavior:smooth}
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v33<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v34<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v33</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v34</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -1257,7 +1263,7 @@ html{scroll-behavior:smooth}
   <a href="#support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 0-16.6 4.6L3 21l4.5-1.3A9 9 0 0 0 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg>Support</a>
 </div></nav>
 
-<!-- L. LIVE VOICE CALL WITH ARIA (v33) — small floating panel, like Muse's call UI -->
+<!-- L. LIVE VOICE CALL WITH ARIA (v34) — small floating panel, like Muse's call UI -->
 <div id="tpcPanel" hidden role="dialog" aria-label="Live voice call with Aria">
   <section class="tpc-panel-card" id="tpcPanelCard">
     <div class="tpc-panel-head" id="tpcPanelHead">
@@ -2742,18 +2748,56 @@ updateMarketMeta().then(function(){
     }
     return 'I can answer about prices, latest signals, trend, RSI, your paper balance, Stars, or support. Try one of the suggestions below.';
   }
+  /* Scroll-to-latest pill for the Ask AI chat (v34) */
+  /* New messages scroll the log only if the user was already at
+     the newest message — never yank them away while they read
+     older messages. The small gold "Latest" pill appears only
+     when they have scrolled up; tapping it jumps to the newest. */
+  var aiChatLatestBtn = null;
+  function aiChatAtBottom() {
+    var log = $('aiChatLog');
+    if (!log) return true;
+    return log.scrollHeight - log.scrollTop - log.clientHeight < 60;
+  }
+  function aiChatUpdateLatest() {
+    if (!aiChatLatestBtn) return;
+    var log = $('aiChatLog');
+    if (!log) return;
+    // Keep the pill the last child so it floats over the newest area.
+    if (aiChatLatestBtn.parentNode === log && log.lastChild !== aiChatLatestBtn) log.appendChild(aiChatLatestBtn);
+    aiChatLatestBtn.hidden = aiChatAtBottom();
+  }
+  try {
+    aiChatLatestBtn = document.getElementById('aiChatLatestBtn');
+    if (aiChatLatestBtn) aiChatLatestBtn.addEventListener('click', function () {
+      var log = $('aiChatLog');
+      if (!log) return;
+      try { log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' }); } catch (e) { log.scrollTop = log.scrollHeight; }
+      aiChatUpdateLatest();
+    });
+    var _aiLog = $('aiChatLog');
+    if (_aiLog) {
+      var _aiRaf = 0;
+      _aiLog.addEventListener('scroll', function () {
+        if (_aiRaf) return;
+        _aiRaf = requestAnimationFrame(function () { _aiRaf = 0; aiChatUpdateLatest(); });
+      }, { passive: true });
+    }
+  } catch (e) {}
   function aiChatAddUser(text){
     var log=$('aiChatLog');if(!log)return;
+    var stick=aiChatAtBottom();
     var d=document.createElement('div');d.className='msg user';
     var tm2=document.createElement('div');tm2.textContent=text;d.appendChild(tm2);
     var tm=document.createElement('div');tm.className='m-time';tm.textContent=aiNowIST();d.appendChild(tm);
-    log.appendChild(d);log.scrollTop=log.scrollHeight;
+    log.appendChild(d);if(stick)log.scrollTop=log.scrollHeight;aiChatUpdateLatest();
   }
   function aiChatAddAI(html){
     var log=$('aiChatLog');if(!log)return;
+    var stick=aiChatAtBottom();
     var d=document.createElement('div');d.className='msg ai';
     d.innerHTML=html+'<div class="m-time">TradePilot AI \u00b7 live data</div>';
-    log.appendChild(d);log.scrollTop=log.scrollHeight;
+    log.appendChild(d);if(stick)log.scrollTop=log.scrollHeight;aiChatUpdateLatest();
   }
   function buildAskAIContext(){
     var ctx={};
@@ -2775,15 +2819,17 @@ updateMarketMeta().then(function(){
   }
   function aiChatAddTyping(){
     var log=$('aiChatLog');if(!log)return null;
+    var stick=aiChatAtBottom();
     var d=document.createElement('div');d.className='msg ai ai-typing';
     var sp=document.createElement('span');sp.textContent='TradePilot AI is typing';d.appendChild(sp);
     for(var i=0;i<3;i++)d.appendChild(document.createElement('i'));
-    log.appendChild(d);log.scrollTop=log.scrollHeight;
+    log.appendChild(d);if(stick)log.scrollTop=log.scrollHeight;aiChatUpdateLatest();
     return d;
   }
   function aiChatRemoveTyping(el){try{if(el&&el.parentNode)el.parentNode.removeChild(el);}catch(e){}}
   function aiChatAddAISafe(text){
     var log=$('aiChatLog');if(!log)return;
+    var stick=aiChatAtBottom();
     var d=document.createElement('div');d.className='msg ai';
     var body=document.createElement('div');
     var parts=String(text||'').split('\n');
@@ -2793,9 +2839,9 @@ updateMarketMeta().then(function(){
     }
     d.appendChild(body);
     var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
-    log.appendChild(d);log.scrollTop=log.scrollHeight;
+    log.appendChild(d);if(stick)log.scrollTop=log.scrollHeight;aiChatUpdateLatest();
   }
-  /* Voice input + spoken answers v33 */
+  /* Voice input + spoken answers v34 */
   var tpVoiceSpeak=true;
   try{tpVoiceSpeak=localStorage.getItem('tpVoiceSpeak')!=='0';}catch(e){}
   function tpSpeak(text){
@@ -2925,7 +2971,7 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Legal collapsible rows v33 */
+  /* Legal collapsible rows v34 */
   try{
     document.querySelectorAll('.risk-coll .risk-head').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -2938,7 +2984,7 @@ updateMarketMeta().then(function(){
     });
   }catch(e){}
 
-  /* Hamburger menu + drawer v33 */
+  /* Hamburger menu + drawer v34 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
@@ -3024,7 +3070,7 @@ updateMarketMeta().then(function(){
     tpSyncDrawerBal();
   }catch(e){ /* drawer only - never break trading */ }
 
-/* ---- Live voice call with Aria v33 (29 Nov 2026) ----
+/* ---- Live voice call with Aria v34 (29 Nov 2026) ----
    Ported faithfully from the proven live-call preview (same flow that
    worked on a real phone call). Flow: Call tap -> POST /liveToken
    (ephemeral token, single use) -> Gemini Live API via @google/genai
@@ -3045,7 +3091,7 @@ updateMarketMeta().then(function(){
   var SERVER_NOT_READY_MSG = "Voice server not updated yet — upload the new flask_app.py to PythonAnywhere and reload.";
   var IDLE_STATUS = "Tap Call to start a live voice conversation.";
 
-  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real friend on a phone call — completely natural and casual, like chatting with a friend, never stiff, never lecture-like, never like reading from a script. Warm, relaxed and natural, with short replies, everyday words, natural reactions and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NEVER speak Bengali/Bangla — no Bengali words, no Bengali script, ever, even if the user's speech sounds Bengali. Answer ONLY in English, or in Hinglish (Hindi words written in Roman letters). If the user's speech sounds like Bengali, still answer in Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. If you only hear a fragment, a single name, or no clear question, do NOT answer the fragment — ask the user to repeat clearly instead. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer ANY question the user asks (world news, any person, any topic, trading, general knowledge) helpfully and briefly, using the latest search results or the news headlines given in this conversation. If a question is about something not in those headlines and you are not sure, say so honestly instead of making up details. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
+  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real friend on a phone call — completely natural and casual, like chatting with a friend, never stiff, never lecture-like, never like reading from a script. Warm, relaxed and natural, with short replies, everyday words, natural reactions and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. Reply in the SAME language the user is speaking — Hindi (Roman or Devanagari) or English, whichever they used. NEVER switch to another language — never Bengali, never Chinese, never any other language. NEVER speak Bengali/Bangla — no Bengali words, no Bengali script, ever, even if the user's speech sounds Bengali. Answer ONLY in English, or in Hinglish (Hindi words written in Roman letters). If the user's speech sounds like Bengali, still answer in Hinglish. If a transcription looks like a different language or a single stray word, ignore it and do not answer it. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. If you only hear a fragment, a single name, or no clear question, do NOT answer the fragment — ask the user to repeat clearly instead. Ignore background voices and noise — only answer the person talking to you directly. Never respond to a fragment, a single stray word, or background chatter. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer ANY question the user asks (world news, any person, any topic, trading, general knowledge) helpfully and briefly, using the latest search results or the news headlines given in this conversation. If a question is about something not in those headlines and you are not sure, say so honestly instead of making up details. TIME: always answer time questions using the USER'S LOCAL time given in this conversation — never UTC. When asked the time, say the local time. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
 
   // ---- DOM ----
   var panelEl = document.getElementById("tpcPanel");
@@ -3084,6 +3130,7 @@ updateMarketMeta().then(function(){
   var newsInt = null;           // periodic news refresh during the call (every 10 min)
   var resumeWatchInt = null;    // 1s AudioContext resume watchdog during a call
   var openBubble = null;        // { role, textEl, text }
+  var recentBubbles = [];       // last few closed bubbles: { role, text, at } — dedupe guard (v34)
   var turnSawAiText = false;
   var turnSawAudio = false;
   var turnNoteShown = false;
@@ -3183,13 +3230,39 @@ updateMarketMeta().then(function(){
     return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // ---- Conversation in the Ask AI chat (v33) ----
+  // ---- Conversation in the Ask AI chat (v34) ----
   // The live call conversation lands in the Ask AI chat log (#aiChatLog),
   // message by message, exactly like a normal text chat — the same bubbles
   // the text Ask AI uses. The call panel has no transcript box anymore.
   var chatLogEl = document.getElementById("aiChatLog");
-  function chatScroll() {
-    if (chatLogEl) chatLogEl.scrollTop = chatLogEl.scrollHeight;
+  // ---- Dedupe guard (v34): exactly ONE bubble per turn ----
+  // The same turn sometimes arrives twice — streamed, then re-sent
+  // after turnComplete, or replayed after a reconnect — and the
+  // user saw the identical reply twice. Every closed bubble is
+  // remembered for 10 seconds; a new bubble whose text equals (or
+  // is contained in) a recent bubble of the same role is a replay
+  // and is skipped. Streaming into the OPEN bubble is idempotent
+  // too: a re-sent fragment, or the full text-so-far, never doubles.
+  function recordClosedBubble(b) {
+    if (!b || !b.text) return;
+    recentBubbles.push({ role: b.role, text: b.text, at: Date.now() });
+    if (recentBubbles.length > 4) recentBubbles.shift();
+  }
+  function isReplay(role, text) {
+    var now = Date.now();
+    for (var i = 0; i < recentBubbles.length; i++) {
+      var rb = recentBubbles[i];
+      if (rb.role === role && now - rb.at < 10000 &&
+          (text === rb.text || rb.text.indexOf(text) !== -1)) return true;
+    }
+    return false;
+  }
+  // Scroll only if the user was already at the newest message —
+  // never yank them away while they are reading older messages.
+  // The pill (see aiChatUpdateLatest) takes them back down.
+  function chatScroll(stick) {
+    if (chatLogEl && stick) chatLogEl.scrollTop = chatLogEl.scrollHeight;
+    aiChatUpdateLatest();
   }
   function renderBubbleText(bodyEl, fullText) {
     while (bodyEl.firstChild) bodyEl.removeChild(bodyEl.firstChild);
@@ -3201,15 +3274,35 @@ updateMarketMeta().then(function(){
   }
   function addNote(text) {
     if (!chatLogEl) return;
+    var stick = aiChatAtBottom();
     var p = document.createElement("div");
     p.className = "msg sys";
     p.textContent = text;
     chatLogEl.appendChild(p);
-    chatScroll();
+    chatScroll(stick);
   }
   function appendTranscript(role, text) {
     if (!text || !chatLogEl) return;
-    if (!openBubble || openBubble.role !== role) {
+    var stick = aiChatAtBottom();
+    if (openBubble && openBubble.role === role) {
+      // Streaming into the current bubble: never double the text.
+      // If the server re-sends the full text so far, take it as-is;
+      // if it replays a fragment already in the bubble, skip it.
+      if (text.indexOf(openBubble.text) === 0) {
+        openBubble.text = text;
+      } else if (openBubble.text === text || (text.length >= 8 && openBubble.text.slice(-text.length) === text)) {
+        chatScroll(stick);
+        return;
+      } else {
+        openBubble.text += text;
+      }
+      renderBubbleText(openBubble.textEl, openBubble.text);
+    } else {
+      // A new bubble for this role: remember the bubble being left
+      // behind, then skip if this is a replay of a recent bubble
+      // (same turn re-sent after turnComplete or a reconnect).
+      recordClosedBubble(openBubble);
+      if (isReplay(role, text)) { chatScroll(stick); return; }
       var div = document.createElement("div");
       div.className = "msg " + (role === "user" ? "user" : "ai");
       var body = document.createElement("div");
@@ -3219,13 +3312,12 @@ updateMarketMeta().then(function(){
       tm.textContent = role === "user" ? aiNowIST() : "TradePilot AI \u00b7 live data";
       div.appendChild(tm);
       chatLogEl.appendChild(div);
-      openBubble = { role: role, textEl: body, text: "" };
+      openBubble = { role: role, textEl: body, text: text };
+      renderBubbleText(openBubble.textEl, openBubble.text);
     }
-    openBubble.text += text;
-    renderBubbleText(openBubble.textEl, openBubble.text);
-    chatScroll();
+    chatScroll(stick);
   }
-  function closeBubble() { openBubble = null; }
+  function closeBubble() { recordClosedBubble(openBubble); openBubble = null; }
 
   // ---- SDK loading (ESM via dynamic import, esm.sh then jsDelivr) ----
   function loadSdk() {
@@ -3291,13 +3383,15 @@ updateMarketMeta().then(function(){
     // answer world-news questions; the last attempt drops search, so
     // the call still connects even if grounding is ever rejected.
     return [
-      { apiVersion: "v1alpha", voice: VOICES[0], search: true },
-      { apiVersion: "v1beta", voice: VOICES[0], search: true },
-      { apiVersion: "v1alpha", voice: VOICES[1], search: false }
+      { apiVersion: "v1alpha", voice: VOICES[0], search: true, lang: true },
+      { apiVersion: "v1beta", voice: VOICES[0], search: true, lang: true },
+      // Last attempt drops both search and the language hint, so the
+      // call still connects even if either is ever rejected.
+      { apiVersion: "v1alpha", voice: VOICES[1], search: false, lang: false }
     ];
   }
 
-  function tryConnect(token, apiVersion, voice, useSearch) {
+  function tryConnect(token, apiVersion, voice, useSearch, useLang) {
     return new Promise(function (resolve, reject) {
       var settled = false;
       var sess = null;
@@ -3309,8 +3403,13 @@ updateMarketMeta().then(function(){
         }
       }, 15000);
 
-      var ai = new sdk.GoogleGenAI({ httpOptions: { apiVersion: apiVersion }, apiKey: token });
-      var config = {
+      // One connect attempt. If the server rejects the Hindi
+      // transcription hint, this retries once without it, with a
+      // fresh token (tokens are single-use — a rejected attempt
+      // may already have consumed one).
+      function doConnect(tok, lang) {
+        var ai = new sdk.GoogleGenAI({ httpOptions: { apiVersion: apiVersion }, apiKey: tok });
+        var config = {
         responseModalities: [sdk.Modality.AUDIO],
         systemInstruction: { parts: [{ text: SYSTEM_TEXT }] },
         speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } },
@@ -3323,7 +3422,7 @@ updateMarketMeta().then(function(){
             startOfSpeechSensitivity: (sdk.StartSensitivity && sdk.StartSensitivity.START_SENSITIVITY_LOW) || "START_SENSITIVITY_LOW",
             endOfSpeechSensitivity: (sdk.EndSensitivity && sdk.EndSensitivity.END_SENSITIVITY_LOW) || "END_SENSITIVITY_LOW",
             prefixPaddingMs: 100,
-            silenceDurationMs: 700
+            silenceDurationMs: 1000
           }
         },
         // Context window compression: as the conversation grows, old
@@ -3336,7 +3435,10 @@ updateMarketMeta().then(function(){
         // Session resumption: {} asks the server for resumption handles;
         // a saved handle resumes the same conversation after a drop.
         sessionResumption: resumeHandle ? { handle: resumeHandle } : {},
-        inputAudioTranscription: {},
+        // Transcription language: the user speaks Hindi/Hinglish, so
+        // the transcriber listens for Hindi (hi-IN) — without this hint
+        // background noise sometimes lands as a random other language.
+        inputAudioTranscription: lang ? { languageCode: "hi-IN" } : {},
         outputAudioTranscription: {}
       };
       // Google Search grounding: lets her answer world-news and
@@ -3366,33 +3468,66 @@ updateMarketMeta().then(function(){
         }
       };
 
-      var p;
-      try {
-        p = ai.live.connect({ model: MODEL, config: config, callbacks: callbacks });
-      } catch (e) {
-        settled = true;
-        clearTimeout(timer);
-        reject(e);
-        return;
+        var p;
+        try {
+          p = ai.live.connect({ model: MODEL, config: config, callbacks: callbacks });
+        } catch (e) {
+          return Promise.reject(e);
+        }
+        return Promise.resolve(p).then(function (s) {
+          sess = s;
+          return s;
+        });
       }
-      Promise.resolve(p).then(function (s) {
-        sess = s;
+
+      var langRetried = false;
+      doConnect(token, useLang !== false).then(function (s) {
         if (!settled) {
           settled = true;
           clearTimeout(timer);
           resolve(s);
         }
       }).catch(function (e) {
+        var msg = errText(e);
+        if (useLang !== false && !langRetried && /transcri|language/i.test(msg)) {
+          langRetried = true;
+          fetchToken().then(function (tok) { return doConnect(tok, false); }).then(function (s) {
+            if (!settled) {
+              settled = true;
+              clearTimeout(timer);
+              resolve(s);
+            }
+          }).catch(function (e2) {
+            if (!settled) {
+              settled = true;
+              clearTimeout(timer);
+              reject(new Error(errText(e2)));
+            }
+          });
+          return;
+        }
         if (!settled) {
           settled = true;
           clearTimeout(timer);
-          reject(new Error(errText(e)));
+          reject(new Error(msg));
         }
       });
     });
   }
 
   // ---- Market context (sent once, right after connect) ----
+  // The user's LOCAL time, read from the phone itself — never
+  // hardcoded, never UTC — so time questions get the time on the
+  // user's own clock, in their own timezone.
+  function localTimeText() {
+    var tz = "";
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+    var when = "";
+    try {
+      when = new Date().toLocaleString("en-IN", { timeZone: tz || undefined, weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
+    } catch (e) { when = new Date().toLocaleString(); }
+    return "User local time: " + when + (tz ? " (timezone " + tz + ")" : "") + ". Always answer time questions with this local time, never UTC.";
+  }
   function fetchJson(url) {
     return fetch(url).then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
@@ -3432,9 +3567,9 @@ updateMarketMeta().then(function(){
         var bits = [];
         if (btcPart) bits.push(btcPart);
         if (sigPart) bits.push(sigPart);
-        text = "Live market update: " + bits.join(". ") + ". Use only this data for prices and signals, never invent numbers. You may share your market view based on it.";
+        text = localTimeText() + " Live market update: " + bits.join(". ") + ". Use only this data for prices and signals, never invent numbers. You may share your market view based on it.";
       } else {
-        text = "No live market data is available right now — say so if asked about prices.";
+        text = localTimeText() + " No live market data is available right now — say so if asked about prices.";
       }
       try { sess.sendRealtimeInput({ text: text }); } catch (e) {
         showError("Could not send the live market data to the AI.", errText(e));
@@ -3594,6 +3729,22 @@ updateMarketMeta().then(function(){
     return audioCtx && playhead > audioCtx.currentTime + 0.05;
   }
 
+  // ---- Noise gate for input transcriptions (v34) ----
+  // Background voices and noise often transcribe as a single stray
+  // word or a fragment in a random language ("Dr. Salim", a lone
+  // Chinese word). Those never become chat messages. Clear short
+  // replies ("ok", "haan", "yes") and real questions (with "?")
+  // always pass through; multi-word speech passes too.
+  var SHORT_OK = ["ok", "okay", "haan", "ha", "yes", "no", "nahin", "nahi", "theek", "acha", "accha", "hi", "hello", "bye", "thanks", "shukriya", "good", "great", "bilkul", "sahi", "chalo", "hmm", "हाँ", "हां", "हा", "ठीक", "अच्छा", "नहीं", "नही"];
+  function isNoiseFragment(text) {
+    var t = String(text || "").trim();
+    if (!t) return true;
+    if (t.indexOf("?") !== -1) return false;
+    if (/\s/.test(t)) return false;
+    var w = t.toLowerCase().replace(/[^a-z\u0900-\u097f]/g, "");
+    return SHORT_OK.indexOf(w) === -1;
+  }
+
   // ---- Incoming messages ----
   function handleMessage(msg) {
     if (msg && msg.sessionResumptionUpdate) {
@@ -3608,7 +3759,7 @@ updateMarketMeta().then(function(){
       turnSawAudio = false; turnSawAiText = false; turnNoteShown = false;
     }
     if (sc.inputTranscription && sc.inputTranscription.text) {
-      appendTranscript("user", sc.inputTranscription.text);
+      if (!isNoiseFragment(sc.inputTranscription.text)) appendTranscript("user", sc.inputTranscription.text);
     }
     if (sc.outputTranscription && sc.outputTranscription.text) {
       turnSawAiText = true;
@@ -3856,7 +4007,7 @@ updateMarketMeta().then(function(){
             : fetchToken().then(function (t) { return t; });
           return tokenP.then(function (token) {
             setStatus("Connecting…");
-            return tryConnect(token, attempt.apiVersion, attempt.voice, attempt.search).then(function (sess) {
+            return tryConnect(token, attempt.apiVersion, attempt.voice, attempt.search, attempt.lang).then(function (sess) {
               connectedSession = sess;
             }).catch(function (e) {
               lastErr = e;
@@ -3933,7 +4084,10 @@ updateMarketMeta().then(function(){
     var gen = callGen;
     cleanupSession();
     stopPlayback();
-    closeBubble();
+    // Do NOT closeBubble() here: if a turn was mid-stream, the
+    // resumed session continues into the SAME bubble after the
+    // reconnect — closing it would leave a partial bubble behind
+    // and the replayed turn would land as a duplicate second one.
     setStatus("Reconnecting…");
     addNote("Connection dropped — reconnecting…");
 
@@ -3946,7 +4100,7 @@ updateMarketMeta().then(function(){
         chain = chain.then(function () {
           if (newSession || gen !== callGen || userEnded || !inCall) return null;
           return fetchToken().then(function (token) {
-            return tryConnect(token, attempt.apiVersion, attempt.voice, attempt.search).then(function (sess) {
+            return tryConnect(token, attempt.apiVersion, attempt.voice, attempt.search, attempt.lang).then(function (sess) {
               newSession = sess;
             }).catch(function (e) { lastErr = e; });
           }).catch(function (e) { lastErr = e; });
