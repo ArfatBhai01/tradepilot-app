@@ -659,8 +659,8 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .ai-text{font-size:13.5px;line-height:1.65;color:#d7dce3}
 .ai-text b{color:#f2f4f6}
 .ai-foot{margin-top:12px;padding-top:10px;border-top:1px solid rgba(220,230,240,.08);font-size:11px;color:var(--dim);line-height:1.5}
-#aiChatLog{max-height:340px;overflow-y:auto}
-.chat-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+#aiChatLog{min-height:420px;max-height:560px;overflow-y:auto}
+.chat-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
 .chat-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .chat-ava{width:32px;height:32px;border-radius:50%;background:#d6a84b;color:#07090c;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:none}
 .chat-title{font-size:15px;font-weight:700;color:var(--text)}
@@ -681,9 +681,26 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
+/* ---- Voice input + spoken answers v26 ---- */
+.input-row button.mic-btn{flex:none;align-self:center;min-height:0;width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
+.input-row button.mic-btn svg{display:block}
+@keyframes micListen{0%{box-shadow:0 0 0 0 rgba(214,168,75,.55)}70%{box-shadow:0 0 0 10px rgba(214,168,75,0)}100%{box-shadow:0 0 0 0 rgba(214,168,75,0)}}
+.input-row button.mic-btn.listening{animation:micListen 1.4s ease-out infinite;background:#e8b64c}
+.voice-btn{margin-left:auto;flex:none;min-height:0;width:32px;height:32px;border-radius:50%;padding:0;background:transparent;border:1px solid var(--line);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.voice-btn svg{display:block}
+.voice-btn.off{opacity:.45}
+.voice-btn.off .wv{display:none}
+.voice-btn.off .mute{display:block}
+/* ---- Legal collapsible rows v26 ---- */
+.risk-coll{padding:0;overflow:hidden}
+.risk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:0;background:none;border:none;padding:11px 14px;font-size:12.5px;color:#e8d9a0;font-family:inherit;text-align:left;cursor:pointer}
+.risk-head b{color:var(--gold)}
+.risk-chev{color:var(--gold);font-size:16px;line-height:1;transition:transform .2s ease;flex:none}
+.risk-coll.open .risk-chev{transform:rotate(90deg)}
+.risk-body{padding:0 14px 12px;font-size:12.5px;line-height:1.6}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v25 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v26 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
 .tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
@@ -1016,7 +1033,7 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 
   <section id="askAi" aria-label="Ask AI">
     <div class="chat-card">
-      <div class="chat-head"><div class="chat-ava">T</div><div><div class="chat-title">Ask AI</div><div class="chat-sub">Ask about prices, signals, or your paper balance</div></div></div>
+      <div class="chat-head"><div class="chat-ava">T</div><div><div class="chat-title">Ask AI</div><div class="chat-sub">Ask about prices, signals, or your paper balance</div></div><button type="button" id="aiVoiceBtn" class="voice-btn" aria-label="Voice answers" aria-pressed="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z" fill="currentColor" stroke="none"/><path class="wv" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="wv" d="M18.5 5.5a9 9 0 0 1 0 13"/><line class="mute" x1="16" y1="9" x2="22" y2="15" style="display:none"/><line class="mute" x1="22" y1="9" x2="16" y2="15" style="display:none"/></svg></button></div>
       <div id="aiChatLog">
         <div class="msg ai">Hi! Ask me about a price, the latest signals, or your paper balance &mdash; I answer from live data.<div class="m-time">TradePilot AI</div></div>
       </div>
@@ -1026,17 +1043,17 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
         <button type="button" class="chip" data-q="Is BTC bullish?">Is BTC bullish?</button>
         <button type="button" class="chip" data-q="My balance?">My balance?</button>
       </div>
-      <div class="input-row"><input id="aiChatInput" type="text" placeholder="Ask AI anything about the market&hellip;" autocomplete="off"/><button type="button" id="aiChatSend">Send</button></div>
+      <div class="input-row"><input id="aiChatInput" type="text" placeholder="Ask AI anything about the market&hellip;" autocomplete="off"/><button type="button" id="aiMicBtn" class="mic-btn" aria-label="Ask by voice"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#07090c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg></button><button type="button" id="aiChatSend">Send</button></div>
     </div>
   </section>
 
 <!-- J. LEGAL & DISCLOSURES -->
   <section id="legal">
     <div class="sec-head"><h2>Legal &amp; Disclosures</h2><span class="hint">Please read before using TradePilot AI</span></div>
-    <div class="risk" style="margin-bottom:10px"><b>Free signals &amp; market data:</b> Trading signals and live market prices in this app are free for everyone. Telegram Stars buy virtual paper balance only &mdash; practice money with no real value. Stars never buy signals, market data, premium access, or any real cryptocurrency.</div>
-    <div class="risk" style="margin-bottom:10px"><b>Not affiliated with Binance:</b> TradePilot AI is not affiliated with, endorsed by, or sponsored by Binance. Market data is shown for informational purposes only.</div>
-    <div class="risk" style="margin-bottom:10px"><b>Crypto risk:</b> Crypto products and NFTs are unregulated and can be highly risky. There may be no regulatory recourse for any loss from such transactions.</div>
-    <div class="risk"><b>Paper trading only:</b> All trading here is simulated paper trading with virtual balance. No real cryptocurrency or money is traded, and no profit is guaranteed. Signals are automated analysis, not financial advice.</div>
+    <div class="risk risk-coll" style="margin-bottom:10px"><button type="button" class="risk-head" aria-expanded="false"><b>Free signals &amp; market data:</b><span class="risk-chev">›</span></button><div class="risk-body" hidden>Trading signals and live market prices in this app are free for everyone. Telegram Stars buy virtual paper balance only &mdash; practice money with no real value. Stars never buy signals, market data, premium access, or any real cryptocurrency.</div></div>
+    <div class="risk risk-coll" style="margin-bottom:10px"><button type="button" class="risk-head" aria-expanded="false"><b>Not affiliated with Binance:</b><span class="risk-chev">›</span></button><div class="risk-body" hidden>TradePilot AI is not affiliated with, endorsed by, or sponsored by Binance. Market data is shown for informational purposes only.</div></div>
+    <div class="risk risk-coll" style="margin-bottom:10px"><button type="button" class="risk-head" aria-expanded="false"><b>Crypto risk:</b><span class="risk-chev">›</span></button><div class="risk-body" hidden>Crypto products and NFTs are unregulated and can be highly risky. There may be no regulatory recourse for any loss from such transactions.</div></div>
+    <div class="risk risk-coll"><button type="button" class="risk-head" aria-expanded="false"><b>Paper trading only:</b><span class="risk-chev">›</span></button><div class="risk-body" hidden>All trading here is simulated paper trading with virtual balance. No real cryptocurrency or money is traded, and no profit is guaranteed. Signals are automated analysis, not financial advice.</div></div>
     <div class="sec-head" style="margin-top:14px"><h2>Documents</h2><span class="hint">Tap a document to read it</span></div>
     <div class="legal-list">
       <button type="button" class="legal-doc" data-doc="terms"><span>Terms of Service</span><span class="legal-chev">›</span></button>
@@ -1117,13 +1134,13 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v25<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v26<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v25</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v26</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -2640,6 +2657,88 @@ updateMarketMeta().then(function(){
     var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
     log.appendChild(d);log.scrollTop=log.scrollHeight;
   }
+  /* Voice input + spoken answers v26 */
+  var tpVoiceSpeak=true;
+  try{tpVoiceSpeak=localStorage.getItem('tpVoiceSpeak')!=='0';}catch(e){}
+  function tpSpeak(text){
+    try{
+      if(!tpVoiceSpeak)return;
+      if(!('speechSynthesis' in window))return;
+      window.speechSynthesis.cancel();
+      var clean=String(text||'').replace(/\s+/g,' ').trim();
+      if(!clean)return;
+      var u=new SpeechSynthesisUtterance(clean);
+      u.lang='en-US';
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  function tpStopSpeak(){try{if('speechSynthesis' in window)window.speechSynthesis.cancel();}catch(e){}}
+  try{
+    var aiVoiceBtn=$('aiVoiceBtn');
+    if(aiVoiceBtn){
+      var tpSyncVoiceBtn=function(){
+        aiVoiceBtn.classList.toggle('off',!tpVoiceSpeak);
+        aiVoiceBtn.setAttribute('aria-pressed',tpVoiceSpeak?'true':'false');
+      };
+      tpSyncVoiceBtn();
+      aiVoiceBtn.addEventListener('click',function(){
+        tpVoiceSpeak=!tpVoiceSpeak;
+        try{localStorage.setItem('tpVoiceSpeak',tpVoiceSpeak?'1':'0');}catch(e){}
+        if(!tpVoiceSpeak)tpStopSpeak();
+        tpSyncVoiceBtn();
+      });
+    }
+  }catch(e){}
+  try{
+    var aiMicBtn=$('aiMicBtn'),aiMicInput=$('aiChatInput');
+    var tpSR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(aiMicBtn&&aiMicInput){
+      if(!tpSR){
+        aiMicBtn.addEventListener('click',function(){
+          try{aiChatAddAI('Voice input is not available in this browser. Try opening the app in Chrome.');}catch(e){}
+        });
+      }else{
+        var tpRec=null,tpListening=false;
+        aiMicBtn.addEventListener('click',function(){
+          if(tpListening&&tpRec){try{tpRec.stop();}catch(e){}return;}
+          try{
+            tpRec=new tpSR();
+            tpRec.lang='en-US';tpRec.continuous=false;tpRec.interimResults=true;
+            var tpFinal='';
+            tpRec.onresult=function(ev){
+              var interim='';
+              for(var i=ev.resultIndex;i<ev.results.length;i++){
+                if(ev.results[i].isFinal)tpFinal+=ev.results[i][0].transcript;
+                else interim+=ev.results[i][0].transcript;
+              }
+              aiMicInput.value=(tpFinal+interim).trim();
+            };
+            tpRec.onerror=function(ev){
+              tpListening=false;aiMicBtn.classList.remove('listening');
+              var err=(ev&&ev.error)||'unknown';
+              if(err==='aborted')return;
+              var msg;
+              if(err==='not-allowed'||err==='service-not-allowed')msg='Microphone blocked ('+err+').';
+              else if(err==='no-speech')msg="Didn't hear anything. Tap the mic and try again.";
+              else if(err==='network')msg='Voice input failed (network). Check your connection and try again.';
+              else msg='Voice input failed ('+err+').';
+              try{aiChatAddAI(msg);}catch(e){}
+            };
+            tpRec.onend=function(){
+              tpListening=false;aiMicBtn.classList.remove('listening');
+              var q=aiMicInput.value.trim();
+              if(q){aiMicInput.value='';askAI(q);}
+            };
+            tpRec.start();
+            tpListening=true;aiMicBtn.classList.add('listening');
+          }catch(e){
+            tpListening=false;aiMicBtn.classList.remove('listening');
+            try{aiChatAddAI('Voice input failed ('+((e&&e.message)||'error')+').');}catch(e2){}
+          }
+        });
+      }
+    }
+  }catch(e){}
   function askAI(q){
     var query=String(q||'').trim();
     if(!query)return;
@@ -2654,11 +2753,13 @@ updateMarketMeta().then(function(){
         var reply='';
         try{reply=aiAnswer(query.toLowerCase());}catch(e){reply='Sorry, something went wrong. Please try again.';}
         try{aiChatAddAI(reply);}catch(e){}
+        try{tpSpeak(reply);}catch(e){}
       }
       function finishRemote(text){
         if(done)return;done=true;
         aiChatRemoveTyping(typing);
         try{aiChatAddAISafe(text);}catch(e){}
+        try{tpSpeak(text);}catch(e){}
       }
       try{
         var ctrl=(typeof AbortController!=='undefined')?new AbortController():null;
@@ -2686,7 +2787,20 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Hamburger menu + drawer v25 */
+  /* Legal collapsible rows v26 */
+  try{
+    document.querySelectorAll('.risk-coll .risk-head').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var card=btn.closest('.risk-coll');
+        var open=card.classList.toggle('open');
+        btn.setAttribute('aria-expanded',open?'true':'false');
+        var body=card.querySelector('.risk-body');
+        if(body)body.hidden=!open;
+      });
+    });
+  }catch(e){}
+
+  /* Hamburger menu + drawer v26 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
