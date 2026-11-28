@@ -681,7 +681,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
-/* ---- Voice input + spoken answers v31 ---- */
+/* ---- Voice input + spoken answers v32 ---- */
 .input-row button.mic-btn{flex:none;align-self:center;min-height:0;width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
 .input-row button.mic-btn svg{display:block}
 @keyframes micListen{0%{box-shadow:0 0 0 0 rgba(214,168,75,.55)}70%{box-shadow:0 0 0 10px rgba(214,168,75,0)}100%{box-shadow:0 0 0 0 rgba(214,168,75,0)}}
@@ -691,7 +691,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .voice-btn.off{opacity:.45}
 .voice-btn.off .wv{display:none}
 .voice-btn.off .mute{display:block}
-/* ---- Legal collapsible rows v31 ---- */
+/* ---- Legal collapsible rows v32 ---- */
 .risk-coll{padding:0;overflow:hidden}
 .risk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:0;background:none;border:none;padding:11px 14px;font-size:12.5px;color:#e8d9a0;font-family:inherit;text-align:left;cursor:pointer}
 .risk-head b{color:var(--gold)}
@@ -700,7 +700,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .risk-body{padding:0 14px 12px;font-size:12.5px;line-height:1.6}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v31 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v32 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
 .tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
@@ -742,13 +742,13 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *::after{animation:none!important;transition:none!important}
 </style>
 <style>
-/* ---- Live voice call with Aria v31 (29 Nov 2026) ---- */
+/* ---- Live voice call with Aria v32 (29 Nov 2026) ---- */
 /* Small floating call panel, like Muse's own call UI: a compact
    rounded card that slides in from the right and floats over the
    app (the app stays visible behind it). Drag it by the header.
    All classes are prefixed tpc- so they never collide with the
    app's own styles. */
-#tpcPanel{position:fixed;z-index:300;top:calc(12px + env(safe-area-inset-top));right:10px;width:min(300px,calc(100vw - 20px));color:#eef1f8}
+#tpcPanel{position:fixed;z-index:300;top:calc(12px + env(safe-area-inset-top));right:10px;width:min(300px,calc(100vw - 20px));color:#eef1f8;will-change:transform}
 #tpcPanel[hidden]{display:none!important}
 #tpcPanel [hidden]{display:none!important}
 .tpc-panel-card{animation:tpcSlideIn .28s cubic-bezier(.32,.72,.35,1);background:linear-gradient(165deg,rgba(24,36,82,.94) 0%,rgba(13,23,52,.95) 55%,rgba(10,17,40,.96) 100%);border:1px solid rgba(212,175,55,.38);border-radius:24px;padding:12px 14px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 18px 44px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07);max-height:calc(100vh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -769,12 +769,12 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 .tpc-timer{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.06em;margin:4px 0 0;color:#eef1f8}
 .tpc-wave{display:none;align-items:flex-end;justify-content:center;gap:3px;height:18px;margin:8px 0 0}
 .tpc-in-call .tpc-wave{display:flex}
-.tpc-wave span{width:4px;border-radius:2px;background:linear-gradient(180deg,#f3d97b,#d4af37);height:20%;animation:tpcWave 1s ease-in-out infinite}
+.tpc-wave span{width:4px;border-radius:2px;background:linear-gradient(180deg,#f3d97b,#d4af37);height:100%;transform-origin:50% 100%;animation:tpcWave 1s ease-in-out infinite}
 .tpc-wave span:nth-child(2){animation-delay:.15s}
 .tpc-wave span:nth-child(3){animation-delay:.3s}
 .tpc-wave span:nth-child(4){animation-delay:.45s}
 .tpc-wave span:nth-child(5){animation-delay:.6s}
-@keyframes tpcWave{0%,100%{height:18%}50%{height:100%}}
+@keyframes tpcWave{0%,100%{transform:scaleY(.18)}50%{transform:scaleY(1)}}
 .tpc-status.tpc-speaking ~ .tpc-wave span{animation-duration:.55s}
 .tpc-error-box{margin-top:12px;width:100%;background:rgba(229,72,77,.10);border:1px solid rgba(229,72,77,.55);color:#ffb4b8;border-radius:14px;padding:10px 12px;font-size:13px;font-weight:600;line-height:1.45;text-align:left;overflow-wrap:anywhere}
 .tpc-error-box .tpc-detail{display:block;margin-top:6px;color:#e58a8e;font-size:12px;font-weight:500}
@@ -784,8 +784,11 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 .tpc-ctl:active{transform:scale(.94)}
 .tpc-ctl svg{width:22px;height:22px;flex:none}
 .tpc-ctl-end{background:linear-gradient(180deg,#e5484d,#c23338);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(229,72,77,.45)}
-.tpc-ctl.tpc-off{opacity:.45}
+.tpc-ctl.tpc-off{opacity:.9;background:rgba(229,72,77,.30);border-color:#e5484d;color:#ffc4c6}
 .tpc-ctl.tpc-off::after{content:"";position:absolute;left:50%;top:50%;width:32px;height:2.5px;background:#fff;border-radius:1px;transform:translate(-50%,-50%) rotate(-45deg)}
+.tpc-ctl-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.tpc-ctl-label{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ff8a8e;visibility:hidden;line-height:1;min-height:11px}
+.tpc-ctl-wrap.tpc-muted .tpc-ctl-label{visibility:visible}
 .tpc-transcript-card{margin-top:10px;width:100%;background:rgba(13,23,52,.72);border:1px solid rgba(34,49,95,.9);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;text-align:left;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .tpc-transcript-card h2{margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;color:#9aa7c7;text-transform:uppercase}
 .tpc-transcript{overflow-y:auto;max-height:150px;min-height:88px;display:flex;flex-direction:column;gap:8px;padding-right:2px}
@@ -804,6 +807,33 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 .tpc-open-btn:active{transform:scale(.98)}
 .tpc-open-btn svg{width:21px;height:21px;flex:none}
 @media (prefers-reduced-motion:reduce){.tpc-panel-card{animation:none}.tpc-photo-wrap{animation:none}.tpc-wave span{animation:none}.tpc-ctl{transition:none}}
+</style>
+<style>
+/* ---- Smoothness pass v32 (29 Nov 2026) ---- */
+/* Whole-app scroll smoothness: GPU-composited motion only, no layout or
+   paint work on scroll. The v8 look (aurora, stars, glow, pulse,
+   shimmer, glass) is UNCHANGED — only HOW it renders changes. */
+html{scroll-behavior:smooth}
+.tpc-transcript{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+/* Live dot: the old box-shadow ring repainted every frame. Same look,
+   composited: a ring that scales up and fades (transform + opacity). */
+.pill .dot{position:relative;animation:none}
+.pill .dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid rgba(14,203,129,.55);animation:tpRingPulse 2.2s ease-out infinite;pointer-events:none}
+@keyframes tpRingPulse{0%{transform:scale(.7);opacity:.8}70%{transform:scale(1.9);opacity:0}100%{transform:scale(1.9);opacity:0}}
+/* Mic listening ring: same conversion (gold ring, transform + opacity). */
+.input-row button.mic-btn{position:relative}
+.input-row button.mic-btn.listening{animation:none}
+.input-row button.mic-btn.listening::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid rgba(214,168,75,.55);animation:tpRingPulseGold 1.4s ease-out infinite;pointer-events:none}
+@keyframes tpRingPulseGold{0%{transform:scale(1);opacity:.8}70%{transform:scale(1.35);opacity:0}100%{transform:scale(1.35);opacity:0}}
+/* Support avatar: keep the scale pulse (already transform), drop the
+   box-shadow spread — the card's glow overlay carries the gold feel. */
+.support-card .avatar{animation:tpAvatarPulseSoft 2.2s ease-in-out infinite}
+@keyframes tpAvatarPulseSoft{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+/* Support card glow: the old keyframe repainted border + shadow every
+   frame. Same look, composited: a gold border+glow overlay fading. */
+.support-card{animation:none;position:relative}
+.support-card::after{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid rgba(214,168,75,.95);box-shadow:0 4px 30px rgba(214,168,75,.4);opacity:.25;pointer-events:none;animation:tpCardGlowSoft 3s ease-in-out infinite;box-sizing:border-box}
+@keyframes tpCardGlowSoft{0%,100%{opacity:.25}50%{opacity:1}}
 </style>
 
 </head>
@@ -1200,13 +1230,13 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v31<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v32<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v31</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v32</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -1238,7 +1268,7 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
   <a href="#support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 0-16.6 4.6L3 21l4.5-1.3A9 9 0 0 0 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg>Support</a>
 </div></nav>
 
-<!-- L. LIVE VOICE CALL WITH ARIA (v31) — small floating panel, like Muse's call UI -->
+<!-- L. LIVE VOICE CALL WITH ARIA (v32) — small floating panel, like Muse's call UI -->
 <div id="tpcPanel" hidden role="dialog" aria-label="Live voice call with Aria">
   <section class="tpc-panel-card" id="tpcPanelCard">
     <div class="tpc-panel-head" id="tpcPanelHead">
@@ -1255,12 +1285,18 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
     <div class="tpc-info-box" id="tpcInfoBox" hidden></div>
     <div class="tpc-error-box" id="tpcErrorBox" hidden></div>
     <div class="tpc-controls">
+      <div class="tpc-ctl-wrap" id="tpcSpeakerWrap">
       <button class="tpc-ctl" id="tpcSpeakerBtn" type="button" aria-label="Mute speaker" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
       </button>
+      <span class="tpc-ctl-label">Muted</span>
+      </div>
+      <div class="tpc-ctl-wrap" id="tpcMicWrap">
       <button class="tpc-ctl" id="tpcMicBtn" type="button" aria-label="Mute microphone" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
       </button>
+      <span class="tpc-ctl-label">Muted</span>
+      </div>
       <button class="tpc-ctl tpc-ctl-end" id="tpcEndBtn" type="button" aria-label="End call">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85a1 1 0 0 1-1.37-.16A11.5 11.5 0 0 1 1 12c0-.55.45-1 1-1h1V9.99A10 10 0 0 1 12 3a10 10 0 0 1 9 6.99V11h1c.55 0 1 .45 1 1 0 1.05-.07 2.08-.2 3.1a1 1 0 0 1-1.66.53c-.79-.73-1.68-1.36-2.66-1.85a1 1 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" transform="rotate(135 12 12)"/></svg>
       </button>
@@ -2194,10 +2230,24 @@ $('buyConfirm').addEventListener('click',function(){
 /* tab bar active state */
 var tabs=document.querySelectorAll('.tabbar a');
 var secs=['dashboard','chart','signals','ai','paper','store','support'];
+/* Smoothness: the old listener ran getBoundingClientRect() on 7 sections
+   on EVERY scroll event (forced layout per frame = the scroll lag). Now
+   it runs at most once per paint frame. */
+var __tabTicking=false;
 window.addEventListener('scroll',function(){
+  if(__tabTicking)return;__tabTicking=true;
+  requestAnimationFrame(function(){__tabTicking=false;
   var cur='dashboard';secs.forEach(function(id){var el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<160)cur=id});
   tabs.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur)});
+  });
 },{passive:true});
+/* Smoothness: while the user is actively scrolling, the live-data
+   re-renders (30s market/signals/float-cards, 1s price ticker) wait
+   instead of rebuilding the DOM mid-scroll. Renders are batched through
+   requestAnimationFrame and flushed 180ms after the last scroll event. */
+var __scrolling=false,__scrollTimer=null,__pendingRenders={};
+window.addEventListener('scroll',function(){__scrolling=true;clearTimeout(__scrollTimer);__scrollTimer=setTimeout(function(){__scrolling=false;var k;for(k in __pendingRenders){var f=__pendingRenders[k];delete __pendingRenders[k];try{f();}catch(e){}}},180);},{passive:true});
+function deferRender(key,fn){if(__scrolling){__pendingRenders[key]=fn;}else{requestAnimationFrame(fn);}}
 
 /* ---------- Binance all-market live data layer ---------- */
 /* Public Binance market data only. No API keys or secrets are used here. */
@@ -2531,12 +2581,12 @@ $('coinSearch').addEventListener('input',function(){searchQuery=this.value;rende
 /* ---------- init ---------- */
 segUI();initCharts();renderPaper();loadPaper();syncServerBalance();syncOrderPanel();
 $('chartSrc').textContent='Connecting to Binance OHLC candle feed…';
-fetchEngineSignals();setInterval(fetchEngineSignals,30000);
-renderFloatCards();renderAIInsight();setInterval(renderFloatCards,30000);
+fetchEngineSignals();setInterval(function(){deferRender('signals',fetchEngineSignals);},30000);
+renderFloatCards();renderAIInsight();setInterval(function(){deferRender('floatCards',renderFloatCards);},30000);
 updateMarketMeta().then(function(){
   connectSelectedTicker();fetchSelectedPrice();fetchMarketTickers();
-  pricePollTimer=setInterval(function(){if(!activeSocket||activeSocket.readyState!==1)fetchSelectedPrice();},1000);
-  marketRefreshTimer=setInterval(function(){fetchMarketTickers();},30000);
+  pricePollTimer=setInterval(function(){if(!activeSocket||activeSocket.readyState!==1)deferRender('price',fetchSelectedPrice);},1000);
+  marketRefreshTimer=setInterval(function(){deferRender('tickers',fetchMarketTickers);},30000);
   fetchLiveCandles();
 }).catch(function(err){
   $('coinCount').textContent='Could not load Binance spot markets';
@@ -2762,7 +2812,7 @@ updateMarketMeta().then(function(){
     var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
     log.appendChild(d);log.scrollTop=log.scrollHeight;
   }
-  /* Voice input + spoken answers v31 */
+  /* Voice input + spoken answers v32 */
   var tpVoiceSpeak=true;
   try{tpVoiceSpeak=localStorage.getItem('tpVoiceSpeak')!=='0';}catch(e){}
   function tpSpeak(text){
@@ -2892,7 +2942,7 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Legal collapsible rows v31 */
+  /* Legal collapsible rows v32 */
   try{
     document.querySelectorAll('.risk-coll .risk-head').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -2905,7 +2955,7 @@ updateMarketMeta().then(function(){
     });
   }catch(e){}
 
-  /* Hamburger menu + drawer v31 */
+  /* Hamburger menu + drawer v32 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
@@ -2991,7 +3041,7 @@ updateMarketMeta().then(function(){
     tpSyncDrawerBal();
   }catch(e){ /* drawer only - never break trading */ }
 
-/* ---- Live voice call with Aria v31 (29 Nov 2026) ----
+/* ---- Live voice call with Aria v32 (29 Nov 2026) ----
    Ported faithfully from the proven live-call preview (same flow that
    worked on a real phone call). Flow: Call tap -> POST /liveToken
    (ephemeral token, single use) -> Gemini Live API via @google/genai
@@ -3003,6 +3053,7 @@ updateMarketMeta().then(function(){
   var TOKEN_URL = "https://arfuu0.pythonanywhere.com/liveToken";
   var HEALTH_URL = "https://arfuu0.pythonanywhere.com/health";
   var SIGNALS_URL = "https://arfuu0.pythonanywhere.com/getSignals";
+  var NEWS_URL = "https://arfuu0.pythonanywhere.com/news";
   var BTC_URL = "https://data-api.binance.vision/api/v3/ticker/24hr?symbol=BTCUSDT";
   var MODEL = "gemini-3.8-live";
   // Female voices only, in fallback order. Sulafat (Warm) first — the
@@ -3011,7 +3062,7 @@ updateMarketMeta().then(function(){
   var SERVER_NOT_READY_MSG = "Voice server not updated yet — upload the new flask_app.py to PythonAnywhere and reload.";
   var IDLE_STATUS = "Tap Call to start a live voice conversation.";
 
-  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real woman on a phone call, not a robot — warm, relaxed and natural, with short sentences, everyday words and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer helpfully and briefly, using the latest search results when they are available. If something is very recent and you are not sure, say so honestly instead of making up details. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
+  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real woman on a phone call, not a robot — warm, relaxed and natural, with short sentences, everyday words and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NEVER speak Bengali/Bangla — no Bengali words, no Bengali script, ever, even if the user's speech sounds Bengali. Answer ONLY in English, or in Hinglish (Hindi words written in Roman letters). If the user's speech sounds like Bengali, still answer in Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. If you only hear a fragment, a single name, or no clear question, do NOT answer the fragment — ask the user to repeat clearly instead. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer ANY news question (world news, any person, any topic, the last 24 hours) helpfully and briefly, using the latest search results or the news headlines given in this conversation. If a question is about something not in those headlines and you are not sure, say so honestly instead of making up details. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
 
   // ---- DOM ----
   var panelEl = document.getElementById("tpcPanel");
@@ -3023,6 +3074,8 @@ updateMarketMeta().then(function(){
   var endBtn = document.getElementById("tpcEndBtn");
   var speakerBtn = document.getElementById("tpcSpeakerBtn");
   var micBtn = document.getElementById("tpcMicBtn");
+  var speakerWrap = document.getElementById("tpcSpeakerWrap");
+  var micWrap = document.getElementById("tpcMicWrap");
   var errorBox = document.getElementById("tpcErrorBox");
   var infoBox = document.getElementById("tpcInfoBox");
   var transcriptEl = document.getElementById("tpcTranscript");
@@ -3047,6 +3100,7 @@ updateMarketMeta().then(function(){
   var timerInt = null;
   var statusInt = null;
   var ctxInt = null;            // periodic live-market refresh during the call
+  var newsInt = null;           // periodic news refresh during the call (every 10 min)
   var resumeWatchInt = null;    // 1s AudioContext resume watchdog during a call
   var openBubble = null;        // { role, textEl }
   var turnSawAiText = false;
@@ -3078,7 +3132,7 @@ updateMarketMeta().then(function(){
     if (!panelEl) return;
     panelEl.hidden = true;
     // Forget a dragged position so the panel reopens at its default spot.
-    panelEl.style.left = ""; panelEl.style.top = ""; panelEl.style.right = "";
+    panelEl.style.left = ""; panelEl.style.top = ""; panelEl.style.right = ""; panelEl.style.transform = "";
   }
   // Drag the panel by its header (avatar + name area). Pointer Events
   // cover mouse and touch; the position is clamped inside the viewport.
@@ -3087,21 +3141,33 @@ updateMarketMeta().then(function(){
   function onDragStart(e) {
     if (!panelEl) return;
     var r = panelEl.getBoundingClientRect();
-    dragState = { px: e.clientX, py: e.clientY, left: r.left, top: r.top };
+    dragState = { px: e.clientX, py: e.clientY, left: r.left, top: r.top, x: e.clientX, y: e.clientY, raf: 0 };
     panelEl.style.right = "auto";
     panelEl.style.left = r.left + "px";
     panelEl.style.top = r.top + "px";
+    // GPU-composited drag: the panel moves via translate3d (no layout
+    // on every move), and pointermove is throttled to one paint per
+    // frame, so dragging never stutters the chat behind it.
+    panelEl.style.transform = "translate3d(0,0,0)";
     e.preventDefault();
+  }
+  function applyDrag() {
+    if (!dragState) return;
+    dragState.raf = 0;
+    var w = panelEl.offsetWidth, h = panelEl.offsetHeight;
+    var nx = Math.max(0, Math.min(window.innerWidth - w, dragState.left + dragState.x - dragState.px));
+    var ny = Math.max(0, Math.min(window.innerHeight - h, dragState.top + dragState.y - dragState.py));
+    panelEl.style.transform = "translate3d(" + (nx - dragState.left) + "px," + (ny - dragState.top) + "px,0)";
   }
   function onDragMove(e) {
     if (!dragState) return;
-    var w = panelEl.offsetWidth, h = panelEl.offsetHeight;
-    var nx = Math.max(0, Math.min(window.innerWidth - w, dragState.left + e.clientX - dragState.px));
-    var ny = Math.max(0, Math.min(window.innerHeight - h, dragState.top + e.clientY - dragState.py));
-    panelEl.style.left = nx + "px";
-    panelEl.style.top = ny + "px";
+    dragState.x = e.clientX; dragState.y = e.clientY;
+    if (!dragState.raf) dragState.raf = requestAnimationFrame(applyDrag);
   }
-  function onDragEnd() { dragState = null; }
+  function onDragEnd() {
+    if (dragState && dragState.raf) cancelAnimationFrame(dragState.raf);
+    dragState = null;
+  }
 
   // ---- Small helpers ----
   function setStatus(text, speaking) {
@@ -3380,6 +3446,29 @@ updateMarketMeta().then(function(){
     });
   }
 
+  // ---- News context (sent once, right after connect; refreshed every 10 min) ----
+  // The server's /news endpoint returns the latest headlines (crypto + world).
+  // Sending them into the conversation lets Aria answer ANY news question —
+  // Trump, Elon Musk, any person, any topic, the last 24 hours — even if
+  // Google Search grounding is unavailable on this attempt.
+  function headlineText(item) {
+    if (typeof item === "string") return item;
+    if (item && typeof item === "object") return item.title || item.headline || item.text || "";
+    return "";
+  }
+  function sendNewsContext(sess) {
+    return fetchJson(NEWS_URL).then(function (d) {
+      var crypto = ((d && d.crypto) || []).map(headlineText).filter(function (t) { return !!t; }).slice(0, 8);
+      var world = ((d && d.world) || []).map(headlineText).filter(function (t) { return !!t; }).slice(0, 8);
+      if (!crypto.length && !world.length) return;
+      var text = "Latest news headlines (use these to answer any news question — world news, any person, any topic, the last 24 hours): ";
+      if (world.length) text += "World: " + world.join("; ") + ". ";
+      if (crypto.length) text += "Crypto: " + crypto.join("; ") + ". ";
+      text += "If a question is about something not in these headlines, use search results if available; otherwise say honestly that you do not know — never invent details.";
+      try { sess.sendRealtimeInput({ text: text }); } catch (e) { /* non-fatal */ }
+    }).catch(function () { /* news is a bonus; the call works without it */ });
+  }
+
   // ---- Mic capture: Float32 -> 16kHz Int16 PCM -> base64 ----
   function downsampleTo16k(input, inRate) {
     var ratio = inRate / 16000;
@@ -3558,6 +3647,9 @@ updateMarketMeta().then(function(){
     statusInt = setInterval(function () {
       if (!inCall) return;
       if (reconnecting) { setStatus("Reconnecting…", false); return; }
+      // Muted speaker beats everything else: the user must SEE why
+      // there is no sound instead of wondering if the call is broken.
+      if (speakerMuted) { setStatus("Speaker muted — tap the speaker icon", false); return; }
       if (isSpeaking()) setStatus("AI speaking…", true);
       else setStatus("Listening…", false);
     }, 250);
@@ -3566,13 +3658,19 @@ updateMarketMeta().then(function(){
     ctxInt = setInterval(function () {
       if (inCall && session && !reconnecting) sendMarketContext(session);
     }, 90000);
+    // Refresh the news headlines every 10 minutes so she can answer
+    // news questions on long calls too.
+    newsInt = setInterval(function () {
+      if (inCall && session && !reconnecting) sendNewsContext(session);
+    }, 600000);
     startResumeWatchdog();
   }
   function stopLoops() {
     if (timerInt) clearInterval(timerInt);
     if (statusInt) clearInterval(statusInt);
     if (ctxInt) clearInterval(ctxInt);
-    timerInt = statusInt = ctxInt = null;
+    if (newsInt) clearInterval(newsInt);
+    timerInt = statusInt = ctxInt = newsInt = null;
     stopResumeWatchdog();
     if (voiceRaf) cancelAnimationFrame(voiceRaf);
     voiceRaf = 0;
@@ -3660,17 +3758,20 @@ updateMarketMeta().then(function(){
       speakerBtn.setAttribute("aria-pressed", speakerMuted ? "true" : "false");
       speakerBtn.setAttribute("aria-label", speakerMuted ? "Unmute speaker" : "Mute speaker");
     }
+    if (speakerWrap) speakerWrap.classList.toggle("tpc-muted", speakerMuted);
     if (micBtn) {
       micBtn.classList.toggle("tpc-off", micMuted);
       micBtn.setAttribute("aria-pressed", micMuted ? "true" : "false");
       micBtn.setAttribute("aria-label", micMuted ? "Unmute microphone" : "Mute microphone");
     }
+    if (micWrap) micWrap.classList.toggle("tpc-muted", micMuted);
   }
   function toggleSpeaker() {
     speakerMuted = !speakerMuted;
     if (outGain) outGain.gain.value = speakerMuted ? 0 : 1;
     if (!speakerMuted) resumeAudio();
     updateToggleButtons();
+    if (speakerMuted && inCall) setStatus("Speaker muted — tap the speaker icon", false);
   }
   function toggleMic() {
     micMuted = !micMuted;
@@ -3789,7 +3890,7 @@ updateMarketMeta().then(function(){
       showInCallUI();
       startLoops();
       setStatus("Listening…");
-      return sendMarketContext(sess).then(function () { return startMic(); });
+      return Promise.all([sendMarketContext(sess), sendNewsContext(sess)]).then(function () { return startMic(); });
     }).catch(function (e) {
       connecting = false;
       inCall = false;
@@ -3925,6 +4026,9 @@ updateMarketMeta().then(function(){
   // immediately instead of waiting on a cold server and a download.
   pingServer();
   loadSdk().catch(function () { /* the Call tap loads it if this failed */ });
+  // Keep-warm: re-ping every 4 minutes while no call is active, so the
+  // free server is still warm even if Call is tapped long after load.
+  setInterval(function () { if (!inCall && !connecting) pingServer(); }, 240000);
 })();
 
 })();
