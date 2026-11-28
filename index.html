@@ -631,6 +631,25 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .brand-chart .tp-line{fill:none;stroke:#d6a84b;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:205;stroke-dashoffset:0;animation:tpChartDraw 4.5s ease-in-out infinite}
 @keyframes tpChartDraw{0%{stroke-dashoffset:205;opacity:1}55%{stroke-dashoffset:0;opacity:1}80%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 </style>
+<style>
+.legal-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.legal-doc{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--text);font:500 14.5px 'IBM Plex Sans',sans-serif;cursor:pointer}
+.legal-doc:active{transform:scale(.98)}
+.legal-chev{color:var(--gold);font-size:18px;line-height:1}
+.legal-overlay{position:fixed;inset:0;z-index:120;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.legal-overlay[hidden]{display:none}
+.legal-bar{flex:none;display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.legal-back{background:none;border:none;color:var(--gold);font:600 15px 'IBM Plex Sans',sans-serif;cursor:pointer;padding:6px 0}
+.legal-doc-title{font:600 16px 'IBM Plex Sans',sans-serif;color:var(--text)}
+.legal-body{flex:1;overflow-y:auto;padding:18px 16px 48px;font-size:14px;line-height:1.65;color:var(--sub)}
+.legal-body h3{color:var(--text);font-size:15px;margin:18px 0 6px}
+.legal-body h3:first-child{margin-top:0}
+.legal-body p{margin:0 0 10px}
+.legal-body ul{margin:0 0 10px;padding-left:18px}
+.legal-body li{margin-bottom:6px}
+.legal-body b,.legal-body strong{color:var(--text)}
+.legal-body a{color:var(--gold)}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -917,6 +936,17 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     <div class="risk" style="margin-bottom:10px"><b>Not affiliated with Binance:</b> TradePilot AI is not affiliated with, endorsed by, or sponsored by Binance. Market data is shown for informational purposes only.</div>
     <div class="risk" style="margin-bottom:10px"><b>Crypto risk:</b> Crypto products and NFTs are unregulated and can be highly risky. There may be no regulatory recourse for any loss from such transactions.</div>
     <div class="risk"><b>Paper trading only:</b> All trading here is simulated paper trading with virtual balance. No real cryptocurrency or money is traded, and no profit is guaranteed. Signals are automated analysis, not financial advice.</div>
+    <div class="sec-head" style="margin-top:14px"><h2>Documents</h2><span class="hint">Tap a document to read it</span></div>
+    <div class="legal-list">
+      <button type="button" class="legal-doc" data-doc="terms"><span>Terms of Service</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="privacy"><span>Privacy Policy</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="paper"><span>Paper Trading Disclaimer</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="marketdata"><span>Market Data Disclosure</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="signals"><span>AI Signals Disclaimer</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="stars"><span>Stars Payment Policy</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="refund"><span>Refund Policy</span><span class="legal-chev">›</span></button>
+      <button type="button" class="legal-doc" data-doc="contact"><span>Contact &amp; Support</span><span class="legal-chev">›</span></button>
+    </div>
   </section>
 
   <section>
@@ -953,6 +983,11 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     <button type="button" class="bd-cancel" id="buyCancel">Cancel</button>
     <p class="bd-note" id="buyNote">Nothing is charged inside this app. Confirm here, then pay with Telegram Stars in the bot — after payment, reopen this app and your new balance will be here.</p>
   </div>
+</div>
+
+<div class="legal-overlay" id="legalOverlay" hidden>
+  <div class="legal-bar"><button type="button" class="legal-back" id="legalClose">‹ Back</button><div class="legal-doc-title" id="legalTitle"></div></div>
+  <div class="legal-body" id="legalBody"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -2280,6 +2315,25 @@ updateMarketMeta().then(function(){
     }
   }catch(e){ /* motion only — never break trading */ }
 })();
+
+  /* Legal documents: full-page viewer. */
+  try{
+    var LEGAL_DOCS={
+      terms:{title:'Terms of Service',html:`<h3>1. What TradePilot AI is</h3><p>TradePilot AI is a personal project by Arfat Shaikh, an individual. It is not a company, and it has no company registration number and no office address. The app is a paper-trading terminal: it shows live market prices and automated trading signals, and it lets you practise trading with virtual money. No real cryptocurrency or money is ever traded here.</p><h3>2. Using the app</h3><p>By using the app, you accept these terms. You must follow Telegram's terms of service and the laws that apply to you. The app is for information and practice only. Nothing in the app is financial advice, and nothing in the app is a recommendation to buy or sell any asset.</p><h3>3. Acceptable use</h3><p>Please use the app fairly. Do not abuse the service, do not try to break it, and do not misrepresent the app as affiliated with Binance or any other exchange. TradePilot AI is not affiliated with, endorsed by, or sponsored by Binance.</p><h3>4. Intellectual property</h3><p>The design and content of the app belong to the project. You may use the app for your own personal practice, but you may not copy, resell, or pass off the app or its content as your own.</p><h3>5. Limitation of liability</h3><p>The app is provided "as is", without any warranty. We are not liable for trading losses, for errors or delays in market data or signals, or for any loss that comes from using the app. Paper-trading results do not predict real trading results.</p><h3>6. Changes to these terms</h3><p>These terms may change from time to time. If you keep using the app after a change, you accept the new terms. If you have a question about these terms, contact support — see the Contact and Support document.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      privacy:{title:'Privacy Policy',html:`<h3>1. What we collect</h3><p>To run the app, we collect a small amount of information:</p><ul><li>Your Telegram user id, and your username if you provide one.</li><li>Your paper-trading data: virtual balance, open positions, and trade history. For Telegram users, this is saved on the TradePilot server under your Telegram account. For browser users, it is saved in your phone's local storage.</li><li>Which signals you view.</li><li>Basic technical information needed to run the app, such as your device and browser type.</li></ul><h3>2. What we never collect</h3><p>We never collect passwords, seed phrases, wallet private keys, or payment card details. Never share those with anyone, including support — we will never ask for them.</p><h3>3. How we use your data</h3><p>Your data is used only to run the app: to show you live prices and signals, and to save your paper-trading balance and trades so they are there when you come back.</p><h3>4. Sharing</h3><p>Your data is not sold to anyone. It is not shared with third parties except where needed to run the service, for example the server that stores your paper balance.</p><h3>5. Deleting your data</h3><p>You can ask for your data to be deleted at any time by messaging support. We will delete your saved paper-trading data on request.</p><h3>6. Users under 18</h3><p>If you are under 18, please use the app with a parent or guardian.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      paper:{title:'Paper Trading Disclaimer',html:`<h3>1. Virtual money only</h3><p>All trading in this app is simulated paper trading with virtual balance. The balance has no real value. It cannot be withdrawn, and it cannot be converted to cash or to real cryptocurrency. No real cryptocurrency or money is traded in this app.</p><h3>2. No profit guarantee</h3><p>Nothing in this app guarantees a profit. Paper-trading results are practice only. Real markets add fees, slippage, and emotion that paper trading does not, so real results can be very different from paper results.</p><h3>3. Crypto risk</h3><p>Crypto products and NFTs are unregulated and can be highly risky. There may be no regulatory recourse for any loss from such transactions.</p><h3>4. Not financial advice</h3><p>Signals in this app are automated model output, shown for information only. They are not financial advice and not a recommendation to buy or sell anything. Always do your own research, and never trade money you cannot afford to lose.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      marketdata:{title:'Market Data Disclosure',html:`<h3>1. Where the data comes from</h3><p>Market prices and candles in this app come from the Binance public API. Prices are shown for information only. The app also shows a Fear and Greed index and overall market figures from public sources, which are shown for information only.</p><h3>2. Not affiliated with Binance</h3><p>TradePilot AI is not affiliated with, endorsed by, or sponsored by Binance. Binance does not endorse this app, and nothing in the app should be read as Binance sponsorship or partnership.</p><h3>3. Accuracy and delays</h3><p>Market data may be delayed or inaccurate at times. Prices can change quickly, and the price shown in the app may differ from the price on an exchange. Do not rely on the app's prices for real trading decisions.</p><h3>4. Licence</h3><p>Binance Vision market data is provided under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 licence (CC BY-NC-SA 4.0), which covers non-commercial use. Signals and market data in this app are free for everyone.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      signals:{title:'AI Signals Disclaimer',html:`<h3>1. What the signals are</h3><p>Signals in this app are automated model output. The model looks at technical indicators such as RSI, MACD, moving averages, and support and resistance levels, and it suggests a possible direction, an entry price, a stop loss, and take-profit levels. Signals are generated automatically — no person reviews each one.</p><h3>2. Not financial advice</h3><p>Signals are shown for information only. They are not financial advice and not a recommendation to buy or sell any asset. Always do your own research before making any decision.</p><h3>3. No guarantees</h3><p>Signals can be wrong, and many of them will be. There is no profit guarantee, and nothing in this app is "100% accurate". Past performance, including any backtest result shown in the app, does not predict future results.</p><h3>4. Free for everyone</h3><p>Signals are free for everyone. No payment and no Telegram Stars are needed to view them.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      stars:{title:'Stars Payment Policy',html:`<h3>1. What Stars buy</h3><p>Telegram Stars buy virtual paper balance only — practice money with no real value. The packs are:</p><ul><li>$1,000 paper balance — 100 Stars</li><li>$5,000 paper balance — 500 Stars</li><li>$10,000 paper balance — 1,000 Stars</li></ul><p>Stars do not buy signals, market data, premium access, or any real cryptocurrency. Signals and live prices are free for everyone.</p><h3>2. How it works</h3><p>Choose a pack in the Store and tap Buy, then Confirm. You will be taken to the @AiTradingPilotBot chat, where you pay with Telegram Stars. After payment, the bot credits the virtual balance to your account on the server. Reopen the app and your new balance will be there.</p><h3>3. Starter balance</h3><p>A $10,000 starter balance is granted once only, when you first use the app. A $0 balance stays $0 — the starter balance is not given again.</p><h3>4. If your balance does not arrive</h3><p>If you paid but your balance has not arrived, message support (see the Contact and Support document) with the payment date, the amount, and your Telegram payment charge id if you have it. The payment will be checked, and the balance will be credited if it went through.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      refund:{title:'Refund Policy',html:`<h3>1. Purchases are final once credited</h3><p>Telegram Stars purchases are final once the virtual paper balance has been credited to your account. Stars buy virtual practice money, which has no real value and cannot be turned into cash or cryptocurrency. Please check the pack details before you confirm a purchase, because a credited balance cannot be undone. If you are not sure about a pack, please read the Stars Payment Policy first.</p><h3>2. If your balance does not arrive</h3><p>If you paid with Stars but your virtual balance did not arrive, message support at @Lustcoded with the payment date, the amount, and your Telegram payment charge id if you have it. The payment will be checked, and the balance will be credited if it went through.</p><h3>3. No cash refunds</h3><p>There are no cash refunds. Stars are a Telegram currency, and any remedy for a failed purchase is given in virtual paper balance, not in cash or cryptocurrency.</p><p><b>Last updated:</b> 28 November 2026.</p>`},
+      contact:{title:'Contact & Support',html:`<h3>1. How to reach us</h3><p>Support is on Telegram at <b>@Lustcoded</b>. The bot is <b>@AiTradingPilotBot</b>. You can also use the Support buttons in the app, which open a chat with a pre-filled message. If the app is not working, please also say whether you opened it inside Telegram or in a regular browser, and what phone or device you are using.</p><h3>2. What to send</h3><p>When you report a problem, please tell us:</p><ul><li>What happened, and what you were trying to do.</li><li>Which screen of the app you were on.</li><li>A screenshot, if you can take one.</li><li>Your Telegram username, so we can find your account.</li></ul><h3>3. Response time</h3><p>Support is run by one person, so please allow a few days for a reply. Messages are answered in the order they arrive. If your question is about a Stars payment, please include the payment date and amount so we can check it quickly.</p><p><b>Last updated:</b> 28 November 2026.</p>`}
+    };
+    var legalOverlay=document.getElementById('legalOverlay'),legalTitle=document.getElementById('legalTitle'),legalBody=document.getElementById('legalBody');
+    function openLegal(key){var d=LEGAL_DOCS[key];if(!d||!legalOverlay)return;legalTitle.textContent=d.title;legalBody.innerHTML=d.html;legalBody.scrollTop=0;legalOverlay.hidden=false;document.body.style.overflow='hidden';}
+    function closeLegal(){if(!legalOverlay)return;legalOverlay.hidden=true;document.body.style.overflow='';}
+    document.querySelectorAll('.legal-doc').forEach(function(b){b.addEventListener('click',function(){openLegal(b.getAttribute('data-doc'));});});
+    var legalClose=document.getElementById('legalClose');if(legalClose)legalClose.addEventListener('click',closeLegal);
+  }catch(e){}
 
 })();
 </script>
