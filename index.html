@@ -669,6 +669,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .msg.ai{margin-left:0;margin-right:auto;background:#171e26;border:1px solid rgba(214,168,75,.25);border-radius:14px 14px 14px 4px;padding:10px 12px;margin-bottom:10px;max-width:85%;box-shadow:none}
 .msg.ai b{color:#e8c15a}
 .msg .m-time{font-size:10px;color:var(--dim);margin-top:4px}
+.msg.sys{margin-left:auto;margin-right:auto;background:transparent;border:0;box-shadow:none;color:#9aa7c7;font-size:11.5px;text-align:center;padding:4px 8px;max-width:90%}
 .ai-typing{display:flex;align-items:center;gap:2px;color:var(--dim);font-size:12.5px}
 .ai-typing i{width:6px;height:6px;border-radius:50%;background:#d6a84b;display:inline-block;animation:tpTyping 1.2s ease-in-out infinite}
 .ai-typing i:nth-child(2){animation-delay:.2s}
@@ -681,7 +682,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
-/* ---- Voice input + spoken answers v32 ---- */
+/* ---- Voice input + spoken answers v33 ---- */
 .input-row button.mic-btn{flex:none;align-self:center;min-height:0;width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
 .input-row button.mic-btn svg{display:block}
 @keyframes micListen{0%{box-shadow:0 0 0 0 rgba(214,168,75,.55)}70%{box-shadow:0 0 0 10px rgba(214,168,75,0)}100%{box-shadow:0 0 0 0 rgba(214,168,75,0)}}
@@ -691,7 +692,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .voice-btn.off{opacity:.45}
 .voice-btn.off .wv{display:none}
 .voice-btn.off .mute{display:block}
-/* ---- Legal collapsible rows v32 ---- */
+/* ---- Legal collapsible rows v33 ---- */
 .risk-coll{padding:0;overflow:hidden}
 .risk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:0;background:none;border:none;padding:11px 14px;font-size:12.5px;color:#e8d9a0;font-family:inherit;text-align:left;cursor:pointer}
 .risk-head b{color:var(--gold)}
@@ -700,7 +701,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .risk-body{padding:0 14px 12px;font-size:12.5px;line-height:1.6}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v32 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v33 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
 .tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
@@ -742,7 +743,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *::after{animation:none!important;transition:none!important}
 </style>
 <style>
-/* ---- Live voice call with Aria v32 (29 Nov 2026) ---- */
+/* ---- Live voice call with Aria v33 (29 Nov 2026) ---- */
 /* Small floating call panel, like Muse's own call UI: a compact
    rounded card that slides in from the right and floats over the
    app (the app stays visible behind it). Drag it by the header.
@@ -789,17 +790,6 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 .tpc-ctl-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
 .tpc-ctl-label{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#ff8a8e;visibility:hidden;line-height:1;min-height:11px}
 .tpc-ctl-wrap.tpc-muted .tpc-ctl-label{visibility:visible}
-.tpc-transcript-card{margin-top:10px;width:100%;background:rgba(13,23,52,.72);border:1px solid rgba(34,49,95,.9);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;text-align:left;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.tpc-transcript-card h2{margin:0 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;color:#9aa7c7;text-transform:uppercase}
-.tpc-transcript{overflow-y:auto;max-height:150px;min-height:88px;display:flex;flex-direction:column;gap:8px;padding-right:2px}
-.tpc-empty{color:#9aa7c7;font-size:13px;margin:4px 0}
-.tpc-bubble{max-width:92%;border-radius:14px;padding:8px 11px;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere;color:#eef1f8}
-.tpc-bubble .tpc-who{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;margin-bottom:3px;text-transform:uppercase}
-.tpc-bubble.tpc-user{align-self:flex-end;background:#2a2110;border:1px solid #8a742a;border-bottom-right-radius:6px}
-.tpc-bubble.tpc-user .tpc-who{color:#eec95c}
-.tpc-bubble.tpc-ai{align-self:flex-start;background:#16224a;border:1px solid #22315f;border-bottom-left-radius:6px}
-.tpc-bubble.tpc-ai .tpc-who{color:#9aa7c7}
-.tpc-note{align-self:center;color:#9aa7c7;font-size:12px;font-style:italic;margin:2px 0;text-align:center}
 .tpc-foot{text-align:center;color:#9aa7c7;font-size:11.5px;line-height:1.5;margin-top:8px}
 .tpc-foot .tpc-nf{color:#eef1f8;font-weight:700;font-size:12px}
 .tpc-foot p{margin:2px 0}
@@ -809,12 +799,11 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
 @media (prefers-reduced-motion:reduce){.tpc-panel-card{animation:none}.tpc-photo-wrap{animation:none}.tpc-wave span{animation:none}.tpc-ctl{transition:none}}
 </style>
 <style>
-/* ---- Smoothness pass v32 (29 Nov 2026) ---- */
+/* ---- Smoothness pass v33 (29 Nov 2026) ---- */
 /* Whole-app scroll smoothness: GPU-composited motion only, no layout or
    paint work on scroll. The v8 look (aurora, stars, glow, pulse,
    shimmer, glass) is UNCHANGED — only HOW it renders changes. */
 html{scroll-behavior:smooth}
-.tpc-transcript{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 /* Live dot: the old box-shadow ring repainted every frame. Same look,
    composited: a ring that scales up and fades (transform + opacity). */
 .pill .dot{position:relative;animation:none}
@@ -1230,13 +1219,13 @@ html{scroll-behavior:smooth}
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v32<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v33<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v32</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v33</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -1268,7 +1257,7 @@ html{scroll-behavior:smooth}
   <a href="#support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 0-16.6 4.6L3 21l4.5-1.3A9 9 0 0 0 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg>Support</a>
 </div></nav>
 
-<!-- L. LIVE VOICE CALL WITH ARIA (v32) — small floating panel, like Muse's call UI -->
+<!-- L. LIVE VOICE CALL WITH ARIA (v33) — small floating panel, like Muse's call UI -->
 <div id="tpcPanel" hidden role="dialog" aria-label="Live voice call with Aria">
   <section class="tpc-panel-card" id="tpcPanelCard">
     <div class="tpc-panel-head" id="tpcPanelHead">
@@ -1301,12 +1290,6 @@ html{scroll-behavior:smooth}
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85a1 1 0 0 1-1.37-.16A11.5 11.5 0 0 1 1 12c0-.55.45-1 1-1h1V9.99A10 10 0 0 1 12 3a10 10 0 0 1 9 6.99V11h1c.55 0 1 .45 1 1 0 1.05-.07 2.08-.2 3.1a1 1 0 0 1-1.66.53c-.79-.73-1.68-1.36-2.66-1.85a1 1 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" transform="rotate(135 12 12)"/></svg>
       </button>
     </div>
-    <section class="tpc-transcript-card">
-      <h2>Live transcript</h2>
-      <div class="tpc-transcript" id="tpcTranscript">
-        <p class="tpc-empty" id="tpcEmpty">Your conversation will appear here once the call starts. Ask her anything — "Will BTC go up?", the latest signals, or today's world news.</p>
-      </div>
-    </section>
     <footer class="tpc-foot">
       <p class="tpc-nf">Not financial advice</p>
     </footer>
@@ -2812,7 +2795,7 @@ updateMarketMeta().then(function(){
     var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
     log.appendChild(d);log.scrollTop=log.scrollHeight;
   }
-  /* Voice input + spoken answers v32 */
+  /* Voice input + spoken answers v33 */
   var tpVoiceSpeak=true;
   try{tpVoiceSpeak=localStorage.getItem('tpVoiceSpeak')!=='0';}catch(e){}
   function tpSpeak(text){
@@ -2942,7 +2925,7 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Legal collapsible rows v32 */
+  /* Legal collapsible rows v33 */
   try{
     document.querySelectorAll('.risk-coll .risk-head').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -2955,7 +2938,7 @@ updateMarketMeta().then(function(){
     });
   }catch(e){}
 
-  /* Hamburger menu + drawer v32 */
+  /* Hamburger menu + drawer v33 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
@@ -3041,7 +3024,7 @@ updateMarketMeta().then(function(){
     tpSyncDrawerBal();
   }catch(e){ /* drawer only - never break trading */ }
 
-/* ---- Live voice call with Aria v32 (29 Nov 2026) ----
+/* ---- Live voice call with Aria v33 (29 Nov 2026) ----
    Ported faithfully from the proven live-call preview (same flow that
    worked on a real phone call). Flow: Call tap -> POST /liveToken
    (ephemeral token, single use) -> Gemini Live API via @google/genai
@@ -3062,7 +3045,7 @@ updateMarketMeta().then(function(){
   var SERVER_NOT_READY_MSG = "Voice server not updated yet — upload the new flask_app.py to PythonAnywhere and reload.";
   var IDLE_STATUS = "Tap Call to start a live voice conversation.";
 
-  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real woman on a phone call, not a robot — warm, relaxed and natural, with short sentences, everyday words and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NEVER speak Bengali/Bangla — no Bengali words, no Bengali script, ever, even if the user's speech sounds Bengali. Answer ONLY in English, or in Hinglish (Hindi words written in Roman letters). If the user's speech sounds like Bengali, still answer in Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. If you only hear a fragment, a single name, or no clear question, do NOT answer the fragment — ask the user to repeat clearly instead. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer ANY news question (world news, any person, any topic, the last 24 hours) helpfully and briefly, using the latest search results or the news headlines given in this conversation. If a question is about something not in those headlines and you are not sure, say so honestly instead of making up details. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
+  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real friend on a phone call — completely natural and casual, like chatting with a friend, never stiff, never lecture-like, never like reading from a script. Warm, relaxed and natural, with short replies, everyday words, natural reactions and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NEVER speak Bengali/Bangla — no Bengali words, no Bengali script, ever, even if the user's speech sounds Bengali. Answer ONLY in English, or in Hinglish (Hindi words written in Roman letters). If the user's speech sounds like Bengali, still answer in Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. If you only hear a fragment, a single name, or no clear question, do NOT answer the fragment — ask the user to repeat clearly instead. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer ANY question the user asks (world news, any person, any topic, trading, general knowledge) helpfully and briefly, using the latest search results or the news headlines given in this conversation. If a question is about something not in those headlines and you are not sure, say so honestly instead of making up details. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
 
   // ---- DOM ----
   var panelEl = document.getElementById("tpcPanel");
@@ -3078,8 +3061,6 @@ updateMarketMeta().then(function(){
   var micWrap = document.getElementById("tpcMicWrap");
   var errorBox = document.getElementById("tpcErrorBox");
   var infoBox = document.getElementById("tpcInfoBox");
-  var transcriptEl = document.getElementById("tpcTranscript");
-  var tEmptyEl = document.getElementById("tpcEmpty");
   var photoEl = document.getElementById("tpcPhoto");
 
   // ---- State ----
@@ -3102,7 +3083,7 @@ updateMarketMeta().then(function(){
   var ctxInt = null;            // periodic live-market refresh during the call
   var newsInt = null;           // periodic news refresh during the call (every 10 min)
   var resumeWatchInt = null;    // 1s AudioContext resume watchdog during a call
-  var openBubble = null;        // { role, textEl }
+  var openBubble = null;        // { role, textEl, text }
   var turnSawAiText = false;
   var turnSawAudio = false;
   var turnNoteShown = false;
@@ -3202,32 +3183,47 @@ updateMarketMeta().then(function(){
     return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // ---- Transcript ----
+  // ---- Conversation in the Ask AI chat (v33) ----
+  // The live call conversation lands in the Ask AI chat log (#aiChatLog),
+  // message by message, exactly like a normal text chat — the same bubbles
+  // the text Ask AI uses. The call panel has no transcript box anymore.
+  var chatLogEl = document.getElementById("aiChatLog");
+  function chatScroll() {
+    if (chatLogEl) chatLogEl.scrollTop = chatLogEl.scrollHeight;
+  }
+  function renderBubbleText(bodyEl, fullText) {
+    while (bodyEl.firstChild) bodyEl.removeChild(bodyEl.firstChild);
+    var parts = String(fullText || "").split("\n");
+    for (var i = 0; i < parts.length; i++) {
+      if (i > 0) bodyEl.appendChild(document.createElement("br"));
+      bodyEl.appendChild(document.createTextNode(parts[i]));
+    }
+  }
   function addNote(text) {
-    if (tEmptyEl) { tEmptyEl.remove(); tEmptyEl = null; }
-    var p = document.createElement("p");
-    p.className = "tpc-note";
+    if (!chatLogEl) return;
+    var p = document.createElement("div");
+    p.className = "msg sys";
     p.textContent = text;
-    transcriptEl.appendChild(p);
-    transcriptEl.scrollTop = transcriptEl.scrollHeight;
+    chatLogEl.appendChild(p);
+    chatScroll();
   }
   function appendTranscript(role, text) {
-    if (!text) return;
-    if (tEmptyEl) { tEmptyEl.remove(); tEmptyEl = null; }
+    if (!text || !chatLogEl) return;
     if (!openBubble || openBubble.role !== role) {
       var div = document.createElement("div");
-      div.className = "tpc-bubble " + (role === "user" ? "tpc-user" : "tpc-ai");
-      var who = document.createElement("span");
-      who.className = "tpc-who";
-      who.textContent = role === "user" ? "You" : "Aria";
-      var body = document.createElement("span");
-      div.appendChild(who);
+      div.className = "msg " + (role === "user" ? "user" : "ai");
+      var body = document.createElement("div");
       div.appendChild(body);
-      transcriptEl.appendChild(div);
-      openBubble = { role: role, textEl: body };
+      var tm = document.createElement("div");
+      tm.className = "m-time";
+      tm.textContent = role === "user" ? aiNowIST() : "TradePilot AI \u00b7 live data";
+      div.appendChild(tm);
+      chatLogEl.appendChild(div);
+      openBubble = { role: role, textEl: body, text: "" };
     }
-    openBubble.textEl.textContent += text;
-    transcriptEl.scrollTop = transcriptEl.scrollHeight;
+    openBubble.text += text;
+    renderBubbleText(openBubble.textEl, openBubble.text);
+    chatScroll();
   }
   function closeBubble() { openBubble = null; }
 
