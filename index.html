@@ -681,7 +681,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
 .input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
 .input-row button:active{transform:scale(.96)}
-/* ---- Voice input + spoken answers v26 ---- */
+/* ---- Voice input + spoken answers v27 ---- */
 .input-row button.mic-btn{flex:none;align-self:center;min-height:0;width:40px;height:40px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center}
 .input-row button.mic-btn svg{display:block}
 @keyframes micListen{0%{box-shadow:0 0 0 0 rgba(214,168,75,.55)}70%{box-shadow:0 0 0 10px rgba(214,168,75,0)}100%{box-shadow:0 0 0 0 rgba(214,168,75,0)}}
@@ -691,7 +691,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .voice-btn.off{opacity:.45}
 .voice-btn.off .wv{display:none}
 .voice-btn.off .mute{display:block}
-/* ---- Legal collapsible rows v26 ---- */
+/* ---- Legal collapsible rows v27 ---- */
 .risk-coll{padding:0;overflow:hidden}
 .risk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:0;background:none;border:none;padding:11px 14px;font-size:12.5px;color:#e8d9a0;font-family:inherit;text-align:left;cursor:pointer}
 .risk-head b{color:var(--gold)}
@@ -700,7 +700,7 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .risk-body{padding:0 14px 12px;font-size:12.5px;line-height:1.6}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v26 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v27 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
 .tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
@@ -741,6 +741,59 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will
 .tp-switch[aria-checked="true"]::after{left:23px;background:#07090c}
 body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *::after{animation:none!important;transition:none!important}
 </style>
+<style>
+/* ---- Live voice call with Aria v27 (28 Nov 2026) ---- */
+/* Full-screen call overlay inside the Mini App. Same dark navy/gold
+   call screen as the proven live-call preview; all classes are prefixed
+   tpc- so they can never collide with the app's own styles. */
+#tpcOverlay{position:fixed;inset:0;z-index:300;background:radial-gradient(120% 60% at 50% -10%,#16224d 0%,#0a1128 55%,#060b1d 100%);color:#eef1f8;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#tpcOverlay[hidden]{display:none!important}
+.tpc-screen{max-width:430px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:16px;min-height:100%;font-family:inherit;-webkit-font-smoothing:antialiased}
+.tpc-close{position:sticky;top:0;align-self:flex-end;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid rgba(212,175,55,.4);background:rgba(13,23,52,.85);color:#eec95c;font-size:20px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.tpc-call-card{background:linear-gradient(180deg,#101a3a 0%,#0d1734 100%);border:1px solid #22315f;border-radius:24px;padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tpc-avatar-wrap{position:relative;width:132px;height:132px;margin-bottom:18px}
+.tpc-avatar{position:absolute;inset:10px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#f3d97b 0%,#d4af37 45%,#a8842a 100%);color:#231a04;font-size:56px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(212,175,55,.28),inset 0 2px 6px rgba(255,255,255,.45);z-index:2}
+.tpc-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(212,175,55,.55);opacity:0;z-index:1}
+.tpc-in-call .tpc-ring{animation:tpcPulse 2.2s ease-out infinite}
+.tpc-in-call .tpc-ring.tpc-r2{animation-delay:1.1s}
+@keyframes tpcPulse{0%{transform:scale(.86);opacity:.85}100%{transform:scale(1.22);opacity:0}}
+.tpc-live-dot{position:absolute;right:12px;bottom:12px;width:18px;height:18px;border-radius:50%;background:#3ddc84;border:3px solid #0d1734;z-index:3;display:none}
+.tpc-in-call .tpc-live-dot{display:block}
+.tpc-callee{font-size:26px;font-weight:800;margin:0 0 2px;letter-spacing:.01em;color:#eef1f8}
+.tpc-callee-sub{color:#eec95c;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}
+.tpc-status{color:#9aa7c7;font-size:15px;font-weight:600;margin:0;min-height:22px}
+.tpc-status.tpc-speaking{color:#eec95c}
+.tpc-timer{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.06em;margin:10px 0 0;color:#eef1f8}
+.tpc-error-box{margin-top:16px;width:100%;background:rgba(229,72,77,.10);border:1px solid rgba(229,72,77,.55);color:#ffb4b8;border-radius:14px;padding:12px 14px;font-size:14px;font-weight:600;line-height:1.45;text-align:left;overflow-wrap:anywhere}
+.tpc-error-box .tpc-detail{display:block;margin-top:6px;color:#e58a8e;font-size:12px;font-weight:500}
+.tpc-info-box{margin-top:16px;width:100%;background:rgba(212,175,55,.08);border:1px solid #8a742a;color:#eec95c;border-radius:14px;padding:12px 14px;font-size:14px;font-weight:600;line-height:1.45;text-align:left;overflow-wrap:anywhere}
+.tpc-controls{margin-top:22px;width:100%;display:flex;flex-direction:column;gap:12px}
+.tpc-btn{appearance:none;border:0;cursor:pointer;width:100%;min-height:58px;border-radius:999px;font-family:inherit;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .08s ease,filter .15s ease,opacity .15s ease}
+.tpc-btn:active{transform:scale(.98)}
+.tpc-btn:disabled{opacity:.55;cursor:default}
+.tpc-btn svg{width:24px;height:24px;flex:none}
+.tpc-btn-call{background:linear-gradient(180deg,#eec95c,#d4af37);color:#231a04;box-shadow:0 8px 24px rgba(212,175,55,.35)}
+.tpc-btn-end{background:linear-gradient(180deg,#e5484d,#c23338);color:#fff}
+.tpc-transcript-card{background:#0d1734;border:1px solid #22315f;border-radius:20px;padding:16px;display:flex;flex-direction:column;flex:1 1 auto;min-height:190px}
+.tpc-transcript-card h2{margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.14em;color:#9aa7c7;text-transform:uppercase}
+.tpc-transcript{overflow-y:auto;max-height:38vh;display:flex;flex-direction:column;gap:10px;padding-right:2px}
+.tpc-empty{color:#9aa7c7;font-size:14px;margin:4px 0}
+.tpc-bubble{max-width:88%;border-radius:16px;padding:10px 13px;font-size:14.5px;line-height:1.5;overflow-wrap:anywhere;color:#eef1f8}
+.tpc-bubble .tpc-who{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;margin-bottom:3px;text-transform:uppercase}
+.tpc-bubble.tpc-user{align-self:flex-end;background:#2a2110;border:1px solid #8a742a;border-bottom-right-radius:6px}
+.tpc-bubble.tpc-user .tpc-who{color:#eec95c}
+.tpc-bubble.tpc-ai{align-self:flex-start;background:#16224a;border:1px solid #22315f;border-bottom-left-radius:6px}
+.tpc-bubble.tpc-ai .tpc-who{color:#9aa7c7}
+.tpc-note{align-self:center;color:#9aa7c7;font-size:12.5px;font-style:italic;margin:2px 0;text-align:center}
+.tpc-foot{text-align:center;color:#9aa7c7;font-size:12.5px;line-height:1.6}
+.tpc-foot .tpc-nf{color:#eef1f8;font-weight:700;font-size:13px}
+.tpc-foot p{margin:2px 0}
+.tpc-open-btn{appearance:none;border:0;cursor:pointer;width:100%;min-height:52px;border-radius:999px;background:linear-gradient(180deg,#eec95c,#d4af37);color:#231a04;font-family:inherit;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:12px;box-shadow:0 6px 20px rgba(212,175,55,.30)}
+.tpc-open-btn:active{transform:scale(.98)}
+.tpc-open-btn svg{width:21px;height:21px;flex:none}
+@media (prefers-reduced-motion:reduce){.tpc-in-call .tpc-ring{animation:none;opacity:0}.tpc-btn{transition:none}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -1044,6 +1097,7 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
         <button type="button" class="chip" data-q="My balance?">My balance?</button>
       </div>
       <div class="input-row"><input id="aiChatInput" type="text" placeholder="Ask AI anything about the market&hellip;" autocomplete="off"/><button type="button" id="aiMicBtn" class="mic-btn" aria-label="Ask by voice"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#07090c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/></svg></button><button type="button" id="aiChatSend">Send</button></div>
+      <button type="button" id="tpcCallOpenBtn" class="tpc-open-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.4 11.4 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg><span>Call Aria</span></button><button type="button" id="aiChatSend">Send</button></div>
     </div>
   </section>
 
@@ -1134,13 +1188,13 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v26<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v27<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v26</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v27</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -1171,6 +1225,48 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
   <a href="#store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.2 11a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8L4 7z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>Store</a>
   <a href="#support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 0-16.6 4.6L3 21l4.5-1.3A9 9 0 0 0 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg>Support</a>
 </div></nav>
+
+<!-- L. LIVE VOICE CALL WITH ARIA (v27) — full-screen overlay inside the Mini App -->
+<div id="tpcOverlay" hidden role="dialog" aria-label="Live voice call with Aria">
+  <main class="tpc-screen">
+    <button type="button" class="tpc-close" id="tpcCloseBtn" aria-label="Close call">&#215;</button>
+    <section class="tpc-call-card" id="tpcCallCard">
+      <div class="tpc-avatar-wrap">
+        <div class="tpc-ring"></div>
+        <div class="tpc-ring tpc-r2"></div>
+        <div class="tpc-avatar" aria-hidden="true">A</div>
+        <div class="tpc-live-dot" aria-hidden="true"></div>
+      </div>
+      <h1 class="tpc-callee">Aria</h1>
+      <p class="tpc-callee-sub">TradePilot AI</p>
+      <p class="tpc-status" id="tpcStatus" role="status" aria-live="polite">Tap Call to start a live voice conversation.</p>
+      <p class="tpc-timer" id="tpcTimer" hidden>00:00</p>
+      <div class="tpc-info-box" id="tpcInfoBox" hidden></div>
+      <div class="tpc-error-box" id="tpcErrorBox" hidden></div>
+      <div class="tpc-controls">
+        <button class="tpc-btn tpc-btn-call" id="tpcCallBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.4 11.4 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+          <span>Call</span>
+        </button>
+        <button class="tpc-btn tpc-btn-end" id="tpcEndBtn" type="button" hidden>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85a1 1 0 0 1-1.37-.16A11.5 11.5 0 0 1 1 12c0-.55.45-1 1-1h1V9.99A10 10 0 0 1 12 3a10 10 0 0 1 9 6.99V11h1c.55 0 1 .45 1 1 0 1.05-.07 2.08-.2 3.1a1 1 0 0 1-1.66.53c-.79-.73-1.68-1.36-2.66-1.85a1 1 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" transform="rotate(135 12 12)"/></svg>
+          <span>End Call</span>
+        </button>
+      </div>
+    </section>
+    <section class="tpc-transcript-card">
+      <h2>Live transcript</h2>
+      <div class="tpc-transcript" id="tpcTranscript">
+        <p class="tpc-empty" id="tpcEmpty">Your conversation will appear here once the call starts. Ask her anything — "Will BTC go up?", the latest signals, or today's world news.</p>
+      </div>
+    </section>
+    <footer class="tpc-foot">
+      <p class="tpc-nf">Not financial advice</p>
+      <p>Long call? If the connection drops, it reconnects by itself and the conversation carries on.</p>
+    </footer>
+  </main>
+</div>
+
 
 <script src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
@@ -2657,7 +2753,7 @@ updateMarketMeta().then(function(){
     var tm=document.createElement('div');tm.className='m-time';tm.textContent='TradePilot AI \u00b7 live data';d.appendChild(tm);
     log.appendChild(d);log.scrollTop=log.scrollHeight;
   }
-  /* Voice input + spoken answers v26 */
+  /* Voice input + spoken answers v27 */
   var tpVoiceSpeak=true;
   try{tpVoiceSpeak=localStorage.getItem('tpVoiceSpeak')!=='0';}catch(e){}
   function tpSpeak(text){
@@ -2787,7 +2883,7 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Legal collapsible rows v26 */
+  /* Legal collapsible rows v27 */
   try{
     document.querySelectorAll('.risk-coll .risk-head').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -2800,7 +2896,7 @@ updateMarketMeta().then(function(){
     });
   }catch(e){}
 
-  /* Hamburger menu + drawer v26 */
+  /* Hamburger menu + drawer v27 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
@@ -2885,6 +2981,789 @@ updateMarketMeta().then(function(){
     });
     tpSyncDrawerBal();
   }catch(e){ /* drawer only - never break trading */ }
+
+/* ---- Live voice call with Aria v27 (28 Nov 2026) ----
+   Ported faithfully from the proven live-call preview (same flow that
+   worked on a real phone call). Flow: Call tap -> POST /liveToken
+   (ephemeral token, single use) -> Gemini Live API via @google/genai
+   SDK (ESM from CDN, loaded with dynamic import) -> mic PCM 16kHz up,
+   AI PCM 24kHz down. No API key ever appears in this file. */
+(function () {
+  "use strict";
+
+  var TOKEN_URL = "https://arfuu0.pythonanywhere.com/liveToken";
+  var HEALTH_URL = "https://arfuu0.pythonanywhere.com/health";
+  var SIGNALS_URL = "https://arfuu0.pythonanywhere.com/getSignals";
+  var BTC_URL = "https://data-api.binance.vision/api/v3/ticker/24hr?symbol=BTCUSDT";
+  var MODEL = "gemini-3.8-live";
+  // Female voices only, in fallback order. Sulafat (Warm) first — the
+  // warmest, most natural human-sounding voice — then Aoede (Breezy).
+  var VOICES = ["Sulafat", "Aoede", "Leda", "Kore", "Zephyr"];
+  var SERVER_NOT_READY_MSG = "Voice server not updated yet — upload the new flask_app.py to PythonAnywhere and reload.";
+  var IDLE_STATUS = "Tap Call to start a live voice conversation.";
+
+  var SYSTEM_TEXT = "You are Aria — the friendly female voice of TradePilot AI, talking live by voice inside the TradePilot AI paper-trading app. You are a woman: whenever you speak Hindi or Hinglish, ALWAYS use feminine verb forms — say 'bol rahi hoon', 'samajh gayi', 'bata rahi hoon', 'kar sakti hoon' — and NEVER masculine forms like 'bol raha hoon' or 'samajh gaya'. SOUND HUMAN: talk like a real woman on a phone call, not a robot — warm, relaxed and natural, with short sentences, everyday words and natural pauses. Do not read out lists, symbols or long digit-by-digit numbers; round prices the way a person would ('Bitcoin is around sixty thousand dollars'). LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Keep answers brief — a few sentences at most; this is a voice call, not an essay. MARKET VIEW: the user may ask what you think — 'will BTC go up or down?', 'market kaisa lagega?' Give your honest reading of the live market data provided in this conversation: the recent signals (how many BUY vs SELL), the RSI, and Bitcoin's 24-hour change. Say plainly whether the data leans bullish, bearish or sideways, with one or two reasons. That is your analysis, never a promise — never guarantee profit or a price move. For prices, signals and balances use ONLY the live data given here — never invent those numbers. Do NOT tell the user to buy or sell a specific coin; if asked which trade to take, explain what the data says, what the risks are, and that the choice is theirs. NEWS AND GENERAL QUESTIONS: the user may ask about world news or anything else — answer helpfully and briefly, using the latest search results when they are available. If something is very recent and you are not sure, say so honestly instead of making up details. Never mention that you are Gemini or Google — you are Aria from TradePilot AI.";
+
+  // ---- DOM ----
+  var overlayEl = document.getElementById("tpcOverlay");
+  var openBtn = document.getElementById("tpcCallOpenBtn");
+  var closeBtn = document.getElementById("tpcCloseBtn");
+  var statusEl = document.getElementById("tpcStatus");
+  var timerEl = document.getElementById("tpcTimer");
+  var callBtn = document.getElementById("tpcCallBtn");
+  var endBtn = document.getElementById("tpcEndBtn");
+  var errorBox = document.getElementById("tpcErrorBox");
+  var infoBox = document.getElementById("tpcInfoBox");
+  var transcriptEl = document.getElementById("tpcTranscript");
+  var tEmptyEl = document.getElementById("tpcEmpty");
+  var callCard = document.getElementById("tpcCallCard");
+
+  // ---- State ----
+  var sdk = null;               // loaded @google/genai module
+  var session = null;           // live session
+  var audioCtx = null;          // shared ctx for mic + playback
+  var micStream = null;
+  var micSource = null;
+  var micNode = null;           // worklet node or script processor
+  var micCarry = [];            // pending float samples
+  var micCarryLen = 0;
+  var playSources = [];         // scheduled playback sources
+  var playhead = 0;             // ctx time when queued audio ends
+  var inCall = false;
+  var connecting = false;
+  var userEnded = false;
+  var callStartAt = 0;
+  var timerInt = null;
+  var statusInt = null;
+  var ctxInt = null;            // periodic live-market refresh during the call
+  var openBubble = null;        // { role, textEl }
+  var turnSawAiText = false;
+  var turnSawAudio = false;
+  var turnNoteShown = false;
+  var resumeHandle = null;      // last session-resumption handle from the server
+  var reconnecting = false;     // true while a dropped call is being restored
+  var callGen = 0;              // bumped on start/end so stale reconnects abort
+
+  // ---- Overlay open / close ----
+  // Closing the overlay ends the call cleanly: mic tracks stop, loops
+  // stop, the session closes — nothing keeps running in the background.
+  function openOverlay() {
+    if (!overlayEl) return;
+    overlayEl.hidden = false;
+    try { document.body.style.overflow = "hidden"; } catch (e) {}
+  }
+  function closeOverlay() {
+    if (inCall || connecting) endCall(true);
+    if (!overlayEl) return;
+    overlayEl.hidden = true;
+    try { document.body.style.overflow = ""; } catch (e) {}
+  }
+
+  // ---- Small helpers ----
+  function setStatus(text, speaking) {
+    statusEl.textContent = text;
+    statusEl.classList.toggle("tpc-speaking", !!speaking);
+  }
+  function showError(main, detail) {
+    errorBox.hidden = false;
+    errorBox.innerHTML = "";
+    var span = document.createElement("span");
+    span.textContent = main;
+    errorBox.appendChild(span);
+    if (detail) {
+      var d = document.createElement("span");
+      d.className = "tpc-detail";
+      d.textContent = detail;
+      errorBox.appendChild(d);
+    }
+  }
+  function clearError() { errorBox.hidden = true; errorBox.innerHTML = ""; }
+  function showInfo(text) { infoBox.hidden = false; infoBox.textContent = text; }
+  function clearInfo() { infoBox.hidden = true; infoBox.textContent = ""; }
+  function errText(e) {
+    if (!e) return "Unknown error";
+    if (typeof e === "string") return e;
+    var name = e.name ? e.name + ": " : "";
+    return name + (e.message || String(e));
+  }
+  function fmtPrice(n) {
+    var v = Number(n);
+    if (!isFinite(v)) return String(n);
+    return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // ---- Transcript ----
+  function addNote(text) {
+    if (tEmptyEl) { tEmptyEl.remove(); tEmptyEl = null; }
+    var p = document.createElement("p");
+    p.className = "tpc-note";
+    p.textContent = text;
+    transcriptEl.appendChild(p);
+    transcriptEl.scrollTop = transcriptEl.scrollHeight;
+  }
+  function appendTranscript(role, text) {
+    if (!text) return;
+    if (tEmptyEl) { tEmptyEl.remove(); tEmptyEl = null; }
+    if (!openBubble || openBubble.role !== role) {
+      var div = document.createElement("div");
+      div.className = "tpc-bubble " + (role === "user" ? "tpc-user" : "tpc-ai");
+      var who = document.createElement("span");
+      who.className = "tpc-who";
+      who.textContent = role === "user" ? "You" : "Aria";
+      var body = document.createElement("span");
+      div.appendChild(who);
+      div.appendChild(body);
+      transcriptEl.appendChild(div);
+      openBubble = { role: role, textEl: body };
+    }
+    openBubble.textEl.textContent += text;
+    transcriptEl.scrollTop = transcriptEl.scrollHeight;
+  }
+  function closeBubble() { openBubble = null; }
+
+  // ---- SDK loading (ESM via dynamic import, esm.sh then jsDelivr) ----
+  function loadSdk() {
+    if (sdk) return Promise.resolve(sdk);
+    return import("https://esm.sh/@google/genai")
+      .catch(function () { return import("https://cdn.jsdelivr.net/npm/@google/genai/+esm"); })
+      .then(function (mod) {
+        if (!mod || typeof mod.GoogleGenAI !== "function") {
+          throw new Error("The voice library loaded but GoogleGenAI was not found in it.");
+        }
+        sdk = mod;
+        return sdk;
+      });
+  }
+
+  // ---- Token ----
+  // One clean request for a single-use ephemeral token. The server is
+  // woken up in the background as soon as this page loads (see the
+  // warm-up at the bottom), so by the time Call is tapped the token
+  // comes back fast. Only a 404 means the route is genuinely missing
+  // (old server file).
+  function TokenNotReady() { this.notReady = true; }
+
+  function pingServer() {
+    // Best-effort wake-up call; its result is ignored on purpose.
+    var ctrl = ("AbortController" in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : null;
+    return fetch(HEALTH_URL, { method: "GET", cache: "no-store", signal: ctrl ? ctrl.signal : undefined })
+      .catch(function () {})
+      .then(function () { if (timer) clearTimeout(timer); });
+  }
+
+  function fetchToken() {
+    var ctrl = ("AbortController" in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 15000) : null;
+    return fetch(TOKEN_URL, { method: "POST", cache: "no-store", signal: ctrl ? ctrl.signal : undefined })
+      .then(function (res) {
+        if (timer) clearTimeout(timer);
+        if (res.status === 404) throw new TokenNotReady();
+        return res.text().then(function (bodyText) {
+          var data = null;
+          try { data = JSON.parse(bodyText); } catch (e) { /* not JSON */ }
+          if (!res.ok) {
+            var msg = (data && (data.error || data.message)) || bodyText.slice(0, 200) || ("HTTP " + res.status);
+            throw new Error("Token request failed (HTTP " + res.status + "): " + msg);
+          }
+          if (!data || !data.token) throw new Error("The voice server replied without a token.");
+          return data.token;
+        });
+      }, function (e) {
+        if (timer) clearTimeout(timer);
+        throw e;
+      });
+  }
+
+  // ---- Connect attempts ----
+  // Ephemeral tokens use the v1alpha constrained endpoint (official docs);
+  // v1beta is tried second, then the remaining female voices on v1alpha.
+  function buildAttempts() {
+    // Kept short on purpose: the first attempt (Sulafat on v1alpha) is
+    // the one that normally connects, so the call starts fast. The
+    // first two attempts enable Google Search grounding so she can
+    // answer world-news questions; the last attempt drops search, so
+    // the call still connects even if grounding is ever rejected.
+    return [
+      { apiVersion: "v1alpha", voice: VOICES[0], search: true },
+      { apiVersion: "v1beta", voice: VOICES[0], search: true },
+      { apiVersion: "v1alpha", voice: VOICES[1], search: false }
+    ];
+  }
+
+  function tryConnect(token, apiVersion, voice, useSearch) {
+    return new Promise(function (resolve, reject) {
+      var settled = false;
+      var sess = null;
+      var timer = setTimeout(function () {
+        if (!settled) {
+          settled = true;
+          try { if (sess) sess.close(); } catch (e) {}
+          reject(new Error("Connection timed out."));
+        }
+      }, 15000);
+
+      var ai = new sdk.GoogleGenAI({ httpOptions: { apiVersion: apiVersion }, apiKey: token });
+      var config = {
+        responseModalities: [sdk.Modality.AUDIO],
+        systemInstruction: { parts: [{ text: SYSTEM_TEXT }] },
+        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } },
+        // Less sensitive voice activity detection: background noise
+        // (TV, fan, other people) should not start a turn — only clear,
+        // close speech should. Low start sensitivity + a longer silence
+        // window keeps short noise bursts from triggering a reply.
+        realtimeInputConfig: {
+          automaticActivityDetection: {
+            startOfSpeechSensitivity: (sdk.StartSensitivity && sdk.StartSensitivity.START_SENSITIVITY_LOW) || "START_SENSITIVITY_LOW",
+            endOfSpeechSensitivity: (sdk.EndSensitivity && sdk.EndSensitivity.END_SENSITIVITY_LOW) || "END_SENSITIVITY_LOW",
+            prefixPaddingMs: 100,
+            silenceDurationMs: 700
+          }
+        },
+        // Context window compression: as the conversation grows, old
+        // turns are summarised instead of dropped, so one call can run
+        // far past the point where the context would otherwise fill up.
+        contextWindowCompression: {
+          triggerTokens: "25600",
+          slidingWindow: { targetTokens: "12800" }
+        },
+        // Session resumption: {} asks the server for resumption handles;
+        // a saved handle resumes the same conversation after a drop.
+        sessionResumption: resumeHandle ? { handle: resumeHandle } : {},
+        inputAudioTranscription: {},
+        outputAudioTranscription: {}
+      };
+      // Google Search grounding: lets her answer world-news and
+      // general questions with current information, not just the
+      // market data sent into the conversation.
+      if (useSearch) config.tools = [{ googleSearch: {} }];
+
+      var callbacks = {
+        onopen: function () {
+          if (!inCall) setStatus("Connected — starting microphone…");
+        },
+        onmessage: function (msg) { handleMessage(msg); },
+        onerror: function (e) {
+          var err = e && e.error ? e.error : e;
+          if (!settled) {
+            settled = true;
+            clearTimeout(timer);
+            reject(new Error(errText(err)));
+          } else if (inCall) {
+            onConnectionLost("Connection error: " + errText(err));
+          }
+        },
+        onclose: function () {
+          if (settled && inCall && !userEnded) {
+            onConnectionLost(null);
+          }
+        }
+      };
+
+      var p;
+      try {
+        p = ai.live.connect({ model: MODEL, config: config, callbacks: callbacks });
+      } catch (e) {
+        settled = true;
+        clearTimeout(timer);
+        reject(e);
+        return;
+      }
+      Promise.resolve(p).then(function (s) {
+        sess = s;
+        if (!settled) {
+          settled = true;
+          clearTimeout(timer);
+          resolve(s);
+        }
+      }).catch(function (e) {
+        if (!settled) {
+          settled = true;
+          clearTimeout(timer);
+          reject(new Error(errText(e)));
+        }
+      });
+    });
+  }
+
+  // ---- Market context (sent once, right after connect) ----
+  function fetchJson(url) {
+    return fetch(url).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    });
+  }
+  function sendMarketContext(sess) {
+    var btcPart = null, sigPart = null;
+    var btcP = fetchJson(BTC_URL).then(function (d) {
+      if (d && d.lastPrice) {
+        var chg = Number(d.priceChangePercent);
+        btcPart = "BTC $" + fmtPrice(d.lastPrice);
+        if (isFinite(chg)) {
+          btcPart += " (" + (chg >= 0 ? "+" : "") + chg.toFixed(2) + "% in the last 24h" +
+            ", 24h high $" + fmtPrice(d.highPrice) + ", 24h low $" + fmtPrice(d.lowPrice) + ")";
+        }
+      }
+    }).catch(function () {});
+    var sigP = fetchJson(SIGNALS_URL).then(function (d) {
+      var list = (d && d.signals) || [];
+      if (list.length) {
+        var buys = 0, sells = 0;
+        var lines = list.slice(0, 5).map(function (s) {
+          if (s.side === "BUY") buys++; else if (s.side === "SELL") sells++;
+          return s.side + " " + String(s.symbol || "").replace(/USDT$/, "") +
+            "/USDT at $" + fmtPrice(s.entry) +
+            " (stop loss $" + fmtPrice(s.stopLoss) + ", take profit $" + fmtPrice(s.takeProfit) +
+            ", RSI " + (s.rsi != null ? Number(s.rsi).toFixed(2) : "n/a") + ")";
+        });
+        sigPart = "recent signals, newest first: " + lines.join("; ") +
+          " — in the latest " + Math.min(5, list.length) + ": " + buys + " BUY, " + sells + " SELL";
+      }
+    }).catch(function () {});
+    return Promise.all([btcP, sigP]).then(function () {
+      var text;
+      if (btcPart || sigPart) {
+        var bits = [];
+        if (btcPart) bits.push(btcPart);
+        if (sigPart) bits.push(sigPart);
+        text = "Live market update: " + bits.join(". ") + ". Use only this data for prices and signals, never invent numbers. You may share your market view based on it.";
+      } else {
+        text = "No live market data is available right now — say so if asked about prices.";
+      }
+      try { sess.sendRealtimeInput({ text: text }); } catch (e) {
+        showError("Could not send the live market data to the AI.", errText(e));
+      }
+    });
+  }
+
+  // ---- Mic capture: Float32 -> 16kHz Int16 PCM -> base64 ----
+  function downsampleTo16k(input, inRate) {
+    var ratio = inRate / 16000;
+    var outLen = Math.max(1, Math.floor(input.length / ratio));
+    var out = new Int16Array(outLen);
+    for (var i = 0; i < outLen; i++) {
+      var idx = i * ratio;
+      var i0 = Math.floor(idx);
+      var i1 = Math.min(i0 + 1, input.length - 1);
+      var frac = idx - i0;
+      var s = input[i0] * (1 - frac) + input[i1] * frac;
+      if (s > 1) s = 1; else if (s < -1) s = -1;
+      out[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+    }
+    return out;
+  }
+  function int16ToBase64(int16) {
+    var bytes = new Uint8Array(int16.buffer, int16.byteOffset, int16.byteLength);
+    var bin = "";
+    var CHUNK = 0x8000;
+    for (var i = 0; i < bytes.length; i += CHUNK) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+    }
+    return btoa(bin);
+  }
+  function pushMicSamples(samples) {
+    if (!inCall || !session) return;
+    for (var i = 0; i < samples.length; i++) micCarry.push(samples[i]);
+    micCarryLen += samples.length;
+    var block = Math.floor(audioCtx.sampleRate / 10); // ~100ms blocks
+    while (micCarryLen >= block) {
+      var chunk = micCarry.slice(0, block);
+      micCarry = micCarry.slice(block);
+      micCarryLen -= block;
+      var pcm = downsampleTo16k(Float32Array.from(chunk), audioCtx.sampleRate);
+      try {
+        session.sendRealtimeInput({ audio: { data: int16ToBase64(pcm), mimeType: "audio/pcm;rate=16000" } });
+      } catch (e) { /* a dropped frame is not fatal */ }
+    }
+  }
+  function startMic() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      return Promise.reject(new Error("This browser does not support microphone access (getUserMedia is unavailable)."));
+    }
+    return navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }).then(function (stream) {
+      micStream = stream;
+      micSource = audioCtx.createMediaStreamSource(stream);
+      var useWorklet = !!(audioCtx.audioWorklet && typeof AudioWorkletNode !== "undefined");
+      if (useWorklet) {
+        var code = "class TpMic extends AudioWorkletProcessor{" +
+          "process(inputs){var ch=inputs[0]&&inputs[0][0];if(ch){this.port.postMessage(ch.slice(0));}return true;}}" +
+          "registerProcessor('tp-mic',TpMic);";
+        var url = URL.createObjectURL(new Blob([code], { type: "application/javascript" }));
+        return audioCtx.audioWorklet.addModule(url).then(function () {
+          URL.revokeObjectURL(url);
+          micNode = new AudioWorkletNode(audioCtx, "tp-mic");
+          micNode.port.onmessage = function (ev) { pushMicSamples(ev.data); };
+          micSource.connect(micNode);
+          // Worklet nodes do not need a destination connection to run.
+        }).catch(function () { startScriptProcessor(); });
+      }
+      startScriptProcessor();
+    });
+  }
+  function startScriptProcessor() {
+    var node = audioCtx.createScriptProcessor(4096, 1, 1);
+    node.onaudioprocess = function (ev) {
+      pushMicSamples(ev.inputBuffer.getChannelData(0).slice(0));
+    };
+    micSource.connect(node);
+    node.connect(audioCtx.destination); // required for the processor to run in some browsers
+    micNode = node;
+  }
+  function micErrorMessage(e) {
+    var name = e && e.name ? e.name : "";
+    if (name === "NotAllowedError" || name === "SecurityError") {
+      return { main: "Microphone blocked (not-allowed).", detail: errText(e) };
+    }
+    if (name === "NotFoundError" || name === "OverconstrainedError") {
+      return { main: "No microphone was found on this device.", detail: errText(e) };
+    }
+    return { main: "Microphone could not be started.", detail: errText(e) };
+  }
+
+  // ---- AI audio playback (24kHz PCM, scheduled gaplessly) ----
+  function base64ToInt16(b64) {
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new Int16Array(bytes.buffer, 0, Math.floor(bytes.byteLength / 2));
+  }
+  function playPcm(b64) {
+    if (!audioCtx) return;
+    var pcm;
+    try { pcm = base64ToInt16(b64); } catch (e) { return; }
+    if (!pcm.length) return;
+    var buffer = audioCtx.createBuffer(1, pcm.length, 24000);
+    var ch = buffer.getChannelData(0);
+    for (var i = 0; i < pcm.length; i++) ch[i] = pcm[i] / 32768;
+    var src = audioCtx.createBufferSource();
+    src.buffer = buffer;
+    src.connect(audioCtx.destination);
+    var now = audioCtx.currentTime;
+    var startAt = Math.max(playhead, now + 0.03);
+    src.start(startAt);
+    playhead = startAt + buffer.duration;
+    playSources.push(src);
+    src.onended = function () {
+      var idx = playSources.indexOf(src);
+      if (idx >= 0) playSources.splice(idx, 1);
+    };
+    if (!turnSawAudio) {
+      turnSawAudio = true;
+      if (!turnSawAiText && !turnNoteShown) {
+        turnNoteShown = true;
+        addNote("You spoke — AI is answering…");
+      }
+    }
+  }
+  function stopPlayback() {
+    playSources.slice().forEach(function (s) { try { s.stop(); } catch (e) {} });
+    playSources = [];
+    playhead = 0;
+  }
+  function isSpeaking() {
+    return audioCtx && playhead > audioCtx.currentTime + 0.05;
+  }
+
+  // ---- Incoming messages ----
+  function handleMessage(msg) {
+    if (msg && msg.sessionResumptionUpdate) {
+      var upd = msg.sessionResumptionUpdate;
+      if (upd.resumable && upd.newHandle) resumeHandle = upd.newHandle;
+    }
+    var sc = msg && msg.serverContent;
+    if (!sc) return;
+    if (sc.interrupted) {
+      stopPlayback();
+      closeBubble();
+      turnSawAudio = false; turnSawAiText = false; turnNoteShown = false;
+    }
+    if (sc.inputTranscription && sc.inputTranscription.text) {
+      appendTranscript("user", sc.inputTranscription.text);
+    }
+    if (sc.outputTranscription && sc.outputTranscription.text) {
+      turnSawAiText = true;
+      appendTranscript("ai", sc.outputTranscription.text);
+    }
+    var parts = sc.modelTurn && sc.modelTurn.parts;
+    if (parts) {
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part && part.inlineData && part.inlineData.data) playPcm(part.inlineData.data);
+      }
+    }
+    if (sc.turnComplete) {
+      closeBubble();
+      turnSawAudio = false; turnSawAiText = false; turnNoteShown = false;
+    }
+  }
+
+  // ---- Timer / status loops ----
+  function fmtTimer(ms) {
+    var s = Math.floor(ms / 1000);
+    var m = Math.floor(s / 60);
+    var r = s % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (r < 10 ? "0" : "") + r;
+  }
+  function startLoops() {
+    timerInt = setInterval(function () {
+      timerEl.textContent = fmtTimer(Date.now() - callStartAt);
+    }, 500);
+    statusInt = setInterval(function () {
+      if (!inCall) return;
+      if (reconnecting) { setStatus("Reconnecting…", false); return; }
+      if (isSpeaking()) setStatus("AI speaking…", true);
+      else setStatus("Listening…", false);
+    }, 250);
+    // Refresh the live market data every 90 seconds so her market
+    // view stays current on long calls.
+    ctxInt = setInterval(function () {
+      if (inCall && session && !reconnecting) sendMarketContext(session);
+    }, 90000);
+  }
+  function stopLoops() {
+    if (timerInt) clearInterval(timerInt);
+    if (statusInt) clearInterval(statusInt);
+    if (ctxInt) clearInterval(ctxInt);
+    timerInt = statusInt = ctxInt = null;
+  }
+
+  // ---- UI state ----
+  function showIdleUI() {
+    callBtn.hidden = false;
+    callBtn.disabled = false;
+    callBtn.querySelector("span").textContent = "Call";
+    endBtn.hidden = true;
+    timerEl.hidden = true;
+    callCard.classList.remove("tpc-in-call");
+  }
+  function showInCallUI() {
+    callBtn.hidden = true;
+    endBtn.hidden = false;
+    timerEl.hidden = false;
+    timerEl.textContent = "00:00";
+    callCard.classList.add("tpc-in-call");
+  }
+
+  // ---- Cleanup ----
+  function cleanupAudio() {
+    stopPlayback();
+    if (micNode) { try { micNode.disconnect(); } catch (e) {} micNode = null; }
+    if (micSource) { try { micSource.disconnect(); } catch (e) {} micSource = null; }
+    if (micStream) {
+      micStream.getTracks().forEach(function (t) { try { t.stop(); } catch (e) {} });
+      micStream = null;
+    }
+    micCarry = []; micCarryLen = 0;
+    if (audioCtx) {
+      var ctx = audioCtx;
+      audioCtx = null;
+      try { ctx.close(); } catch (e) {}
+    }
+  }
+  function cleanupSession() {
+    if (session) {
+      var s = session;
+      session = null;
+      try { s.close(); } catch (e) {}
+    }
+  }
+
+  // ---- Call lifecycle ----
+  function startCall() {
+    if (inCall || connecting) return;
+    callGen++;
+    connecting = true;
+    userEnded = false;
+    clearError();
+    clearInfo();
+    callBtn.disabled = true;
+    callBtn.querySelector("span").textContent = "Connecting…";
+    setStatus("Connecting…");
+
+    // Create the AudioContext inside the tap handler chain so the
+    // browser allows it to run (autoplay policy).
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+    } catch (e) {
+      connecting = false;
+      showIdleUI();
+      showError("Audio is not available in this browser.");
+      setStatus(IDLE_STATUS);
+      return;
+    }
+
+    // Token and voice library load in parallel (the library is
+    // usually already loaded by the page-load warm-up). The first
+    // token is used by the first connect attempt; every later
+    // attempt fetches a fresh one (tokens are single-use).
+    var firstToken = null;
+    Promise.all([fetchToken(), loadSdk()]).then(function (results) {
+      firstToken = results[0];
+      var attempts = buildAttempts();
+      var lastErr = null;
+      var chain = Promise.resolve();
+      var connectedSession = null;
+
+      attempts.forEach(function (attempt, idx) {
+        chain = chain.then(function () {
+          if (connectedSession) return null;
+          var tokenP = (idx === 0 && firstToken)
+            ? Promise.resolve(firstToken)
+            : fetchToken().then(function (t) { return t; });
+          return tokenP.then(function (token) {
+            setStatus("Connecting…");
+            return tryConnect(token, attempt.apiVersion, attempt.voice, attempt.search).then(function (sess) {
+              connectedSession = sess;
+            }).catch(function (e) {
+              lastErr = e;
+            });
+          });
+        });
+      });
+
+      return chain.then(function () {
+        if (!connectedSession) {
+          if (lastErr && lastErr.notReady) throw lastErr;
+          throw new Error("Connection failed. " + (lastErr ? errText(lastErr) : "No attempt succeeded."));
+        }
+        return connectedSession;
+      });
+    }).then(function (sess) {
+      session = sess;
+      inCall = true;
+      connecting = false;
+      callStartAt = Date.now();
+      showInCallUI();
+      startLoops();
+      setStatus("Listening…");
+      return sendMarketContext(sess).then(function () { return startMic(); });
+    }).catch(function (e) {
+      connecting = false;
+      inCall = false;
+      cleanupSession();
+      cleanupAudio();
+      showIdleUI();
+      if (e && e.notReady) {
+        showInfo(SERVER_NOT_READY_MSG);
+      } else if (e && e.__mic) {
+        showError(e.__mic.main);
+      } else {
+        showError("Couldn't connect right now — check your internet connection.");
+      }
+      setStatus(IDLE_STATUS);
+    });
+  }
+
+  function endCall(silent) {
+    callGen++;
+    userEnded = true;
+    reconnecting = false;
+    resumeHandle = null; // deliberate end: the next Call starts a fresh conversation
+    inCall = false;
+    connecting = false;
+    stopLoops();
+    cleanupSession();
+    cleanupAudio();
+    closeBubble();
+    showIdleUI();
+    if (!silent) setStatus("Call ended.");
+  }
+
+  // ---- Auto-reconnect ----
+  // A live session can drop (free-tier session cap, network blip).
+  // Instead of ending the call, fetch a fresh token and reconnect
+  // with the saved resumption handle: the same conversation picks
+  // up where it left off, the timer keeps running from the original
+  // start, and the mic and speakers stay live throughout — only the
+  // dead session object is replaced.
+  function attemptReconnect() {
+    if (reconnecting || userEnded || !inCall) return;
+    reconnecting = true;
+    var gen = callGen;
+    cleanupSession();
+    stopPlayback();
+    closeBubble();
+    setStatus("Reconnecting…");
+    addNote("Connection dropped — reconnecting…");
+
+    var attempts = buildAttempts();
+    function tryRound(round) {
+      var lastErr = null;
+      var newSession = null;
+      var chain = Promise.resolve();
+      attempts.forEach(function (attempt) {
+        chain = chain.then(function () {
+          if (newSession || gen !== callGen || userEnded || !inCall) return null;
+          return fetchToken().then(function (token) {
+            return tryConnect(token, attempt.apiVersion, attempt.voice, attempt.search).then(function (sess) {
+              newSession = sess;
+            }).catch(function (e) { lastErr = e; });
+          }).catch(function (e) { lastErr = e; });
+        });
+      });
+      return chain.then(function () {
+        if (newSession) return newSession;
+        if (round < 2 && gen === callGen && !userEnded && inCall) {
+          return new Promise(function (res) { setTimeout(res, 1500); })
+            .then(function () { return tryRound(round + 1); });
+        }
+        throw lastErr || new Error("Reconnect failed.");
+      });
+    }
+
+    tryRound(1).then(function (sess) {
+      reconnecting = false;
+      if (gen !== callGen || userEnded || !inCall) {
+        try { sess.close(); } catch (e) {}
+        return;
+      }
+      session = sess;
+      setStatus("Listening…");
+      addNote("Reconnected — your conversation continues.");
+    }).catch(function (e) {
+      reconnecting = false;
+      if (gen !== callGen || userEnded || !inCall) return;
+      inCall = false;
+      connecting = false;
+      stopLoops();
+      cleanupAudio();
+      closeBubble();
+      showIdleUI();
+      if (e && e.notReady) showInfo(SERVER_NOT_READY_MSG);
+      else showError("The connection dropped and couldn't be restored.");
+      setStatus("Call ended.");
+    });
+  }
+
+  function onConnectionLost(detail) {
+    if (!inCall || userEnded) return;
+    attemptReconnect();
+  }
+
+  // Wrap startMic errors so startCall's catch can show the mic message.
+  var originalStartMic = startMic;
+  startMic = function () {
+    return originalStartMic().catch(function (e) {
+      var m = micErrorMessage(e);
+      var wrapped = new Error(m.main);
+      wrapped.__mic = m;
+      throw wrapped;
+    });
+  };
+
+  if (openBtn) openBtn.addEventListener("click", openOverlay);
+  if (closeBtn) closeBtn.addEventListener("click", closeOverlay);
+  callBtn.addEventListener("click", startCall);
+  endBtn.addEventListener("click", function () { endCall(false); closeOverlay(); });
+  window.addEventListener("beforeunload", function () { if (inCall) endCall(true); });
+
+  // Warm-up: wake the voice server and load the voice library in the
+  // background as soon as the page opens, so tapping Call connects
+  // immediately instead of waiting on a cold server and a download.
+  pingServer();
+  loadSdk().catch(function () { /* the Call tap loads it if this failed */ });
+})();
 
 })();
 </script>
