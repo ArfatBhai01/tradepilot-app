@@ -524,7 +524,7 @@ button:active,.mrow:active,.wrow:active,.tf-btn:active,.ind-btn:active{transform
 /* ---- Animated background v5 (27 Nov 2026) — STRONGER aurora + twinkling stars ----
    v3 was too faint to see, so blobs are bigger + more saturated and stars are
    bigger with a clear blink. CSS-only, fixed behind content, pointer-events none. */
-body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will-change:transform;backface-visibility:hidden;
   background:
     radial-gradient(900px 620px at 12% 8%, rgba(240,185,11,.35), transparent 70%),
     radial-gradient(800px 560px at 88% 28%, rgba(14,203,129,.28), transparent 70%),
@@ -534,7 +534,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   0%{transform:translate3d(0,0,0) scale(1);opacity:.8}
   50%{transform:translate3d(3%,2%,0) scale(1.12);opacity:1}
   100%{transform:translate3d(-3%,3%,0) scale(1.06);opacity:.9}}
-body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;will-change:opacity;backface-visibility:hidden;
   background-image:
     radial-gradient(2px 2px at 20% 25%, rgba(255,255,255,.9), transparent),
     radial-gradient(2px 2px at 70% 15%, rgba(255,255,255,.7), transparent),
@@ -683,13 +683,13 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .input-row button:active{transform:scale(.96)}
 </style>
 <style>
-/* ---- Hamburger menu + drawer v23 (28 Nov 2026) ---- */
+/* ---- Hamburger menu + drawer v25 (28 Nov 2026) ---- */
 .tp-menu-btn{flex:none;width:42px;height:42px;border-radius:10px;border:1px solid rgba(214,168,75,.35);background:rgba(17,22,28,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .tp-menu-btn:active{transform:scale(.94)}
-.tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.tp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;opacity:0;pointer-events:none;will-change:opacity;transition:opacity .22s cubic-bezier(.32,.72,.35,1)}
 .tp-backdrop.open{opacity:1;pointer-events:auto}
-.tp-drawer{position:fixed;top:0;left:0;bottom:0;width:300px;max-width:85vw;background:#11161c;border-right:1px solid rgba(214,168,75,.25);box-shadow:12px 0 40px rgba(0,0,0,.5);z-index:200;transform:translateX(-102%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;display:flex;flex-direction:column;overflow-y:auto}
-.tp-drawer.open{transform:translateX(0);visibility:visible;transition:transform .25s ease,visibility 0s linear 0s}
+.tp-drawer{position:fixed;top:0;left:0;bottom:0;width:300px;max-width:85vw;background:#11161c;border-right:1px solid rgba(214,168,75,.25);box-shadow:8px 0 24px rgba(0,0,0,.45);z-index:200;transform:translateX(-102%);visibility:hidden;will-change:transform;transition:transform .22s cubic-bezier(.32,.72,.35,1),visibility 0s linear .22s;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.tp-drawer.open{transform:translateX(0);visibility:visible;transition:transform .22s cubic-bezier(.32,.72,.35,1),visibility 0s linear 0s}
 .tp-drawer-head{flex:none;display:flex;align-items:center;gap:10px;padding:16px 16px 12px;border-bottom:1px solid rgba(220,230,240,.08)}
 .tp-d-logo{width:36px;height:36px;flex:none;border-radius:10px;background:linear-gradient(135deg,#0d1b2e,#07090c);border:1px solid rgba(214,168,75,.45);display:flex;align-items:center;justify-content:center}
 .tp-d-name{font-size:17px;font-weight:800;color:#f2f4f6;letter-spacing:-.02em}
@@ -709,15 +709,16 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .tp-modal-bar{flex:none;display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
 .tp-modal-back{background:none;border:0;color:#d6a84b;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;padding:4px 0}
 .tp-modal-title{font-size:16px;font-weight:700;color:var(--text)}
-.tp-modal-body{flex:1;overflow-y:auto;padding:18px 16px 90px;line-height:1.65;color:var(--text);font-size:14px}
+.tp-modal-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:18px 16px 90px;line-height:1.65;color:var(--text);font-size:14px}
 .tp-modal-body p{margin:0 0 14px}
 .tp-kv{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(220,230,240,.08);font-size:14px}
 .tp-kv .k{color:var(--dim)}
 .tp-kv .v{color:var(--text);font-weight:600;text-align:right}
 .tp-set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid rgba(220,230,240,.08)}
+.tp-set-row>div:first-child{flex:1;min-width:0}
 .tp-set-t{font-size:14.5px;font-weight:600;color:var(--text)}
 .tp-set-s{font-size:12px;color:var(--dim);margin-top:2px;line-height:1.5}
-.tp-switch{flex:none;width:48px;height:28px;border-radius:999px;border:1px solid rgba(214,168,75,.4);background:rgba(255,255,255,.08);cursor:pointer;position:relative;padding:0;transition:background .2s ease}
+.tp-switch{flex:none;align-self:center;width:48px;height:28px;min-height:0;border-radius:999px;border:1px solid rgba(214,168,75,.4);background:rgba(255,255,255,.08);cursor:pointer;position:relative;padding:0;transition:background .2s ease}
 .tp-switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#f2f4f6;transition:left .2s ease}
 .tp-switch[aria-checked="true"]{background:#d6a84b}
 .tp-switch[aria-checked="true"]::after{left:23px;background:#07090c}
@@ -1116,13 +1117,13 @@ body.tp-reduce-motion *,body.tp-reduce-motion *::before,body.tp-reduce-motion *:
     <button type="button" class="tp-d-item" id="tpNavData"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Market Data</button>
     <a class="tp-d-item" href="#legal" data-tp-nav="legal"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Legal &amp; Disclosures</a>
   </div>
-  <div class="tp-drawer-foot">TradePilot AI &middot; v23<br>Paper trading only &middot; Not financial advice</div>
+  <div class="tp-drawer-foot">TradePilot AI &middot; v25<br>Paper trading only &middot; Not financial advice</div>
 </nav>
 
 <div class="tp-modal" id="tpSettingsOverlay" hidden>
   <div class="tp-modal-bar"><button type="button" class="tp-modal-back" id="tpSettingsBack">&#8249; Back</button><div class="tp-modal-title">Settings</div></div>
   <div class="tp-modal-body">
-    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v23</span></div>
+    <div class="tp-kv"><span class="k">App</span><span class="v">TradePilot AI &middot; v25</span></div>
     <div class="tp-kv"><span class="k">Data source</span><span class="v">Binance public API</span></div>
     <div class="tp-kv"><span class="k">Signal engine</span><span class="v">C++ &middot; GitHub Actions &middot; every 15 min</span></div>
     <div class="tp-set-row"><div><div class="tp-set-t">Reduce animations</div><div class="tp-set-s">Turn off card entrances, pulses and shimmer effects.</div></div><button type="button" class="tp-switch" id="tpToggleMotion" role="switch" aria-checked="false" aria-label="Reduce animations"></button></div>
@@ -2685,7 +2686,7 @@ updateMarketMeta().then(function(){
     renderAIInsight();
   }catch(e){}
 
-  /* Hamburger menu + drawer v23 */
+  /* Hamburger menu + drawer v25 */
   try{
     var tpDrawer=document.getElementById('tpDrawer'),
         tpBackdrop=document.getElementById('tpBackdrop'),
@@ -2708,7 +2709,7 @@ updateMarketMeta().then(function(){
     function tpCloseDrawer(){
       if(!tpDrawer)return;
       tpDrawer.classList.remove('open');
-      if(tpBackdrop){tpBackdrop.classList.remove('open');setTimeout(function(){if(!tpDrawer.classList.contains('open'))tpBackdrop.hidden=true;},260);}
+      if(tpBackdrop){tpBackdrop.classList.remove('open');setTimeout(function(){if(!tpDrawer.classList.contains('open'))tpBackdrop.hidden=true;},230);}
     }
     function tpOpenModal(el){if(!el)return;el.hidden=false;document.body.style.overflow='hidden';}
     function tpCloseModal(el){if(!el)return;el.hidden=true;document.body.style.overflow='';}
