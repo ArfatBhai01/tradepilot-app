@@ -241,7 +241,7 @@
 
       <footer>
         <p class="nf">Not financial advice</p>
-        <p>Free tier: a call lasts up to 15 minutes, then reconnect.</p>
+        <p>Long call? If the connection drops, it reconnects by itself and the conversation carries on.</p>
       </footer>
     </main>
 
@@ -267,7 +267,7 @@
       var SERVER_NOT_READY_MSG = "Voice server not updated yet — upload the new flask_app.py to PythonAnywhere and reload."
       var IDLE_STATUS = "Tap Call to start a live voice conversation.";
 
-      var SYSTEM_TEXT = "You are TradePilot AI, a friendly trading assistant talking live by voice inside the TradePilot AI paper-trading app. LANGUAGE RULE: match the user's language. If the user speaks English, answer ONLY in English. If the user speaks Hindi or Hinglish, answer in the same Hinglish. Speak naturally and briefly, a few sentences at most — this is a voice call, not an essay. Use ONLY the live market data given in the conversation — never invent prices, signals, or balances. Explain the market and the signals, discuss pros and cons, and help the user learn. Do NOT tell the user to buy or sell a specific coin, and never promise or guarantee profit. If asked which trade to take, explain what the signals and indicators say, what the risks are, and that the choice is theirs. Never mention that you are Gemini or Google — you are TradePilot AI.";
+      var SYSTEM_TEXT = "You are TradePilot AI, a friendly trading assistant talking live by voice inside the TradePilot AI paper-trading app. LANGUAGE RULE: default to English or Hinglish. If the user clearly speaks English, answer ONLY in English. If the user clearly speaks Hindi or Hinglish, answer in the same Hinglish. NOISE RULE: ignore background noise, TV, fans, other people, and unclear sounds — respond only when the user clearly speaks to you. If the speech is unclear, is just a single word, or seems to be in an unexpected language, do NOT answer it and do NOT switch language; politely ask the user to repeat in English or Hinglish. Never reply in Spanish or any other third language unless the user clearly speaks that language in full sentences. Speak naturally and briefly, a few sentences at most — this is a voice call, not an essay. Use ONLY the live market data given in the conversation — never invent prices, signals, or balances. Explain the market and the signals, discuss pros and cons, and help the user learn. Do NOT tell the user to buy or sell a specific coin, and never promise or guarantee profit. If asked which trade to take, explain what the signals and indicators say, what the risks are, and that the choice is theirs. Never mention that you are Gemini or Google — you are TradePilot AI.";
 
       // ---- DOM ----
       var statusEl = document.getElementById("status");
@@ -302,6 +302,8 @@
       var turnSawAudio = false;
       var turnNoteShown = false;
       var resumeHandle = null;      // last session-resumption handle from the server
+      var reconnecting = false;     // true while a dropped call is being restored
+      var callGen = 0;              // bumped on start/end so stale reconnects abort
 
       // ---- Small helpers ----
       function setStatus(text, speaking) {
@@ -449,6 +451,25 @@
             responseModalities: [sdk.Modality.AUDIO],
             systemInstruction: { parts: [{ text: SYSTEM_TEXT }] },
             speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } },
+            // Less sensitive voice activity detection: background noise
+            // (TV, fan, other people) should not start a turn — only clear,
+            // close speech should. Low start sensitivity + a longer silence
+            // window keeps short noise bursts from triggering a reply.
+            realtimeInputConfig: {
+              automaticActivityDetection: {
+                startOfSpeechSensitivity: (sdk.StartSensitivity && sdk.StartSensitivity.START_SENSITIVITY_LOW) || "START_SENSITIVITY_LOW",
+                endOfSpeechSensitivity: (sdk.EndSensitivity && sdk.EndSensitivity.END_SENSITIVITY_LOW) || "END_SENSITIVITY_LOW",
+                prefixPaddingMs: 100,
+                silenceDurationMs: 700
+              }
+            },
+            // Context window compression: as the conversation grows, old
+            // turns are summarised instead of dropped, so one call can run
+            // far past the point where the context would otherwise fill up.
+            contextWindowCompression: {
+              triggerTokens: "25600",
+              slidingWindow: { targetTokens: "12800" }
+            },
             // Session resumption: {} asks the server for resumption handles;
             // a saved handle resumes the same conversation after a drop.
             sessionResumption: resumeHandle ? { handle: resumeHandle } : {},
@@ -585,7 +606,7 @@
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
           return Promise.reject(new Error("This browser does not support microphone access (getUserMedia is unavailable)."));
         }
-        return navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+        return navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }).then(function (stream) {
           micStream = stream;
           micSource = audioCtx.createMediaStreamSource(stream);
           var useWorklet = !!(audioCtx.audioWorklet && typeof AudioWorkletNode !== "undefined");
@@ -715,6 +736,7 @@
         }, 500);
         statusInt = setInterval(function () {
           if (!inCall) return;
+          if (reconnecting) { setStatus("Reconnecting…", false); return; }
           if (isSpeaking()) setStatus("AI speaking…", true);
           else setStatus("Listening…", false);
         }, 250);
@@ -769,6 +791,7 @@
       // ---- Call lifecycle ----
       function startCall() {
         if (inCall || connecting) return;
+        callGen++;
         connecting = true;
         userEnded = false;
         clearError();
@@ -853,7 +876,9 @@
       }
 
       function endCall(silent) {
+        callGen++;
         userEnded = true;
+        reconnecting = false;
         resumeHandle = null; // deliberate end: the next Call starts a fresh conversation
         inCall = false;
         connecting = false;
@@ -865,20 +890,75 @@
         if (!silent) setStatus("Call ended.");
       }
 
-      function onConnectionLost(detail) {
-        if (!inCall) return;
-        var elapsed = Date.now() - callStartAt;
-        inCall = false;
-        connecting = false;
-        stopLoops();
+      // ---- Auto-reconnect ----
+      // A live session can drop (free-tier session cap, network blip).
+      // Instead of ending the call, fetch a fresh token and reconnect
+      // with the saved resumption handle: the same conversation picks
+      // up where it left off, the timer keeps running from the original
+      // start, and the mic and speakers stay live throughout — only the
+      // dead session object is replaced.
+      function attemptReconnect() {
+        if (reconnecting || userEnded || !inCall) return;
+        reconnecting = true;
+        var gen = callGen;
         cleanupSession();
-        cleanupAudio();
+        stopPlayback();
         closeBubble();
-        showIdleUI();
-        if (elapsed >= 14.5 * 60 * 1000) {
-          showInfo("The call reached the free-tier limit of 15 minutes.");
+        setStatus("Reconnecting…");
+        addNote("Connection dropped — reconnecting…");
+
+        var attempts = buildAttempts();
+        function tryRound(round) {
+          var lastErr = null;
+          var newSession = null;
+          var chain = Promise.resolve();
+          attempts.forEach(function (attempt) {
+            chain = chain.then(function () {
+              if (newSession || gen !== callGen || userEnded || !inCall) return null;
+              return fetchToken().then(function (token) {
+                return tryConnect(token, attempt.apiVersion, attempt.voice).then(function (sess) {
+                  newSession = sess;
+                }).catch(function (e) { lastErr = e; });
+              }).catch(function (e) { lastErr = e; });
+            });
+          });
+          return chain.then(function () {
+            if (newSession) return newSession;
+            if (round < 2 && gen === callGen && !userEnded && inCall) {
+              return new Promise(function (res) { setTimeout(res, 1500); })
+                .then(function () { return tryRound(round + 1); });
+            }
+            throw lastErr || new Error("Reconnect failed.");
+          });
         }
-        setStatus("Call ended.");
+
+        tryRound(1).then(function (sess) {
+          reconnecting = false;
+          if (gen !== callGen || userEnded || !inCall) {
+            try { sess.close(); } catch (e) {}
+            return;
+          }
+          session = sess;
+          setStatus("Listening…");
+          addNote("Reconnected — your conversation continues.");
+        }).catch(function (e) {
+          reconnecting = false;
+          if (gen !== callGen || userEnded || !inCall) return;
+          inCall = false;
+          connecting = false;
+          stopLoops();
+          cleanupAudio();
+          closeBubble();
+          showIdleUI();
+          if (e && e.notReady) showInfo(SERVER_NOT_READY_MSG);
+          else showError("The connection dropped and couldn't be restored.");
+          setStatus("Call ended.");
+        });
+      }
+
+      function onConnectionLost(detail) {
+        if (!inCall || userEnded) return;
+        attemptReconnect();
       }
 
       // Wrap startMic errors so startCall's catch can show the mic message.
