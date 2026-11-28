@@ -649,6 +649,34 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 .legal-body li{margin-bottom:6px}
 .legal-body b,.legal-body strong{color:var(--text)}
 .legal-body a{color:var(--gold)}
+<style>
+/* v21: AI Insight + Ask AI (Dashboard) */
+.ai-insight-card{background:linear-gradient(160deg,#141a23,#10151d);border:1px solid rgba(214,168,75,.35);border-radius:16px;padding:16px;box-shadow:0 0 24px rgba(214,168,75,.08)}
+.ai-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ai-badge{background:#d6a84b;color:#07090c;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:999px}
+.ai-title{font-size:15px;font-weight:700;color:var(--text)}
+.ai-live{margin-left:auto;font-size:11px;color:var(--green);display:flex;align-items:center;gap:5px}
+.ai-live i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block}
+.ai-text{font-size:13.5px;line-height:1.65;color:#d7dce3}
+.ai-text b{color:#f2f4f6}
+.ai-foot{margin-top:12px;padding-top:10px;border-top:1px solid rgba(220,230,240,.08);font-size:11px;color:var(--dim);line-height:1.5}
+#aiChatLog{max-height:340px;overflow-y:auto}
+.chat-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+.chat-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.chat-ava{width:32px;height:32px;border-radius:50%;background:#d6a84b;color:#07090c;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:none}
+.chat-title{font-size:15px;font-weight:700;color:var(--text)}
+.chat-sub{font-size:11px;color:var(--dim)}
+.msg.user{margin-left:auto;margin-right:0;background:#1d2630;border:1px solid #1d2630;border-radius:14px 14px 4px 14px;padding:10px 12px;margin-bottom:10px;max-width:85%;box-shadow:none}
+.msg.ai{margin-left:0;margin-right:auto;background:#171e26;border:1px solid rgba(214,168,75,.25);border-radius:14px 14px 14px 4px;padding:10px 12px;margin-bottom:10px;max-width:85%;box-shadow:none}
+.msg.ai b{color:#e8c15a}
+.msg .m-time{font-size:10px;color:var(--dim);margin-top:4px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 12px}
+.chip{font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid rgba(214,168,75,.45);color:#e8c15a;background:transparent;font-family:inherit;cursor:pointer}
+.chip:active{transform:scale(.96)}
+.input-row{display:flex;gap:8px}
+.input-row input{flex:1;background:#0d1117;border:1px solid var(--line);border-radius:999px;padding:11px 14px;color:var(--text);font-size:13.5px;font-family:inherit;outline:none;min-width:0}
+.input-row button{background:#d6a84b;color:#07090c;border:none;border-radius:999px;padding:0 18px;font-weight:700;font-size:13.5px;font-family:inherit;cursor:pointer}
+.input-row button:active{transform:scale(.96)}
 </style>
 </head>
 <body>
@@ -678,6 +706,31 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="fc"><div class="fc-ico">&#127758;</div><div class="fc-k">Market Overview</div><div class="fc-v">$2.08T</div><div class="fc-s">Total cap &middot; BTC dom 57.9% &middot; snapshot 25 Nov</div></div>
       <div class="fc"><div class="fc-ico">&#128276;</div><div class="fc-k">Price Alerts</div><div class="fc-v" style="color:var(--dim)">No alerts</div><div class="fc-s">Alerts are not live yet</div></div>
       <div class="fc"><div class="fc-ico">&#127942;</div><div class="fc-k">Trading Performance</div><div class="fc-v" id="fcWin">&mdash;</div><div class="fc-s" id="fcWinSub">No closed trades yet</div></div>
+    </div>
+  </section>
+
+  <!-- v21: AI INSIGHT + ASK AI (Dashboard) -->
+  <section id="aiInsight" aria-label="AI market summary">
+    <div class="ai-insight-card">
+      <div class="ai-head"><span class="ai-badge">AI INSIGHT</span><span class="ai-title">Market Summary</span><span class="ai-live"><i></i>Live data</span></div>
+      <div class="ai-text" id="aiInsightText">Loading live data&hellip;</div>
+      <div class="ai-foot" id="aiInsightFoot">Sources: Binance live prices, C++ engine signals, Fear &amp; Greed Index. Not financial advice.</div>
+    </div>
+  </section>
+
+  <section id="askAi" aria-label="Ask AI">
+    <div class="chat-card">
+      <div class="chat-head"><div class="chat-ava">T</div><div><div class="chat-title">Ask AI</div><div class="chat-sub">Ask about prices, signals, or your paper balance</div></div></div>
+      <div id="aiChatLog">
+        <div class="msg ai">Hi! Ask me about a price, the latest signals, or your paper balance &mdash; I answer from live data.<div class="m-time">TradePilot AI</div></div>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" data-q="BTC price?">BTC price?</button>
+        <button type="button" class="chip" data-q="Latest signals?">Latest signals?</button>
+        <button type="button" class="chip" data-q="Is BTC bullish?">Is BTC bullish?</button>
+        <button type="button" class="chip" data-q="My balance?">My balance?</button>
+      </div>
+      <div class="input-row"><input id="aiChatInput" type="text" placeholder="Ask AI anything about the market&hellip;" autocomplete="off"/><button type="button" id="aiChatSend">Send</button></div>
     </div>
   </section>
 
@@ -2218,6 +2271,7 @@ function renderFloatCards(){
     if(w)$('fcWin').textContent=w.textContent;
     var closed=(typeof paper!=='undefined'&&paper.closed)?paper.closed.length:0;
     $('fcWinSub').textContent=closed?closed+' closed paper trades':'No closed trades yet';
+    renderAIInsight();
   }catch(e){}
 }
 function renderSignals(){
@@ -2256,7 +2310,7 @@ $('coinSearch').addEventListener('input',function(){searchQuery=this.value;rende
 segUI();initCharts();renderPaper();loadPaper();syncServerBalance();syncOrderPanel();
 $('chartSrc').textContent='Connecting to Binance OHLC candle feed…';
 fetchEngineSignals();setInterval(fetchEngineSignals,30000);
-renderFloatCards();setInterval(renderFloatCards,30000);
+renderFloatCards();renderAIInsight();setInterval(renderFloatCards,30000);
 updateMarketMeta().then(function(){
   connectSelectedTicker();fetchSelectedPrice();fetchMarketTickers();
   pricePollTimer=setInterval(function(){if(!activeSocket||activeSocket.readyState!==1)fetchSelectedPrice();},1000);
@@ -2333,6 +2387,136 @@ updateMarketMeta().then(function(){
     function closeLegal(){if(!legalOverlay)return;legalOverlay.hidden=true;document.body.style.overflow='';}
     document.querySelectorAll('.legal-doc').forEach(function(b){b.addEventListener('click',function(){openLegal(b.getAttribute('data-doc'));});});
     var legalClose=document.getElementById('legalClose');if(legalClose)legalClose.addEventListener('click',closeLegal);
+  }catch(e){}
+
+  /* v21: AI Insight + Ask AI chat (Dashboard). All answers come from live data only. */
+  var AI_NAMES={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',BNB:'BNB',XRP:'XRP',ZEC:'Zcash',HYPE:'Hyperliquid',TRX:'TRON',DOGE:'Dogecoin',ADA:'Cardano'};
+  var AI_COINS=['BTC','ETH','SOL','BNB','XRP','ZEC','HYPE','TRX','DOGE','ADA'];
+  var AI_ALIASES={bitcoin:'BTC',ethereum:'ETH',solana:'SOL',bnb:'BNB',xrp:'XRP',zcash:'ZEC',zec:'ZEC',hyperliquid:'HYPE',hype:'HYPE',tron:'TRX',trx:'TRX',dogecoin:'DOGE',doge:'DOGE',cardano:'ADA',ada:'ADA',btc:'BTC',eth:'ETH',sol:'SOL'};
+  function aiCoinName(sym){return (typeof AI_NAMES!=='undefined'&&AI_NAMES&&AI_NAMES[sym])||NAMES[sym]||sym}
+  function aiChg(sym){var s=SNAP[sym];return s?{p:s.p,c:s.c}:null}
+  function aiLiveList(){try{return (typeof engineSignals!=='undefined'&&engineSignals)?engineSignals.map(mapEngineSignal):[]}catch(e){return[]}}
+  function aiNowIST(){try{return new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date())}catch(e){return ''}}
+  function aiDirTxt(c){return (c>=0?'up ':'down ')+fmt(Math.abs(c),2)+'%'}
+  function renderAIInsight(){
+    try{
+      var txt=$('aiInsightText'),foot=$('aiInsightFoot');
+      if(!txt)return;
+      var btc=aiChg('BTC'),eth=aiChg('ETH'),sol=aiChg('SOL');
+      if(!btc||!btc.p||btc.p<=0){
+        txt.textContent='Loading live data\u2026';
+        if(foot)foot.textContent='Sources: Binance live prices, C++ engine signals, Fear & Greed Index. Not financial advice.';
+        return;
+      }
+      var html='<b>Bitcoin</b> is trading at <b>'+fmt$(btc.p,coinPrecision('BTC'))+'</b>, <span class="'+(btc.c>=0?'up':'down')+'">'+aiDirTxt(btc.c)+'</span> in the last 24 hours.';
+      var others=[];
+      if(eth&&eth.p>0)others.push('<b>Ethereum</b> is <span class="'+(eth.c>=0?'up':'down')+'">'+aiDirTxt(eth.c)+'</span> ('+fmt$(eth.p,coinPrecision('ETH'))+')');
+      if(sol&&sol.p>0)others.push('<b>Solana</b> is <span class="'+(sol.c>=0?'up':'down')+'">'+aiDirTxt(sol.c)+'</span> ('+fmt$(sol.p,coinPrecision('SOL'))+')');
+      var ups=0,downs=0;
+      [btc,eth,sol].forEach(function(x){if(x&&isFinite(x.c)){if(x.c>0)ups++;else if(x.c<0)downs++;}});
+      var mood=downs>=2?'the market is broadly red today':(ups>=2?'the market is broadly green today':'the market is mixed today');
+      if(others.length)html+=' '+others.join(' and ')+' \u2014 '+mood+'.';
+      var list=aiLiveList(),n=list[0]||null,sigLine;
+      if(typeof engineSignals==='undefined'||engineSignals===null){
+        sigLine='The signal server is unreachable right now.';
+      }else if(!n){
+        sigLine='No engine signals have arrived yet.';
+      }else{
+        var d=coinPrecision(n.pair.split('/')[0]);
+        sigLine='The newest engine signal is <b>'+n.side+' '+n.pair.split('/')[0]+'</b> at <b>'+fmt$(n.entry,d)+'</b> (RSI '+(n.rsi!=null?fmt(n.rsi,2):'\u2014')+', confidence '+n.confidence+'%).';
+      }
+      html+='<br><br>'+sigLine+' Market sentiment is <b>Extreme Fear (11)</b> (snapshot 25 Nov).<br><br>This is automated analysis from live data \u2014 it explains what the market is doing, it does not predict prices.';
+      txt.innerHTML=html;
+      if(foot)foot.textContent='Updated '+aiNowIST()+' IST \u00b7 Sources: Binance live prices, C++ engine signals, Fear & Greed Index. Not financial advice.';
+    }catch(e){}
+  }
+  function aiDetectCoin(low){
+    var words=String(low||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').split(' ');
+    for(var i=0;i<words.length;i++){var w=words[i];if(!w)continue;if(AI_ALIASES[w])return AI_ALIASES[w];if(AI_COINS.indexOf(w.toUpperCase())>-1)return w.toUpperCase();}
+    return null;
+  }
+  function aiAnswer(low){
+    var sym=aiDetectCoin(low)||state.pair;
+    var list=aiLiveList(),n=list[0]||null;
+    if(low.indexOf('balance')>-1||low.indexOf('cash')>-1||low.indexOf('money')>-1||low.indexOf('my funds')>-1){
+      var eq=$('acctEquity'),cash=$('acctCash');
+      return 'Your paper balance is <b>'+(eq?eq.textContent:'\u2014')+'</b> (cash '+(cash?cash.textContent:'\u2014')+'). It is virtual money only \u2014 it has no real value and cannot be withdrawn.';
+    }
+    if(low.indexOf('rsi')>-1){
+      if(!n)return 'No signals yet, so there is no RSI to show. Signals appear here when the C++ engine publishes them.';
+      var r=n.rsi;
+      if(r==null)return 'The newest signal has no RSI value.';
+      var zone=r>=70?'the overbought zone':(r<=30?'the oversold zone':'the neutral zone');
+      return 'The newest signal (<b>'+n.side+' '+n.pair+'</b>) has an RSI of <b>'+fmt(r,2)+'</b>. RSI above 70 is usually overbought, below 30 oversold \u2014 '+fmt(r,2)+' is in '+zone+'.';
+    }
+    if(low.indexOf('signal')>-1){
+      if(typeof engineSignals==='undefined'||engineSignals===null)return 'The signal server is unreachable right now. Please try again in a few seconds.';
+      if(!list.length)return 'No engine signals have arrived yet. Signals appear here when the C++ engine publishes them.';
+      var out='Newest signals:';
+      list.slice(0,3).forEach(function(x,i){
+        var d=coinPrecision(x.pair.split('/')[0]);
+        out+='<br>'+(i+1)+'. <b>'+x.side+' '+x.pair+'</b> at '+fmt$(x.entry,d)+' (RSI '+(x.rsi!=null?fmt(x.rsi,2):'\u2014')+', '+x.confidence+'%)';
+      });
+      out+='<br><br>Signals are free for everyone \u2014 automated model output, not financial advice.';
+      return out;
+    }
+    if(low.indexOf('bullish')>-1||low.indexOf('bearish')>-1||low.indexOf('trend')>-1){
+      var ch=aiChg(sym);
+      if(!ch||!ch.p||ch.p<=0)return 'Live prices are still loading \u2014 try again in a few seconds.';
+      var base='<b>'+aiCoinName(sym)+' ('+sym+')</b> is <span class="'+(ch.c>=0?'up':'down')+'">'+aiDirTxt(ch.c)+'</span> in the last 24 hours.';
+      if(!n)return base+' There is no engine signal to compare it with. I describe the data; I do not predict prices.';
+      var agree=(ch.c>0&&n.side==='BUY')||(ch.c<0&&n.side==='SELL');
+      base+=' The newest engine signal is <b>'+n.side+' '+n.pair.split('/')[0]+'</b>.';
+      base+=agree?' Both point the same way, but that is not a prediction \u2014 I describe the data only.':' Those two point in different directions, so the picture is mixed \u2014 not a clear trend. I describe the data; I do not predict prices.';
+      return base;
+    }
+    if(low.indexOf('paper')>-1||low.indexOf('how to trade')>-1||low.indexOf('how do i buy')>-1||low.indexOf('how to buy')>-1||low.indexOf('buy')>-1||low.indexOf('sell')>-1||low.indexOf('trade')>-1){
+      return 'Paper trading uses virtual money at live prices \u2014 no real funds, no real orders. Pick a pair, set an amount, and tap Buy or Sell in the Paper section.';
+    }
+    if(low.indexOf('price')>-1||aiDetectCoin(low)){
+      var c2=aiChg(sym);
+      if(!c2||!c2.p||c2.p<=0)return 'Live prices are still loading \u2014 try again in a few seconds.';
+      return '<b>'+aiCoinName(sym)+' ('+sym+'/USDT)</b> is trading at <b>'+fmt$(c2.p,coinPrecision(sym))+'</b>, <span class="'+(c2.c>=0?'up':'down')+'">'+aiDirTxt(c2.c)+'</span> in the last 24 hours.';
+    }
+    if(low.indexOf('star')>-1||low.indexOf('top up')>-1||low.indexOf('topup')>-1||low.indexOf('store')>-1||low.indexOf('pack')>-1){
+      return 'Stars buy virtual paper balance only: <b>$1,000 = 100 Stars</b>, <b>$5,000 = 500 Stars</b>, <b>$10,000 = 1,000 Stars</b>. Buy a pack in the Store \u2014 Stars never buy signals or real crypto.';
+    }
+    if(low.indexOf('support')>-1||low.indexOf('help')>-1||low.indexOf('contact')>-1){
+      return 'Message <b>@Lustcoded</b> on Telegram from the Support section \u2014 tap your issue and the message is already written for you.';
+    }
+    return 'I can answer about prices, latest signals, trend, RSI, your paper balance, Stars, or support. Try one of the suggestions below.';
+  }
+  function aiChatAddUser(text){
+    var log=$('aiChatLog');if(!log)return;
+    var d=document.createElement('div');d.className='msg user';
+    var tm2=document.createElement('div');tm2.textContent=text;d.appendChild(tm2);
+    var tm=document.createElement('div');tm.className='m-time';tm.textContent=aiNowIST();d.appendChild(tm);
+    log.appendChild(d);log.scrollTop=log.scrollHeight;
+  }
+  function aiChatAddAI(html){
+    var log=$('aiChatLog');if(!log)return;
+    var d=document.createElement('div');d.className='msg ai';
+    d.innerHTML=html+'<div class="m-time">TradePilot AI \u00b7 live data</div>';
+    log.appendChild(d);log.scrollTop=log.scrollHeight;
+  }
+  function askAI(q){
+    var query=String(q||'').trim();
+    if(!query)return;
+    try{
+      aiChatAddUser(query);
+      var reply='';
+      try{reply=aiAnswer(query.toLowerCase());}catch(e){reply='Sorry, something went wrong. Please try again.';}
+      aiChatAddAI(reply);
+    }catch(e){}
+  }
+  try{
+    var aiSend=$('aiChatSend'),aiInput=$('aiChatInput');
+    if(aiSend&&aiInput){
+      aiSend.addEventListener('click',function(){var v=aiInput.value;aiInput.value='';askAI(v);aiInput.focus();});
+      aiInput.addEventListener('keydown',function(ev){if(ev.key==='Enter'){var v=aiInput.value;aiInput.value='';askAI(v);}});
+    }
+    document.querySelectorAll('.chip[data-q]').forEach(function(b){b.addEventListener('click',function(){askAI(b.getAttribute('data-q'));});});
+    renderAIInsight();
   }catch(e){}
 
 })();
